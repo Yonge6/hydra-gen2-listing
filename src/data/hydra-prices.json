@@ -1,0 +1,64 @@
+{
+  "7": {
+    "url": "https://www.1laser.com/products/hydra-7-gen-2-70w-rf-co2-dual-laser-machine",
+    "variants": [
+      {
+        "id": 44667131822114,
+        "title": "Default Title",
+        "price": 10999.0,
+        "available": true
+      }
+    ]
+  },
+  "9": {
+    "url": "https://www.1laser.com/products/hydra-9-gen-2-70w-rf-co2-dual-laser-machine",
+    "variants": [
+      {
+        "id": 44745765650466,
+        "title": "Hydra 9 Hybrid - 38W RF + 100W DC",
+        "price": 10999.0,
+        "available": true
+      },
+      {
+        "id": 44745765617698,
+        "title": "Hydra 9 Pro - 70W RF",
+        "price": 11999.0,
+        "available": true
+      }
+    ]
+  },
+  "13": {
+    "url": "https://www.1laser.com/products/hydra-13-gen-2-70w-rf-co2-dual-laser-machine",
+    "variants": [
+      {
+        "id": 44745769156642,
+        "title": "Hydra 13 Hybrid - 38W RF + 130W DC",
+        "price": 12999.0,
+        "available": true
+      },
+      {
+        "id": 44745769123874,
+        "title": "Hydra 13 Pro - 70W RF",
+        "price": 13999.0,
+        "available": true
+      }
+    ]
+  },
+  "16": {
+    "url": "https://www.1laser.com/products/hydra-16-gen-2-70w-rf-co2-dual-laser-machine",
+    "variants": [
+      {
+        "id": 44745771155490,
+        "title": "Hydra 16 Hybrid - 38W RF + 150W DC",
+        "price": 13999.0,
+        "available": true
+      },
+      {
+        "id": 44745771122722,
+        "title": "Hydra 16 Pro - 70W RF",
+        "price": 14999.0,
+        "available": true
+      }
+    ]
+  }
+}
