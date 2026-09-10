@@ -136,3 +136,5 @@
 @media(min-width:1181px) { .hydra-capability .capability-scroll__nav { margin-bottom:-216px; } }
 @media(max-width:760px) { .hydra-capability { padding-top:32px; } }
 @media(max-width:760px) { .hydra-capability .capability-scroll__layout { padding:0; } }
+/* Keep chapter headings below both mobile navigation rails. */
+@media(max-width:760px) { .hydra-page .capability-scroll__chapter[id] { scroll-margin-top:180px; } }
