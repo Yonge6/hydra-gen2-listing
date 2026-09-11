@@ -133,8 +133,34 @@
 .hydra-page .material-tab__label svg { color:inherit; }
 .hydra-page .h-image.is-image-ready { background:transparent; animation:none; }
 .hydra-capability { padding-top:48px; }
-@media(min-width:1181px) { .hydra-capability .capability-scroll__nav { margin-bottom:-216px; } }
+@media(min-width:1181px) { .hydra-capability .capability-scroll__nav { margin-bottom:-260px; } }
 @media(max-width:760px) { .hydra-capability { padding-top:32px; } }
 @media(max-width:760px) { .hydra-capability .capability-scroll__layout { padding:0; } }
 /* Keep chapter headings below both mobile navigation rails. */
 @media(max-width:760px) { .hydra-page .capability-scroll__chapter[id] { scroll-margin-top:180px; } }
+
+/* Reuse the XRF video, review, comparison and decision modules. */
+.h-hero-video { display:flex; align-items:center; gap:14px; width:100%; margin-top:14px; padding:0; border:0; background:none; color:var(--ink); text-align:left; cursor:pointer; }
+.h-hero-video > span { position:relative; width:124px; aspect-ratio:16/9; overflow:hidden; border-radius:12px; flex:none; }
+.h-hero-video img { display:block; width:100%; height:100%; object-fit:cover; }
+.h-hero-video > span > svg { position:absolute; inset:0; margin:auto; box-sizing:content-box; padding:8px; border-radius:50%; color:white; background:#0003; }
+.h-hero-video strong { flex:1; font-size:14px; }
+.h-hero-video small { display:block; margin-top:7px; color:var(--muted); font-size:12px; font-weight:400; }
+.hydra-page .youtube-cover__play,.hydra-page .review-video-card__media > span { background:rgba(0,0,0,.2); color:#fff; }
+.hydra-page .youtube-cover img { object-fit:contain; }
+.hydra-page .review-proof__controls button:disabled { opacity:.35; cursor:default; }
+.h-video-disclaimer { max-width:1280px; margin:14px auto 0; font-size:12px; line-height:1.6; color:var(--muted); }
+.hydra-page .tv-proof .h-footnote,.hydra-page .sales-video .h-footnote { font-size:12px; line-height:1.6; margin-top:16px; }
+.h-video-modal { z-index:200; }
+.h-video-modal .video-modal__dialog { max-height:calc(100dvh - 32px); overflow:auto; }
+.h-video-modal iframe { display:block; width:100%; height:100%; border:0; }
+.h-video-modal__copy { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:20px 24px; }
+.h-video-modal__copy small { color:var(--muted); font-size:12px; }
+.h-video-modal__copy h2 { margin:8px 0 0; font-size:20px; font-weight:800; line-height:1.3; }
+.h-video-modal__copy a { display:flex; flex:none; align-items:center; gap:8px; min-height:44px; font-size:13px; font-weight:700; }
+@media(max-width:760px) {
+ .hydra-page #laser-guide { scroll-margin-top:180px; }
+ .h-video-modal__copy { flex-direction:column; align-items:start; gap:8px; padding:16px; }
+ .h-video-modal__copy h2 { font-size:18px; }
+ .h-hero-video > span { width:104px; }
+}
