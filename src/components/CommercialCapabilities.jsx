@@ -42,7 +42,7 @@ function ProductEconomics({ product, equipmentInvestment }) {
         </header>
         <dl className="product-economics__metrics">
           <div className="product-economics__payback"><dt>Estimated payback</dt><dd>{paybackMonths.toFixed(1)}<small>months</small></dd></div>
-          <div><dt>24-month payment</dt><dd>{monthlyCurrencyFormatter.format(monthlyPayment)}<small>/mo.</small></dd></div>
+          <div><dt>24-month cost illustration</dt><dd>{monthlyCurrencyFormatter.format(monthlyPayment)}<small>/mo.</small></dd></div>
         </dl>
         <p className="product-economics__assumptions">
           {monthlySales} products/mo. × {economics.sellingPrice} selling price × {economics.margin} net margin. Payback uses the current {currencyFormatter.format(equipmentInvestment)} configuration.
@@ -136,7 +136,7 @@ function ProductOpportunities({ asset, equipmentInvestment }) {
       <div className="product-opportunities__inner">
         <header className="product-opportunities__header">
           <span className="eyebrow">PRODUCT OPPORTUNITIES</span>
-          <h2 id="product-opportunities-title">What could you sell with XRF Gen2?</h2>
+          <h2 id="product-opportunities-title">What could you sell with Hydra Gen2?</h2>
           <p>Explore product categories designed for one-offs, repeat orders and small-batch production.</p>
         </header>
 
@@ -257,11 +257,11 @@ function ProductOpportunities({ asset, equipmentInvestment }) {
 
 export function CommercialCapabilities({ asset, equipmentInvestment }) {
   return (
-    <section className="commercial-capabilities" id="roi-materials" aria-label="XRF Gen2 ROI and material opportunities">
+    <section className="commercial-capabilities" id="roi-materials" aria-label="Hydra Gen2 ROI and material opportunities">
       <span className="commercial-capabilities__anchor" id="capabilities" aria-hidden="true" />
       <span className="commercial-capabilities__anchor" id="results" aria-hidden="true" />
       <div className="journey-opening-artwork">
-        <img src={asset("xrf-profit-products-v2.webp")} alt="Premium products and example business outputs made with the OneLaser XRF Gen2" />
+        <img src={asset("hydra-profit-products-v2.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="Premium products and example business outputs made with the OneLaser Hydra Gen2" />
       </div>
       <ProductOpportunities asset={asset} equipmentInvestment={equipmentInvestment} />
     </section>

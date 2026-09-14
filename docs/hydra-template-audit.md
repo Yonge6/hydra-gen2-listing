@@ -1,27 +1,32 @@
-# Hydra / XRF template parity audit — 2026-09-11
+# Hydra / XRF exact component audit — 2026-09-14
 
 Reference: https://yonge6.github.io/xrf-gen2-listing/?v=d01dc77
 
-## Implemented module mapping
+## Implementation
 
-| XRF template | Hydra adaptation |
-| --- | --- |
-| Square gallery + purchase panel | Same shared styles; four Hydra sizes and Pro / Hybrid choices; added separate official-film entry |
-| Feature overview | Hydra application artwork and workbook-backed metrics |
-| Official film | Verified Hydra 16 Gen2 / Stitchcraft Interiors film |
-| Split TV feature | Same split layout, verified Hydra 13 owner story; no unsupported FOX endorsement |
-| Reviewer video rail | Same cards, arrow controls, keyboard navigation and touch scroll; four creator/tutorial videos |
-| Scroll-linked engineering chapters | RF / power guide inside the chapter system, then five Hydra engineering chapters |
-| MakerBoost, Software | Same separate template modules |
-| Opportunities, Materials | Moved after Software to match the live template sequence |
-| Specifications | Same model-aware accordion anatomy |
-| Gen2 / Gen1 comparison | Same table anatomy, sourced Pro / Hybrid comparison; no unsupported generation deltas |
-| Competitor video comparison | Same split video anatomy; RF / glass-tube cutting reference, no XRF / P2 claims |
-| Owner video rail | Three real owner films; no invented star ratings or testimonial quotes |
-| Decision paths, Trade-Up | Three template decision cards and official Trade-Up link; no unverified Gen2 credit promise |
-| Support, FAQ, footer, sticky bars | Existing template styles retained |
+The earlier custom Hydra composition has been replaced by the original XRF App source at d01dc77. Original component JSX, selectors, interaction logic, gallery, configurator, sticky navigation and purchase bar are retained. `hydra.css` is no longer imported. Shared styles.css, home.css and CommercialCapabilities.css are unchanged.
 
-Shared `styles.css` and `home.css` are unchanged by this revision. New rules are scoped to Hydra video controls, modal and six-item chapter navigation.
+All 18 main sections have the same class structure and sequence: Hero → Feature Overview → Official Film → Split Case Study → Authority Video Rail → Capability Chapters → MakerBoost → Software → Product Opportunities → Materials → Specifications → Configuration Comparison → Split Video Comparison → Owner Videos and Feedback → Decision Paths → Trade-Up → Support → FAQ. Original header/footer and modal components remain.
+
+The hero restores the inline video tile, 2×2 assurance cards, ratings, four highlights, Final Price / MSRP columns, financing row, two source cards, detailed package cards, four accessory cards, quantity, primary and secondary checkout actions. Four Hydra workspace records reuse the original package card component.
+
+## Product-specific data boundaries
+
+- Official Gen2 product pages currently report zero reviews: retain the rating-row anatomy with outline stars and no numeric score. Owner cards summarize public videos and are explicitly not rated reviews.
+- Hydra 9 Hybrid starts at $10,999; current MSRP $11,999. All seven valid model/source prices and variant IDs reverified from official Shopify JSON. Each MSRP is $1,000 above price.
+- Official Hydra 9 base page displays financing from $534/mo. with Affirm; only that base configuration uses the amount. Other configurations use generic financing eligibility wording. No unsupported 24-month offer or 0% claim.
+- Optional accessories: LightBurn Pro $199, Hydra industrial chiller $699, multi-function 57-motor rotary $299, 2-inch lens $44.99. Exact official variant IDs feed cart permalinks. Chiller applicability is explained as Hybrid glass-source cooling.
+- Keep the original secondary checkout button anatomy with truthful checkout text; no unverified Shop Pay endpoint.
+- Configuration comparison replaces unsupported Gen1 deltas with sourced Pro / Hybrid data; video comparison replaces XRF / competitor claims with sourced RF / DC context.
+- AI application imagery remains illustrative. Performance copy uses Hydra facts from the supplied workbook and brochure.
+
+## Local verification
+
+- Desktop 1440px: 660×660 gallery; all 18 section structures in original order. Compared 207 common element selectors against live d01dc77: none missing, 204 exact computed-style matches. Three differences are intrinsic text widths/margins, not CSS changes.
+- Mobile 390×844: scrolled all 18 sections, zero horizontal overflow or broken loaded images; viewport-visible images have real natural dimensions. Screenshots are ignored under references/incoming/exact-template.
+- Seven valid model/source choices return the expected price and official variant. Hydra 7 is Pro-only. Hydra 9 Hybrid + LightBurn × quantity 2 totals $22,396 and produces both corresponding cart line items.
+- Official Gen2 video actually plays in the mobile modal; iframe absent before interaction, Escape removes iframe and body scroll lock and restores focus. Browser error events empty.
+- One nonvisual correction: mobile chapter jump offset is 180px instead of the template’s 136px so the heading clears the 159px stacked navigation. Original rail layout is retained.
 
 ## YouTube sources
 
@@ -40,10 +45,5 @@ https://www.1laser.com/products/hydra-9-gen-2-70w-rf-co2-dual-laser-machine
 
 Trade-Up eligibility is linked to https://www.1laser.com/pages/trade-up. Its current table still includes earlier Hydra hardware, so no credit amount is promised for Gen2.
 
-## Local acceptance
 
-- Desktop viewport: 1818px; gallery 660 × 660; shared video-card and split-section layouts visually checked.
-- Mobile viewport: 390 × 844; document overflow 0px; chapter rail bottom 159px and Speed heading top 179.9px after navigation.
-- Video rail advances 345.5px on mobile. Visible video covers loaded at 1280px natural width.
-- Verified the Gen2 film actually plays in the mobile modal using the standard YouTube embed host. Escape restores focus; close removes the iframe and body scroll lock.
-- Page-owned text checked at 12px or above; browser error log empty.
+Additional verified video references: https://www.youtube.com/watch?v=QnASI4XyATU (Sechelski, print and cut) and https://www.youtube.com/watch?v=godnvdc7raE (Maker Foundry, Hydra 16 signs). Both are series references, not asserted Gen2 benchmarks.

@@ -1,17 +1,10 @@
 # Hydra Gen2 listing — current handoff
 
-- Independent repository and GitHub Pages site: `Yonge6/hydra-gen2-listing`.
-- Design source: XRF listing revision `d01dc77`. Keep its shared visual system. Only font asset paths differ in the shared CSS; Hydra additions are in `src/hydra.css`.
-- Page: `src/Hydra.jsx`; official commercial data: `src/data/hydra-prices.json`.
-- Sources and factual boundaries: `docs/hydra-content-sources.md`.
-- Prices verified 2026-09-10. Recheck official Shopify product variants before changing prices or purchase links.
-- Run `npm run verify`, inspect desktop and 390px mobile, then deploy and read the public page back.
-- Do not modify the parent XRF checkout or its QA evidence while working on Hydra.
-
-## Template and video revision — 2026-09-11
-
-- Rechecked the live XRF `d01dc77` layout; reordered content and restored film, split case study, creator/owner video rails, comparison and decision modules.
-- Video components and verified YouTube IDs: `src/components/HydraVideos.jsx`. Original local covers: `public/assets/hydra-video-*.jpg`.
-- Module mapping and generation boundaries: `docs/hydra-template-audit.md`. Do not imply earlier Hydra videos benchmark Gen2 or that the movie Supra was made with Hydra.
-- Use the shared `www.youtube.com/embed` host. Chrome played the official Gen2 film successfully; the no-cookie host triggered YouTube sign-in verification during QA.
-- Desktop and 390px checks: no horizontal overflow, 660px desktop gallery, mobile chapter title below the three navigation layers, video rail arrows work, visible images loaded, no console errors, no iframe before playback or after close.
+- Independent repository and GitHub Pages site: `Yonge6/hydra-gen2-listing`, branch `main`.
+- Source of truth for UI: exact XRF `d01dc77` components. On 2026-09-14, `src/Hydra.jsx` was rebuilt from that revision’s `src/App.jsx`, retaining its original JSX, selectors, module order and interaction handlers. Change only Hydra copy, assets and product data. Do not reimplement modules or introduce a Hydra design system.
+- `src/main.jsx` intentionally does not import the old `hydra.css`. `HydraVideos.jsx` and `hydra-prices.json` are legacy files, not the active page implementation.
+- Active product configurations, variant IDs, accessories and videos are in `src/Hydra.jsx`. Commercial facts reverified 2026-09-14 from official product JSON / product page. See `docs/hydra-template-audit.md` and `docs/hydra-content-sources.md`.
+- All 18 main modules match the original template anatomy. Four Hydra model entries reuse the original package cards. No new selector module.
+- YouTube loads on interaction through the original shared modal, using `www.youtube.com/embed`. Use real Hydra videos and distinguish Gen2, Gen1 and unspecified series footage.
+- Before release run `npm run verify`, inspect desktop and 390px mobile, configuration/cart mappings, image loading and modal close. Push main and verify Pages HTML/assets and browser content.
+- Do not modify the parent XRF checkout or its untracked QA evidence.

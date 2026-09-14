@@ -7,7 +7,7 @@ export const capabilitySlides = [
     meta: "Drinkware · home décor · gifts · accessories · branded goods",
     image: "commercial-product-line.webp",
     imagePosition: "50% 58%",
-    alt: "Maker presenting engraved wood products beside the OneLaser XRF",
+    alt: "Maker presenting engraved wood products beside the OneLaser Hydra",
   },
   {
     id: "premium-personalization",
@@ -27,7 +27,7 @@ export const capabilitySlides = [
     meta: "Repeat orders · batch production · wholesale opportunities",
     image: "commercial-repeatable-batches.webp",
     imagePosition: "50% 50%",
-    alt: "Multiple finished products arranged across the OneLaser XRF working area",
+    alt: "Multiple finished products arranged across the OneLaser Hydra working area",
   },
   {
     id: "catalog-growth",
@@ -37,7 +37,7 @@ export const capabilitySlides = [
     meta: "Flat work · rotary work · engraving · cutting",
     image: "commercial-catalog-growth.webp",
     imagePosition: "50% 48%",
-    alt: "Open OneLaser XRF showing the flat working area used for varied product formats",
+    alt: "Open OneLaser Hydra showing the flat working area used for varied product formats",
   },
 ];
 

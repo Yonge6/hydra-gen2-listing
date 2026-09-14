@@ -1,178 +1,2624 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, CaretLeft, CaretRight, CaretUp, DownloadSimple, Phone, Headset, ShieldCheck, Truck, Tree, Wine, Diamond, Stack, Wind, Lightning, Target, Camera, Thermometer, Monitor, WifiHigh, Play, Pause, X, MagnifyingGlassPlus, CubeFocus, CheckCircle } from '@phosphor-icons/react';
-import { HomeNavigation, HomeFooter } from './Home.jsx';
-import prices from './data/hydra-prices.json';
-import { initializeAnalytics, trackEvent } from './analytics.js';
-import './components/CommercialCapabilities.css';
-import { hydraFilm, HydraFilm, HydraSpotlight, HydraVideoRail, HydraComparison, HydraDecisionPaths, HydraVideoModal } from './components/HydraVideos.jsx';
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Anchor,
+  ArrowUpRight,
+  ArrowClockwise,
+  Camera,
+  CaretLeft,
+  CaretRight,
+  CaretUp,
+  Check,
+  CubeFocus,
+  CubeTransparent,
+  DownloadSimple,
+  EnvelopeSimple,
+  Fire,
+  Handbag,
+  Headset,
+  LockKey,
+  MapPin,
+  Minus,
+  Monitor,
+  Phone,
+  Play,
+  Plus,
+  ShieldCheck,
+  Star,
+  Tag,
+  Target,
+  Thermometer,
+  Trash,
+  Tree,
+  WifiHigh,
+  Wine,
+  X,
+} from "@phosphor-icons/react";
+import { CommercialCapabilities } from "./components/CommercialCapabilities.jsx";
+import { HomeFooter, HomeNavigation, HomePage } from "./Home.jsx";
+import { initializeAnalytics, trackEvent } from "./analytics.js";
+import { useAutoplayCarousel } from "./hooks/useAutoplayCarousel.js";
 
-const asset = n => `${import.meta.env.BASE_URL}assets/${n}`;
-const brochure = `${import.meta.env.BASE_URL}downloads/onelaser-hydra-gen2-brochure.pdf`;
-const call = 'https://www.1laser.com/products/sales-consultation-call';
-const money = n => new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 }).format(n);
-const models = {
-  7: { area:'700 × 500 mm', inches:'27.6 × 19.7 in', fit:'Focused production', dc:null, dimensions:'1,300 × 1,045 × 1,035 mm', load:'20 kg' },
-  9: { area:'900 × 600 mm', inches:'35.4 × 23.6 in', fit:'Room to grow', dc:100, dimensions:'1,500 × 1,045 × 1,035 mm (Pro); 1,900 × 1,045 × 1,035 mm (Hybrid)', load:'30 kg' },
-  13:{ area:'1,300 × 900 mm', inches:'51.2 × 35.4 in', fit:'Larger batches', dc:130, dimensions:'1,900 × 1,445 × 1,035 mm', load:'30 kg' },
-  16:{ area:'1,600 × 1,000 mm', inches:'63.0 × 39.4 in', fit:'Large-format ambition', dc:150, dimensions:'2,200 × 1,545 × 1,035 mm', load:'30 kg' },
+const assetMap = {
+  "feature-overview-hero.webp": "home-banner-hydra-education.png",
+  "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
+  "hydra-profit-products-v2.webp": "hydra-ai-projects.webp",
+  "fox-friends-onelaser-hd.webp": "hydra-video-Fqtlsk_NsKM.jpg",
+  "software-makerboost.webp": "hydra-makerboost.webp",
+  "software-compatibility.webp": "hydra-official-14.webp",
+  "material-acrylic.webp": "hydra-ai-acrylic.webp",
+  "material-wood.webp": "hydra-ai-detail.webp",
+  "material-leather.webp": "hydra-ai-leather.webp",
+  "material-glass-stone.webp": "hydra-ai-projects.webp",
+  "material-coated-metal.webp": "hydra-ai-projects.webp"
 };
-const materials = [
-  { name:'Wood', icon:Tree, image:'hydra-ai-detail.webp', title:'Turn natural grain into extraordinary detail.', copy:'Photo engraving, layered artwork and personalized wood products. RF control brings out fine textures and smooth grayscale.', mode:'RF engraving · CO₂ cutting' },
-  { name:'Acrylic', icon:Diamond, image:'hydra-ai-acrylic.webp', title:'Make your next statement in acrylic.', copy:'From engraved clear acrylic to precisely cut shapes, create signage, display pieces and decorative products.', mode:'RF engraving · CO₂ cutting' },
-  { name:'Leather', icon:Stack, image:'hydra-ai-leather.webp', title:'A personal touch people can feel.', copy:'Add detailed artwork to laser-compatible leather journals, patches and accessories. Test material composition before processing.', mode:'RF engraving · CO₂ cutting' },
-  { name:'Drinkware', icon:Wine, image:'hydra-ai-projects.webp', title:'Take your designs all the way around.', copy:'Personalize glass and powder-coated drinkware. Cylindrical work requires a compatible optional 4-pin rotary.', mode:'RF engraving · Optional rotary required' },
-];
-const chapters = [
-  { id:'speed', label:'Speed & motion', title:'Real speed.\nReady for production.', copy:'Move from one job to the next with up to 2,000 mm/s raster engraving and 4G acceleration. A high-speed servo system and rigid, vibration-optimized mechanics keep detail at the center of the work.', image:'hydra-motion.webp', alt:'Hydra Gen2 precision motion system', metrics:[['2,000','mm/s raster speed'],['4G','acceleration']], proofs:[[Lightning,'High-speed servo','Responsive motion for demanding production.'],[Target,'≤ 0.01 mm','Repeat positioning accuracy.']] },
-  { id:'air', label:'Smart dual air', title:'The right airflow.\nAutomatically.', copy:'Gentle air for clean, detailed engraving. Stronger air for efficient cutting. Smart Dual Air-Assist switches with the job, through your software, so there is less manual adjustment between processes.', image:'hydra-official-05.webp', alt:'Hydra low-air engraving and high-air cutting modes', proofs:[[Wind,'Low air','Keeps engraved detail clear.'],[Wind,'High air','Supports cutting and cleaner edges.']] },
-  { id:'workflow', label:'Visual workflow', title:'Less setup.\nMore making.', copy:'Position the artwork with the camera, set the focal distance automatically and check placement with the red dot. Move confidently from a one-off design to the next repeat job.', image:'hydra-workflow.webp', alt:'Hydra Gen2 open working bed and camera-ready positioning', proofs:[[Camera,'Visual positioning','Millimeter-level placement assistance.'],[CubeFocus,'Autofocus + red dot','Automatic Z-axis focusing and visible alignment.']] },
-  { id:'reliability', label:'Reliability & safety', title:'Built for the\nlong run.', copy:'Real-time lens temperature monitoring warns of overheating or contamination. A rigid, NVH-optimized structure supports consistent output, while the enclosed chassis separates electronics from the working area.', image:'hydra-official-07.webp', alt:'Hydra Gen2 lens temperature monitoring', proofs:[[Thermometer,'Detect. Alert. Protect.','Temperature alarms and laser-output shutoff.'],[ShieldCheck,'Integrated interlocks','Lid and side-panel safety interlocks.']] },
-  { id:'format', label:'Room to create', title:'Go longer.\nThink bigger.', copy:'Four work areas give your business room to scale. Front-to-back pass-through doors accommodate longer stock; a 225 mm Z-axis travel supports varied workpiece heights.', image:'hydra-official-11.webp', alt:'Hydra Gen2 front-to-back material pass-through', proofs:[[Stack,'225 mm','Maximum Z-axis bed travel.'],[ArrowUpRight,'Front-to-back','20 mm pass-through opening.']] },
-];
-const opportunitySets = [
-  {label:'Personalized Gifts',copy:'Thoughtful products with a personal touch.',items:[['Wood portraits','hydra-ai-detail.webp','Wood','Detailed RF engraving','Use tested grayscale settings on flat, laser-compatible wood.'],['Leather keepsakes','hydra-ai-leather.webp','Leather','RF engraving','Confirm the leather composition and test settings before production.'],['Acrylic gifts','hydra-ai-acrylic.webp','Acrylic','Engraving & cutting','Choose compatible acrylic and appropriate settings for the source.']]},
-  {label:'Home & Décor',copy:'Detailed decorative work, from the studio to the living space.',items:[['Engraved wall art','hydra-ai-detail.webp','Wood','RF grayscale','Size the artwork to the bed and test detail on the chosen stock.'],['Botanical displays','hydra-ai-acrylic.webp','Acrylic','Engraving & cutting','Use a jig for repeatable placement and inspect finished edges.'],['Coordinated gift sets','hydra-ai-projects.webp','Mixed materials','Multiple processes','Prepare separate settings for each material. Rotary required for cylindrical items.']]},
-  {label:'Drinkware & Events',copy:'Personalized pieces for events and branded gifting.',items:[['Coated drinkware','hydra-ai-projects.webp','Powder-coated metal','RF coating removal','Requires a compatible optional rotary and suitable coating.'],['Table displays','hydra-ai-acrylic.webp','Acrylic','Engraving & cutting','Lay out repeat shapes and confirm acrylic compatibility.'],['Event keepsakes','hydra-ai-leather.webp','Leather','RF engraving','Use approved laser-compatible leather and repeatable fixtures.']]},
-  {label:'Branded Goods',copy:'Turn repeatable details into a consistent product collection.',items:[['Leather patches','hydra-ai-leather.webp','Leather','Batch engraving','Prepare a batch fixture and validate one sample before running the set.'],['Display pieces','hydra-ai-acrylic.webp','Acrylic','Engraving & cutting','Match laser configuration to the detail and cutting workload.'],['Wooden merchandise','hydra-ai-detail.webp','Wood','RF engraving','Tune grayscale, speed and power to the chosen wood.']]},
-];
-const chapterNav = [{id:'laser-guide',label:'RF precision'}, ...chapters];
-const navItems = [['possibilities','Overview'],['performance','Features'],['product-opportunities','Projects'],['materials','Materials'],['specifications','Specifications'],['reviews','Reviews']];
+const asset = (name) => `${import.meta.env.BASE_URL}assets/${assetMap[name] || name}`;
+const MATERIAL_AUTOPLAY_DELAY = 6000;
+const SALES_CALL_URL = "https://www.1laser.com/products/sales-consultation-call";
+const BROCHURE_URL = `${import.meta.env.BASE_URL}downloads/onelaser-hydra-gen2-brochure.pdf`;
+const SUPPORT_URL = "https://www.1laser.com/pages/contact-us";
 
-function Img({ name, alt='', className='', eager=false, ...props }) {
-  const [state,setState]=useState('loading');
-  return <img {...props} className={`h-image ${state==='ready'?'is-image-ready':''} ${className}`} src={asset(name)} alt={alt} loading={eager?'eager':'lazy'} decoding="async" onLoad={()=>setState('ready')} onError={()=>setState('error')} data-image-state={state}/>;
+const media = ['home-product-hydra-gen2-scene.webp', ...Array.from({length:15},(_,i)=>`hydra-official-${String(i+1).padStart(2,'0')}.webp`), 'hydra-ai-detail.webp','hydra-ai-acrylic.webp','hydra-ai-leather.webp','hydra-workflow.webp'].map((name,index)=>({src:asset(name),alt:`OneLaser Hydra Gen2 product view ${index+1}`,label:`Product ${index+1}`}));
+
+const officialFilm = {
+  "youtubeId": "vf5KO_kGgmU",
+  "title": "Inside a Hydra Gen2 workshop."
+};
+
+const materialCategories = [
+  {
+    id: "acrylic",
+    label: "Acrylic",
+    title: "Polished edges. Dimensional color.",
+    copy: "Build layered signage, displays, organizers and decorative objects with clean contours and premium edge quality.",
+    proof: "Clear · colored · layered · dimensional",
+    image: "material-acrylic.webp",
+    icon: CubeTransparent,
+  },
+  {
+    id: "wood",
+    label: "Wood",
+    title: "From photo detail to repeatable batches.",
+    copy: "Turn natural wood into photo-real engraving, deep relief, architectural parts and products made to sell again and again.",
+    proof: "Photo engraving · relief · batch goods · models",
+    image: "material-wood.webp",
+    icon: Tree,
+  },
+  {
+    id: "leather",
+    label: "Leather",
+    title: "Personalization that feels permanent.",
+    copy: "Create refined wallets, notebooks, straps and tags with consistent tonal contrast and precise cut edges.",
+    proof: "Wallets · straps · tags · premium gifts",
+    image: "material-leather.webp",
+    icon: Handbag,
+  },
+  {
+    id: "glass-stone",
+    label: "Glass & Stone",
+    title: "Fine marks on hard, high-value surfaces.",
+    copy: "Add crisp frosted artwork and detailed personalization to awards, slate, glassware, coasters and polished stone.",
+    proof: "Awards · slate · glassware · keepsakes",
+    image: "material-glass-stone.webp",
+    icon: Wine,
+  },
+  {
+    id: "coated-metal",
+    label: "Coated Metal",
+    title: "High contrast for everyday production.",
+    copy: "Produce detailed tumblers, anodized cards, tags and identification plates with clean, repeatable contrast.",
+    proof: "Tumblers · cards · tags · nameplates",
+    image: "material-coated-metal.webp",
+    icon: Tag,
+  },
+];
+
+const powerProofs = [
+  {
+    "id": "38W",
+    "tab": "38W RF + DC",
+    "eyebrow": "HYDRA HYBRID · ENGRAVE & CUT",
+    "title": "RF detail. Dedicated cutting power.",
+    "copy": "Pair precise 38W RF engraving with a glass DC CO₂ source for mixed engraving-and-cutting jobs. Hydra 9, 13 and 16 offer 100W, 130W and 150W DC respectively.",
+    "proof": "RF engraving · Glass DC cutting · Separate source control",
+    "image": "hydra-ai-acrylic.webp",
+    "alt": "Hydra acrylic application concept"
+  },
+  {
+    "id": "70W",
+    "tab": "70W RF Pro",
+    "eyebrow": "HYDRA PRO · DEDICATED RF",
+    "title": "Premium detail. Production focus.",
+    "copy": "Choose a dedicated 70W air-cooled RF source for fine grayscale, textures and professional batch engraving. Available in all four Hydra workspaces.",
+    "proof": "70W RF · Air-cooled · 7 / 9 / 13 / 16",
+    "image": "hydra-ai-detail.webp",
+    "alt": "Hydra detailed engraving application concept"
+  }
+];
+
+const generationComparisons = [
+  {
+    "feature": "RF source",
+    "gen2": "70W RF",
+    "gen1": "38W RF"
+  },
+  {
+    "feature": "Glass DC cutting",
+    "gen2": "RF-only configuration",
+    "gen1": "100W / 130W / 150W"
+  },
+  {
+    "feature": "Workspace options",
+    "gen2": "Hydra 7 / 9 / 13 / 16",
+    "gen1": "Hydra 9 / 13 / 16"
+  },
+  {
+    "feature": "Cooling",
+    "gen2": "Air-cooled RF",
+    "gen1": "Air-cooled RF + water-cooled DC"
+  },
+  {
+    "feature": "Workflow fit",
+    "gen2": "Dedicated RF production",
+    "gen1": "RF engraving + glass-tube cutting"
+  }
+];
+
+const rfAdvantages = [
+  {
+    "id": "detail",
+    "tab": "Cleaner Detail",
+    "eyebrow": "CLEANER DETAIL",
+    "title": "Fine textures. Richer grayscale.",
+    "copy": "RF pulse control brings out fine textures, small text and subtle shades on compatible materials. Tune your settings to each material and finish.",
+    "proof": "0.07 mm spot · Up to 2,000 DPI",
+    "image": "hydra-ai-detail.webp",
+    "alt": "Fine RF engraving concept",
+    "icon": Target
+  },
+  {
+    "id": "speed",
+    "tab": "Faster Response",
+    "eyebrow": "FASTER RESPONSE",
+    "title": "Detail at production speed.",
+    "copy": "Fast RF response works with the servo motion platform to support detailed engraving at up to 2,000 mm/s raster speed and 4G acceleration.",
+    "proof": "Up to 2,000 mm/s · 4G",
+    "image": "hydra-motion.webp",
+    "alt": "Hydra Gen2 motion system",
+    "icon": ArrowClockwise
+  },
+  {
+    "id": "lifespan",
+    "tab": "Longer Lifespan",
+    "eyebrow": "LONGER LIFESPAN",
+    "title": "Less maintenance. More uptime.",
+    "copy": "The sealed RF source is rated for 20,000–30,000 hours and uses air cooling. The glass DC source in Hybrid configurations requires water cooling.",
+    "proof": "20,000–30,000 hours · Air-cooled RF",
+    "image": "hydra-rf-source.webp",
+    "alt": "Hydra RF source",
+    "icon": ShieldCheck
+  }
+];
+
+const tvFeature = {
+  "id": "Fqtlsk_NsKM",
+  "title": "A pottery owner’s Hydra 13 story",
+  "channel": "OneLaser",
+  "tag": "HYDRA SERIES · OWNER STORY",
+  "cover": "hydra-video-Fqtlsk_NsKM.jpg"
+};
+
+const decisionVideos = {
+  "performance": {
+    "id": "ZQ_VhgOepXE",
+    "title": "RF vs glass tube: Hydra 9 cut tests",
+    "channel": "Wrico Goods",
+    "tag": "HYDRA SERIES · CUT TEST",
+    "cover": "hydra-video-ZQ_VhgOepXE.jpg"
+  },
+  "business": {
+    "id": "vf5KO_kGgmU",
+    "title": "Hydra 16 Gen2 at Stitchcraft Interiors",
+    "channel": "OneLaser",
+    "tag": "HYDRA 16 GEN2",
+    "cover": "hydra-video-vf5KO_kGgmU.jpg"
+  },
+  "businessFit": {
+    "id": "Fqtlsk_NsKM",
+    "title": "A pottery owner’s Hydra 13 story",
+    "channel": "OneLaser",
+    "tag": "HYDRA SERIES · OWNER STORY",
+    "cover": "hydra-video-Fqtlsk_NsKM.jpg"
+  },
+  "competitor": {
+    "id": "ZQ_VhgOepXE",
+    "title": "RF vs glass tube: Hydra 9 cut tests",
+    "channel": "Wrico Goods",
+    "tag": "HYDRA SERIES · CUT TEST",
+    "cover": "hydra-video-ZQ_VhgOepXE.jpg"
+  }
+};
+
+const authorityVideos = [
+  {
+    "id": "y0YUu-4rx7A",
+    "title": "Should you get an industrial-size laser?",
+    "channel": "Make or Break Shop",
+    "tag": "HYDRA SERIES · HANDS-ON",
+    "cover": "hydra-video-y0YUu-4rx7A.jpg"
+  },
+  {
+    "id": "xgY6aEGvvQQ",
+    "title": "Hydra 9 unboxing and features",
+    "channel": "Wrico Goods",
+    "tag": "HYDRA SERIES · WALKTHROUGH",
+    "cover": "hydra-video-xgY6aEGvvQQ.jpg"
+  },
+  {
+    "id": "ZQ_VhgOepXE",
+    "title": "RF vs glass tube: Hydra 9 cut tests",
+    "channel": "Wrico Goods",
+    "tag": "HYDRA SERIES · CUT TEST",
+    "cover": "hydra-video-ZQ_VhgOepXE.jpg"
+  },
+  {
+    "id": "dYYZXY_FHXc",
+    "title": "Hydra touchscreen interface tutorial",
+    "channel": "OneLaser",
+    "tag": "HYDRA SERIES · TUTORIAL",
+    "cover": "hydra-video-dYYZXY_FHXc.jpg"
+  },
+  {
+    "id": "QnASI4XyATU",
+    "title": "Print to Cut on my OneLaser Hydra 9",
+    "channel": "Sechelski Creations",
+    "tag": "HYDRA SERIES · WORKFLOW",
+    "cover": "hydra-video-QnASI4XyATU.jpg"
+  }
+];
+
+const customerStoryVideos = [
+  {
+    "id": "vf5KO_kGgmU",
+    "title": "Hydra 16 Gen2 at Stitchcraft Interiors",
+    "channel": "OneLaser",
+    "tag": "HYDRA 16 GEN2",
+    "cover": "hydra-video-vf5KO_kGgmU.jpg"
+  },
+  {
+    "id": "Fqtlsk_NsKM",
+    "title": "A pottery owner’s Hydra 13 story",
+    "channel": "OneLaser",
+    "tag": "HYDRA SERIES · OWNER STORY",
+    "cover": "hydra-video-Fqtlsk_NsKM.jpg"
+  },
+  {
+    "id": "HdP62cQVzs0",
+    "title": "The machine behind his best-selling maps",
+    "channel": "OneLaser",
+    "tag": "HYDRA 16 GEN1 · OWNER STORY",
+    "cover": "hydra-video-HdP62cQVzs0.jpg"
+  },
+  {
+    "id": "godnvdc7raE",
+    "title": "Making 5-foot store signs with Hydra 16",
+    "channel": "Maker Foundry",
+    "tag": "HYDRA SERIES · LARGE FORMAT",
+    "cover": "hydra-video-godnvdc7raE.jpg"
+  },
+  {
+    "id": "QnASI4XyATU",
+    "title": "Print to Cut on my OneLaser Hydra 9",
+    "channel": "Sechelski Creations",
+    "tag": "HYDRA SERIES · WORKFLOW",
+    "cover": "hydra-video-QnASI4XyATU.jpg"
+  }
+];
+
+const speedMotionMaterials = [
+  {
+    "id": "wood",
+    "label": "Wood",
+    "title": "Production motion for detailed woodwork.",
+    "copy": "High-speed servo motion supports detailed raster engraving and repeat positioning on laser-compatible wood.",
+    "image": "hydra-ai-detail.webp",
+    "icon": Tree
+  },
+  {
+    "id": "acrylic",
+    "label": "Acrylic",
+    "title": "Keep acrylic work moving.",
+    "copy": "Pair RF engraving with the cutting source suited to your acrylic workload. Test thickness and settings before running a batch.",
+    "image": "hydra-ai-acrylic.webp",
+    "icon": CubeTransparent
+  },
+  {
+    "id": "slate",
+    "label": "Slate",
+    "title": "Bring contrast to natural surfaces.",
+    "copy": "Responsive RF control supports detailed marks on compatible slate. Surface texture and settings influence the finished result.",
+    "image": "hydra-ai-projects.webp",
+    "icon": Target
+  },
+  {
+    "id": "leather",
+    "label": "Leather",
+    "title": "Personalization, ready to repeat.",
+    "copy": "Use tested laser-compatible leather and repeatable fixtures to keep personalized production consistent.",
+    "image": "hydra-ai-leather.webp",
+    "icon": Handbag
+  }
+];
+
+const capabilityChapters = [
+  {
+    "id": "precision",
+    "nav": "RF Precision",
+    "title": "Sharper detail. More valuable work.",
+    "summary": "A focused RF beam, responsive power control and up to 2,000 DPI bring fine textures and smooth grayscale to professional personalization.",
+    "spotlights": [
+      {
+        "title": "Sharper detail. More valuable work.",
+        "copy": "RF control supports fine engraving and premium surface detail.",
+        "image": "hydra-ai-detail.webp",
+        "metrics": [
+          "2,000 DPI",
+          "0.07 mm spot",
+          "20,000–30,000 h"
+        ],
+        "hideCopy": true
+      }
+    ],
+    "support": [],
+    "proofs": [
+      {
+        "value": "Air-cooled",
+        "label": "RF source cooling",
+        "icon": Thermometer
+      },
+      {
+        "value": "≤ 0.01 mm",
+        "label": "Repeat positioning",
+        "icon": Target
+      },
+      {
+        "value": "2.5 in",
+        "label": "Standard focal lens",
+        "icon": CubeFocus
+      },
+      {
+        "value": "38W / 70W",
+        "label": "RF source options",
+        "icon": Fire
+      }
+    ],
+    "details": [
+      "Optional focal lengths",
+      "Responsive RF control",
+      "Hybrid DC source uses water cooling",
+      "Optional fiber on supported 70W configurations"
+    ]
+  },
+  {
+    "id": "motion",
+    "nav": "Speed & Motion",
+    "title": "Turn speed into finished output.",
+    "summary": "High-speed servo motion and a rigid, vibration-optimized platform help production jobs stay precise at speed.",
+    "speedProof": true,
+    "spotlights": [],
+    "support": [
+      {
+        "title": "High-speed servo motion",
+        "copy": "Responsive motion control supports up to 2,000 mm/s raster engraving.",
+        "icon": ArrowClockwise
+      },
+      {
+        "title": "A rigid production platform",
+        "copy": "NVH-optimized mechanics help keep high-speed movement stable and repeatable.",
+        "icon": CubeTransparent
+      }
+    ],
+    "proofs": [],
+    "details": []
+  },
+  {
+    "id": "workflow",
+    "nav": "Smart Workflow",
+    "title": "Less setup. More making.",
+    "summary": "Visual positioning, autofocus and direct machine control make custom and repeat jobs easier to prepare.",
+    "spotlights": [
+      {
+        "title": "Position with confidence.",
+        "copy": "Use vision-assisted positioning and registration-mark recognition to prepare artwork and align the next job.",
+        "image": "hydra-workflow.webp",
+        "metrics": [
+          "Visual positioning",
+          "Registration marks",
+          "Autofocus"
+        ],
+        "hideCopy": false
+      }
+    ],
+    "support": [
+      {
+        "title": "See your working area.",
+        "copy": "Camera-assisted placement helps align artwork to the material and reduce setup guesswork.",
+        "image": "hydra-workflow.webp"
+      },
+      {
+        "title": "A touch. A key. Direct control.",
+        "copy": "The GT5 controller combines a 5-inch touchscreen and physical keys for file preview, diagnostics and offline operation.",
+        "image": "hydra-official-14.webp"
+      }
+    ],
+    "proofs": [
+      {
+        "value": "Vision",
+        "label": "Camera-assisted positioning",
+        "icon": Camera
+      },
+      {
+        "value": "GT5",
+        "label": "5-inch touchscreen + keypad",
+        "icon": Monitor
+      },
+      {
+        "value": "3 ways",
+        "label": "Wi-Fi / USB / Ethernet",
+        "icon": WifiHigh
+      },
+      {
+        "value": "Autofocus",
+        "label": "Motorized Z-axis focusing",
+        "icon": CubeFocus
+      }
+    ],
+    "details": [
+      "Red-dot alignment",
+      "File preview",
+      "Machine status and alerts"
+    ]
+  },
+  {
+    "id": "expansion",
+    "nav": "Business Expansion",
+    "title": "A platform built to grow with your business.",
+    "summary": "Four working areas, pass-through access and optional rotary workflows help your equipment fit a broader range of jobs.",
+    "spotlights": [
+      {
+        "title": "Go longer. Think bigger.",
+        "copy": "Front-to-back pass-through doors accommodate longer stock through a 20 mm opening. Plan material support and job alignment for each setup.",
+        "image": "hydra-official-11.webp",
+        "metrics": [
+          "Front-to-back access",
+          "20 mm opening",
+          "Longer stock"
+        ],
+        "hideCopy": false
+      }
+    ],
+    "support": [
+      {
+        "title": "Choose your production footprint.",
+        "copy": "Hydra 7: 700 × 500 mm. Hydra 9: 900 × 600 mm. Hydra 13: 1,300 × 900 mm. Hydra 16: 1,600 × 1,000 mm.",
+        "image": "hydra-16-hero.webp"
+      },
+      {
+        "title": "From flat work to rotary jobs.",
+        "copy": "225 mm Z-axis travel provides setup flexibility. Cylindrical engraving requires a compatible optional 4-pin rotary and suitable object clearance.",
+        "image": "hydra-ai-projects.webp"
+      }
+    ],
+    "proofs": [
+      {
+        "value": "4 sizes",
+        "label": "Scalable working areas",
+        "icon": Target
+      },
+      {
+        "value": "225 mm",
+        "label": "Z-axis bed travel",
+        "icon": CubeFocus
+      },
+      {
+        "value": "20 mm",
+        "label": "Pass-through opening",
+        "icon": ArrowClockwise
+      },
+      {
+        "value": "Optional",
+        "label": "Rotary workflow",
+        "icon": Anchor
+      }
+    ],
+    "details": [
+      "Optional rotary",
+      "Optional focal lenses",
+      "Optional compatible filtration",
+      "Optional 70W fiber expansion"
+    ]
+  },
+  {
+    "id": "protection",
+    "nav": "Reliability & Safety",
+    "title": "Run cleaner. Stay protected.",
+    "summary": "Automatic airflow, lens-temperature monitoring and integrated interlocks support cleaner work and dependable daily operation.",
+    "spotlights": [
+      {
+        "title": "Smart Dual Air-Assist. Automatically.",
+        "copy": "Low airflow for fine engraving and higher airflow for cutting switch through your software, reducing manual adjustment between processes. Built into Hydra Gen2.",
+        "image": "hydra-official-05.webp",
+        "metrics": [
+          "Built-in dual air",
+          "Cut / engrave modes",
+          "Automatic switching"
+        ],
+        "hideCopy": false
+      }
+    ],
+    "feature": {
+      "title": "Protect the optics that protect your work.",
+      "copy": "Real-time lens-temperature monitoring warns of overheating or contamination and can shut off laser output.",
+      "image": "hydra-official-07.webp"
+    },
+    "support": [
+      {
+        "title": "Monitor the working environment.",
+        "copy": "Workbench temperature sensing and PM2.5 detection help monitor the processing environment.",
+        "image": "hydra-official-08.webp"
+      },
+      {
+        "title": "Interlocks built into the enclosure.",
+        "copy": "Lid and side-panel interlocks work with the enclosed chassis and separated electronics area.",
+        "image": "hydra-front.webp"
+      }
+    ],
+    "proofs": [
+      {
+        "value": "Dual air",
+        "label": "Automatic flow selection",
+        "icon": Fire
+      },
+      {
+        "value": "Interlocks",
+        "label": "Lid and side panels",
+        "icon": ShieldCheck
+      },
+      {
+        "value": "Lens sensor",
+        "label": "Temperature monitoring",
+        "icon": Thermometer
+      },
+      {
+        "value": "Auto stop",
+        "label": "Laser-output protection",
+        "icon": LockKey
+      }
+    ],
+    "details": [
+      "Separated electronics",
+      "Lens-temperature alerts",
+      "Workbench temperature sensor",
+      "PM2.5 detector",
+      "Rigid machine structure"
+    ]
+  }
+];
+
+const purchasePackages = [
+  {
+    "id": "9",
+    "name": "Hydra 9 Gen2",
+    "price": 10999.0,
+    "msrp": 11999.0,
+    "badge": "CURRENT OFFER",
+    "detail": "900 × 600 mm work area · Hybrid or Pro",
+    "hybrid": 44745765650466,
+    "pro": 44745765617698,
+    "powerDelta": 1000.0,
+    "dc": 100,
+    "area": "900 × 600 mm"
+  },
+  {
+    "id": "13",
+    "name": "Hydra 13 Gen2",
+    "price": 12999.0,
+    "msrp": 13999.0,
+    "badge": "LARGER WORKSPACE",
+    "detail": "1,300 × 900 mm work area · Hybrid or Pro",
+    "hybrid": 44745769156642,
+    "pro": 44745769123874,
+    "powerDelta": 1000.0,
+    "dc": 130,
+    "area": "1,300 × 900 mm"
+  },
+  {
+    "id": "16",
+    "name": "Hydra 16 Gen2",
+    "price": 13999.0,
+    "msrp": 14999.0,
+    "badge": "LARGE FORMAT",
+    "detail": "1,600 × 1,000 mm work area · Hybrid or Pro",
+    "hybrid": 44745771155490,
+    "pro": 44745771122722,
+    "powerDelta": 1000.0,
+    "dc": 150,
+    "area": "1,600 × 1,000 mm"
+  },
+  {
+    "id": "7",
+    "name": "Hydra 7 Gen2",
+    "price": 10999.0,
+    "msrp": 11999.0,
+    "badge": "RF PRO",
+    "detail": "700 × 500 mm work area · 70W RF Pro only",
+    "hybrid": null,
+    "pro": 44667131822114,
+    "powerDelta": 0.0,
+    "dc": null,
+    "area": "700 × 500 mm"
+  }
+];
+
+const officialAccessories = [
+  {
+    "id": "lightburn",
+    "name": "LightBurn \"Pro\" Version - License Key",
+    "price": 199.0,
+    "msrp": 199.0,
+    "variant": 43173642567714,
+    "image": "hydra-accessory-lightburn.jpg",
+    "imageScale": 1,
+    "source": "https://www.1laser.com/products/lightburn-software-pro-license-key",
+    "description": "Optional LightBurn Pro license for Windows and macOS."
+  },
+  {
+    "id": "onelaser-industrial-chiller-for-hydra-laser-engraver",
+    "name": "OneLaser Chiller For Hydra & Cobra Glass Tube Laser System",
+    "price": 699.0,
+    "msrp": 699.0,
+    "variant": 43173614059554,
+    "image": "hydra-accessory-onelaser-industrial-chiller-for-hydra-laser-engraver.jpg",
+    "imageScale": 1,
+    "source": "https://www.1laser.com/products/onelaser-industrial-chiller-for-hydra-laser-engraver",
+    "description": "Water cooling for the Hybrid glass DC source. Confirm the cooling equipment included in your order before adding."
+  },
+  {
+    "id": "multi-function-rotary-axis-57-motor",
+    "name": "Multi-Function Rotary Axis (57 Motor) Compatible with OneLaser Hydra & Cobra Series",
+    "price": 299.0,
+    "msrp": 299.0,
+    "variant": 46622053892130,
+    "image": "hydra-accessory-multi-function-rotary-axis-57-motor.jpg",
+    "imageScale": 1,
+    "source": "https://www.1laser.com/products/multi-function-rotary-axis-57-motor",
+    "description": "Optional rotary for cylindrical work on Hydra. Confirm object size and clearance before ordering."
+  },
+  {
+    "id": "2-inch-focal-lens-laser-engraver",
+    "name": "Focal Lens for Laser Engraving, Hydra and X Series Compatible",
+    "price": 44.99,
+    "msrp": 44.99,
+    "variant": 45337011781666,
+    "image": "hydra-accessory-2-inch-focal-lens-laser-engraver.jpg",
+    "imageScale": 1,
+    "source": "https://www.1laser.com/products/2-inch-focal-lens-laser-engraver",
+    "description": "Optional 2-inch focal lens for compatible Hydra optics. Confirm the required barrel and focal length."
+  }
+];
+
+const formatMoney = (value) => new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+}).format(value);
+
+const specs = [
+  {
+    "title": "Laser source",
+    "rows": [
+      [
+        "RF source",
+        "70W Pro / 38W Hybrid"
+      ],
+      [
+        "Hybrid DC source",
+        "100W (9) / 130W (13) / 150W (16)"
+      ],
+      [
+        "Cooling",
+        "RF air cooling / Hybrid DC water cooling"
+      ],
+      [
+        "Rated RF lifespan",
+        "20,000–30,000 hours"
+      ]
+    ]
+  },
+  {
+    "title": "Performance",
+    "rows": [
+      [
+        "Raster engraving speed",
+        "Up to 2,000 mm/s"
+      ],
+      [
+        "Acceleration",
+        "4G"
+      ],
+      [
+        "Repeat positioning",
+        "≤ 0.01 mm"
+      ],
+      [
+        "Maximum scanning precision",
+        "2,000 DPI"
+      ]
+    ]
+  },
+  {
+    "title": "Workspace",
+    "rows": [
+      [
+        "Hydra 7",
+        "700 × 500 mm · Pro only"
+      ],
+      [
+        "Hydra 9",
+        "900 × 600 mm"
+      ],
+      [
+        "Hydra 13",
+        "1,300 × 900 mm"
+      ],
+      [
+        "Hydra 16",
+        "1,600 × 1,000 mm"
+      ],
+      [
+        "Z-axis travel",
+        "225 mm"
+      ],
+      [
+        "Pass-through opening",
+        "20 mm · front to back"
+      ]
+    ]
+  },
+  {
+    "title": "Control & software",
+    "rows": [
+      [
+        "Connectivity",
+        "Wi-Fi / USB / Ethernet"
+      ],
+      [
+        "Software",
+        "LightBurn / MakerBoost / RDWorks"
+      ],
+      [
+        "Operating systems",
+        "Windows / macOS"
+      ],
+      [
+        "Controller",
+        "GT5 · 5-inch touchscreen + keypad"
+      ],
+      [
+        "Positioning",
+        "Camera assistance / autofocus / red dot"
+      ]
+    ]
+  },
+  {
+    "title": "Machine & electrical",
+    "rows": [
+      [
+        "Hydra 9 Pro size",
+        "1,500 × 1,045 × 1,035 mm"
+      ],
+      [
+        "Hydra 9 Hybrid size",
+        "1,900 × 1,045 × 1,035 mm"
+      ],
+      [
+        "Power supply",
+        "110V 60Hz / 220V 50Hz"
+      ],
+      [
+        "Installation",
+        "Confirm circuit capacity, delivery access, ventilation and cooling"
+      ]
+    ]
+  },
+  {
+    "title": "Optics & safety",
+    "rows": [
+      [
+        "Standard lens",
+        "2.5 in"
+      ],
+      [
+        "Focused spot",
+        "As small as 0.07 mm"
+      ],
+      [
+        "Interlocks",
+        "Lid and side panels"
+      ],
+      [
+        "Monitoring",
+        "Lens temperature / workbench temperature / PM2.5"
+      ]
+    ]
+  },
+  {
+    "title": "Optional expansion",
+    "rows": [
+      [
+        "Rotary",
+        "Optional · compatible 4-pin rotary required for cylinders"
+      ],
+      [
+        "Focal lengths",
+        "Optional 1.5 / 2 / 3 / 4 in"
+      ],
+      [
+        "Fiber",
+        "Optional on supported 70W configurations; confirm availability"
+      ],
+      [
+        "Hybrid cooling",
+        "Confirm suitable chiller and package inclusions"
+      ]
+    ]
+  }
+];
+
+const faqs = [
+  {
+    "q": "Should I choose Hybrid or Pro?",
+    "a": "Choose Hybrid for 38W RF engraving plus dedicated glass DC cutting. Choose Pro for dedicated 70W RF production. Hydra 9, 13 and 16 offer both; Hydra 7 is Pro only."
+  },
+  {
+    "q": "Does Hydra Gen2 need water cooling?",
+    "a": "The RF source is air-cooled. The glass DC source in Hybrid configurations is water-cooled. Confirm the appropriate chiller and what is included with your order."
+  },
+  {
+    "q": "Which accessories are included?",
+    "a": "Published essentials include the honeycomb and blade tables, built-in dual air-assist, exhaust fan and ducting, tool kit and setup cables. Rotary attachments, optional lenses, software licenses and upgrades are separate unless explicitly included in your quote."
+  },
+  {
+    "q": "Which software can I use?",
+    "a": "Hydra Gen2 supports LightBurn, MakerBoost and RDWorks. Check each application’s operating-system requirements; LightBurn licensing is optional and sold separately."
+  },
+  {
+    "q": "Can I engrave bare metal or cylindrical objects?",
+    "a": "Standard CO₂ sources process compatible organic materials, glass and coated surfaces. Bare-metal processing needs an appropriate process or supported optional fiber system. Cylindrical work requires a compatible optional rotary."
+  },
+  {
+    "q": "What electrical supply do I need?",
+    "a": "Published configurations are 110V 60Hz / 220V 50Hz. Confirm the specific machine, circuit amperage, ventilation and accessory power requirements with OneLaser before installation."
+  },
+  {
+    "q": "How much is shipping, and when will Hydra arrive?",
+    "a": "Shipping, processing and installation arrangements vary by configuration and destination. Confirm current freight costs, availability, delivery access and lead times on the official store or with an engineer."
+  },
+  {
+    "q": "How much more is the Pro configuration?",
+    "a": "Current official Hydra 9, 13 and 16 Pro variants are $1,000 above their corresponding Hybrid variants. The choice changes the source configuration: dedicated 70W RF Pro versus 38W RF plus a glass DC source."
+  }
+];
+
+const journeySections = [
+  { id: "why-hydra", label: "Why Hydra" },
+  { id: "features", label: "Features" },
+  { id: "roi-materials", label: "ROI & Materials" },
+  { id: "specs", label: "Specs" },
+  { id: "compare", label: "Compare" },
+  { id: "reviews", label: "Reviews" },
+  { id: "faq-support", label: "FAQ & Support" },
+];
+
+const consultationFeedback = [
+  {
+    "name": "Stitchcraft Interiors",
+    "role": "Hydra 16 Gen2 · Video summary",
+    "quote": "Revo Reeves shows how Hydra 16 Gen2 fits into current custom automotive interior work."
+  },
+  {
+    "name": "The Stamp House",
+    "role": "Hydra 13 · Video summary",
+    "quote": "Heather Dorian discusses laser-made pottery tools and a growing production workflow."
+  },
+  {
+    "name": "OneLaser map-maker story",
+    "role": "Hydra 16 Gen1 · Video summary",
+    "quote": "An owner describes using Hydra 16 Gen1 to create engraved maps."
+  },
+  {
+    "name": "Make or Break Shop",
+    "role": "Hydra series · Video summary",
+    "quote": "A hands-on overview explores the capabilities and workshop demands of an industrial-size laser."
+  },
+  {
+    "name": "Wrico Goods",
+    "role": "Hydra 9 · Video summary",
+    "quote": "RF and glass-tube cutting tests explore how the two sources process material."
+  },
+  {
+    "name": "Sechelski Creations",
+    "role": "Hydra 9 · Video summary",
+    "quote": "A print-to-cut demonstration shows an example of the Hydra workflow."
+  }
+];
+
+const competitorRows = [
+  [
+    "Laser source",
+    "70W RF Pro",
+    "38W RF + glass DC Hybrid"
+  ],
+  [
+    "Raster speed",
+    "Up to 2,000 mm/s",
+    "Up to 2,000 mm/s"
+  ],
+  [
+    "Acceleration",
+    "4G",
+    "4G"
+  ],
+  [
+    "Detail",
+    "Up to 2,000 DPI · 0.07 mm spot",
+    "Up to 2,000 DPI · 0.07 mm RF spot"
+  ],
+  [
+    "Cooling",
+    "Air-cooled RF",
+    "Air-cooled RF + water-cooled DC"
+  ],
+  [
+    "Available sizes",
+    "Hydra 7 / 9 / 13 / 16",
+    "Hydra 9 / 13 / 16"
+  ]
+];
+
+function SpecGroup({ group }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`spec-group ${open ? "is-open" : ""}`}>
+      <button type="button" className="spec-group__trigger" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+        <span>{group.title}</span>
+        <span aria-hidden="true">{open ? <Minus size={18} /> : <Plus size={18} />}</span>
+      </button>
+      {open && (
+        <div className="spec-group__rows">
+          {group.rows.map(([label, value, context]) => (
+            <div className="spec-row" key={label}>
+              <span>{label}</span>
+              <div><strong>{value}</strong>{context && <small>{context}</small>}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
-function Heading({ eyebrow, title, children, center=false }) {
-  return <div className="section-heading section-heading--stack"><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{children && <p>{children}</p>}</div>;
+
+function YouTubeCover({ video, onPlay, className = "" }) {
+  return (
+    <button type="button" className={`youtube-cover ${className}`.trim()} onClick={() => onPlay(video)} aria-label={`Play ${video.title} by ${video.channel}`}>
+      <img src={video.cover ? asset(video.cover) : `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} alt="" loading="lazy" />
+      <span className="youtube-cover__play"><Play size={26} weight="fill" /></span>
+      <i>{video.tag}</i>
+    </button>
+  );
 }
-function Link({href=call, children, secondary=false, ...props}) {
-  return <a className={secondary?'h-link':'primary-cta'} href={href} target="_blank" rel="noreferrer" onClick={()=>trackEvent('generate_lead',{destination:href})} {...props}>{children}<ArrowUpRight size={18}/></a>;
+
+function ReviewVideoCard({ video, onPlay, index, total }) {
+  return (
+    <button type="button" className="review-video-card" onClick={() => onPlay(video)} aria-label={`Play ${video.title} by ${video.channel}`}>
+      <span className="review-video-card__media">
+        <img src={video.cover ? asset(video.cover) : `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} alt="" loading="lazy" />
+        <span><Play size={22} weight="fill" /></span>
+        {index !== undefined && <i>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</i>}
+      </span>
+      <span className="review-video-card__copy"><small>{video.tag}</small><strong>{video.title}</strong><span>{video.channel}</span></span>
+    </button>
+  );
 }
-function SpecGroup({ title, rows }) {
-  const [open,setOpen]=useState(false);
-  return <div className={`spec-group ${open?'is-open':''}`}><button className="spec-group__trigger" onClick={()=>setOpen(v=>!v)} aria-expanded={open}><span>{title}</span><span aria-hidden="true">{open?'−':'+'}</span></button>{open&&<div className="spec-group__rows">{rows.map(([label,value])=><div className="spec-row" key={label}><span>{label}</span><div><strong>{value}</strong></div></div>)}</div>}</div>;
+
+function GenerationComparison() {
+  return (
+    <section className="generation-comparison" id="compare" aria-labelledby="generation-comparison-title" data-reveal>
+      <span className="commercial-capabilities__anchor" id="generation-comparison" aria-hidden="true" />
+      <div className="generation-comparison__inner">
+        <header className="generation-comparison__header">
+          <span className="eyebrow">PRO VS. HYBRID</span>
+          <h2 id="generation-comparison-title">One platform. Two ways to produce.</h2>
+          <p><strong>RF production or RF engraving with dedicated glass-tube cutting.</strong></p>
+        </header>
+
+        <div className="generation-comparison__table-wrap">
+          <table className="generation-comparison__table">
+            <caption className="sr-only">Hydra Gen1 and Hydra Gen2 feature comparison</caption>
+            <colgroup>
+              <col className="generation-comparison__feature-column" />
+              <col className="generation-comparison__gen2-column" />
+              <col className="generation-comparison__gen1-column" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col"><span className="sr-only">Feature</span></th>
+                <th scope="col" className="generation-comparison__gen2-heading">Hydra Pro Gen2</th>
+                <th scope="col" className="generation-comparison__gen1-heading">Hydra Hybrid Gen2</th>
+              </tr>
+            </thead>
+            <tbody>
+              {generationComparisons.map((item) => (
+                <tr key={item.feature}>
+                  <th scope="row">{item.feature}</th>
+                  <td className="generation-comparison__gen2" data-label="Hydra Pro Gen2">{item.gen2}</td>
+                  <td className="generation-comparison__gen1" data-label="Hydra Hybrid Gen2">{item.gen1}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="generation-comparison__statement">Choose the source configuration around your materials and daily workload.</p>
+      </div>
+    </section>
+  );
 }
-function Preview({ item, close }) {
-  const dialog=useRef(null);
-  useEffect(()=>{
-    const prior=document.activeElement; const overflow=document.body.style.overflow;
-    document.body.style.overflow='hidden'; dialog.current?.focus();
-    function keys(e){if(e.key==='Escape')close();if(e.key==='Tab'){e.preventDefault();dialog.current?.querySelector('button')?.focus();}}
-    window.addEventListener('keydown',keys);
-    return()=>{window.removeEventListener('keydown',keys);document.body.style.overflow=overflow;prior?.focus();};
-  },[close]);
-  return <div className="h-modal" onClick={close}><div ref={dialog} tabIndex={-1} role="dialog" aria-modal="true" aria-label={item.alt} onClick={e=>e.stopPropagation()}><button className="h-round h-modal-close" onClick={close} aria-label="Close image preview"><X size={24}/></button><Img name={item.name} alt={item.alt} eager/><p>{item.alt}</p></div></div>;
+
+function SpeedMotionProof() {
+  const {
+    activeIndex: activeMaterial,
+    selectIndex: selectMaterial,
+    interactionProps: carouselProps,
+  } = useAutoplayCarousel(speedMotionMaterials.length);
+  const materialTabRefs = useRef([]);
+  const selectedMaterial = speedMotionMaterials[activeMaterial];
+
+  function handleMaterialKeyDown(event, index) {
+    const navigationKeys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!navigationKeys.includes(event.key)) return;
+    event.preventDefault();
+    const lastIndex = speedMotionMaterials.length - 1;
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? lastIndex
+        : event.key === "ArrowLeft"
+          ? (index - 1 + speedMotionMaterials.length) % speedMotionMaterials.length
+          : (index + 1) % speedMotionMaterials.length;
+    selectMaterial(nextIndex);
+    materialTabRefs.current[nextIndex]?.focus();
+  }
+
+  return (
+    <article className="speed-motion-proof" {...carouselProps}>
+      <div className="speed-motion-proof__controls">
+        <div
+          className="speed-motion-proof__materials"
+          role="tablist"
+          aria-label="Explore Hydra speed and motion by material"
+        >
+          {speedMotionMaterials.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeMaterial === index}
+                aria-controls="speed-motion-panel"
+                className={activeMaterial === index ? "is-active" : ""}
+                key={item.id}
+                ref={(node) => { materialTabRefs.current[index] = node; }}
+                onClick={() => selectMaterial(index)}
+                onKeyDown={(event) => handleMaterialKeyDown(event, index)}
+              >
+                <Icon size={20} weight={activeMaterial === index ? "bold" : "regular"} aria-hidden="true" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+      </div>
+
+      <div
+        className="speed-motion-proof__stage"
+        id="speed-motion-panel"
+        role="tabpanel"
+        aria-live="polite"
+      >
+        <div className="speed-motion-proof__media">
+          <img
+            key={selectedMaterial.id}
+            src={asset(selectedMaterial.image)}
+            alt={`${selectedMaterial.label} speed and motion comparison for the OneLaser Hydra Gen2`}
+          />
+        </div>
+
+        <div className="speed-motion-proof__copy">
+          <span className="speed-motion-proof__profile">Hydra Gen2 speed · Servo motion</span>
+          <h4>{selectedMaterial.title}</h4>
+          <p>{selectedMaterial.copy}</p>
+          <div className="speed-motion-proof__metrics" aria-label="Confirmed Hydra Gen2 motion performance">
+            <div><strong>2,000</strong><span>mm/s raster speed</span></div>
+            <div><strong>4G</strong><span>Working acceleration</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function RfAdvantages({ activeIndex, onChange, carouselProps }) {
+  return (
+    <section className="rf-advantages" id="rf-advantages" data-chapter-index="0" {...carouselProps}>
+      <div className="rf-advantages__inner">
+        <header className="rf-advantages__header">
+          <span className="eyebrow">WHY RF TUBE</span>
+          <h2>Why makers choose RF tube.</h2>
+          <p>Cleaner detail, faster response, and up to 30,000 hours of source life—built for products worth making and selling.</p>
+        </header>
+        <div className="rf-advantages__tabs" role="tablist" aria-label="Explore the advantages of RF laser technology">
+          {rfAdvantages.map((item, index) => {
+            return (
+              <button
+                type="button"
+                role="tab"
+                id={`rf-tab-${item.id}`}
+                aria-selected={activeIndex === index}
+                aria-controls="rf-advantage-panel"
+                tabIndex={activeIndex === index ? 0 : -1}
+                className={activeIndex === index ? "is-active" : ""}
+                key={item.id}
+                onClick={() => onChange(index)}
+                onKeyDown={(event) => {
+                  const navigationKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"];
+                  if (!navigationKeys.includes(event.key)) return;
+                  event.preventDefault();
+                  const lastIndex = rfAdvantages.length - 1;
+                  const nextIndex = event.key === "Home"
+                    ? 0
+                    : event.key === "End"
+                      ? lastIndex
+                      : event.key === "ArrowLeft" || event.key === "ArrowUp"
+                        ? (index - 1 + rfAdvantages.length) % rfAdvantages.length
+                        : (index + 1) % rfAdvantages.length;
+                  onChange(nextIndex);
+                  event.currentTarget.parentElement
+                    ?.querySelectorAll('[role="tab"]')
+                    [nextIndex]?.focus();
+                }}
+              >
+                <span>{item.tab}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div
+          className="rf-advantages__stage"
+          id="rf-advantage-panel"
+          role="tabpanel"
+          aria-labelledby={`rf-tab-${rfAdvantages[activeIndex].id}`}
+          aria-live="polite"
+        >
+          <div className="rf-advantages__media">
+            <img
+              key={rfAdvantages[activeIndex].id}
+              src={asset(rfAdvantages[activeIndex].image)}
+              alt={rfAdvantages[activeIndex].alt}
+            />
+          </div>
+          <div className="rf-advantages__copy">
+            <span className="eyebrow">{rfAdvantages[activeIndex].eyebrow}</span>
+            <h3>{rfAdvantages[activeIndex].title}</h3>
+            <p>{rfAdvantages[activeIndex].copy}</p>
+            <strong>{rfAdvantages[activeIndex].proof}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CapabilityBrowser({ onPlay, children }) {
+  const [activeChapter, setActiveChapter] = useState(0);
+  const chapterRefs = useRef([]);
+  const navRef = useRef(null);
+
+  function jumpToNode(node, offset) {
+    if (!node) return;
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo({ top: window.scrollY + node.getBoundingClientRect().top - offset, behavior: "auto" });
+    requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+  }
+
+  useEffect(() => {
+    const chapters = [
+      document.getElementById("rf-advantages"),
+      document.getElementById("power-guide"),
+      ...chapterRefs.current,
+      document.getElementById("makerboost"),
+    ].filter(Boolean);
+    const observer = new IntersectionObserver(() => {
+      const visible = chapters
+        .map((target) => ({ target, rect: target.getBoundingClientRect() }))
+        .filter(({ rect }) => rect.bottom > 96 && rect.top < window.innerHeight * .32)
+        .sort((a, b) => Math.abs(a.rect.top - 150) - Math.abs(b.rect.top - 150));
+      if (visible[0]) setActiveChapter(Number(visible[0].target.dataset.chapterIndex));
+    }, { rootMargin: "-96px 0px -68% 0px", threshold: 0 });
+
+    chapters.forEach((chapter) => observer.observe(chapter));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const activeButton = nav?.querySelector(`[data-chapter-nav="${activeChapter}"]`);
+    if (!nav || !activeButton || window.innerWidth > 760) return;
+    nav.scrollTo({
+      left: activeButton.offsetLeft - ((nav.clientWidth - activeButton.clientWidth) / 2),
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+  }, [activeChapter]);
+
+  useEffect(() => {
+    if (!["#features", "#capability-system"].includes(window.location.hash)) return;
+    const alignToCapabilities = () => jumpToNode(document.getElementById("features"), 64);
+    const timeout = window.setTimeout(alignToCapabilities, 350);
+    window.addEventListener("load", alignToCapabilities, { once: true });
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener("load", alignToCapabilities);
+    };
+  }, []);
+
+  function selectChapter(index) {
+    setActiveChapter(index);
+    jumpToNode(
+      index === 0 ? document.getElementById("rf-advantages") : chapterRefs.current[index],
+      window.innerWidth <= 760 ? 180 : 100,
+    );
+  }
+
+  return (
+    <section className="capability-scroll" id="features">
+      <span className="commercial-capabilities__anchor" id="capability-system" aria-hidden="true" />
+      <div className="journey-opening-artwork">
+        <img src={asset("feature-overview-capabilities-v4.webp")} style={{aspectRatio:"3840 / 2004",objectFit:"cover"}} alt="Hydra Gen2 feature overview covering RF precision, power options, motion, workflow, safety and support" />
+      </div>
+      <nav
+          className="capability-scroll__nav"
+          aria-label="Explore Hydra Gen2 advantages"
+          ref={navRef}
+          style={{
+            "--active-chapter": activeChapter,
+            "--chapter-count": capabilityChapters.length + 1,
+          }}
+        >
+          {capabilityChapters.map((item, index) => (
+            <button
+              type="button"
+              key={item.id}
+              className={activeChapter === index ? "is-active" : ""}
+              onClick={() => selectChapter(index)}
+              aria-current={activeChapter === index ? "step" : undefined}
+              data-chapter-nav={index}
+            >
+              <strong>{item.nav}</strong>
+            </button>
+          ))}
+          <button
+            type="button"
+            className={activeChapter === capabilityChapters.length ? "is-active" : ""}
+            onClick={() => {
+              setActiveChapter(capabilityChapters.length);
+              jumpToNode(document.getElementById("makerboost"), window.innerWidth <= 760 ? 136 : 100);
+            }}
+            aria-current={activeChapter === capabilityChapters.length ? "step" : undefined}
+            data-chapter-nav={capabilityChapters.length}
+          >
+            <strong>Software</strong>
+          </button>
+      </nav>
+      {children}
+      <div className="capability-scroll__layout">
+
+        <div className="capability-scroll__chapters">
+          {capabilityChapters.map((chapter, chapterIndex) => (
+            <section
+              className="capability-scroll__chapter"
+              id={`capability-${chapter.id}`}
+              data-chapter-index={chapterIndex}
+              ref={(node) => { chapterRefs.current[chapterIndex] = node; }}
+              aria-labelledby={`capability-${chapter.id}-title`}
+              key={chapter.id}
+            >
+              <header className="capability-scroll__chapter-heading">
+                <small>{chapter.nav}</small>
+                <h3 id={`capability-${chapter.id}-title`}>{chapter.title}</h3>
+                <p>{chapter.summary}</p>
+              </header>
+
+              <div className="capability-scroll__stories">
+                {chapter.speedProof && <SpeedMotionProof />}
+                {chapter.spotlights.map((spotlight) => (
+                  <article className="capability-scroll__story" key={spotlight.title}>
+                    <div className="capability-scroll__media capability-scroll__media--static">
+                      <img src={asset(spotlight.image)} alt={`${spotlight.title} Hydra Gen2 proof`} />
+                    </div>
+                    {!spotlight.hideCopy && (
+                      <div className="capability-scroll__story-copy">
+                        <h4>{spotlight.title}</h4>
+                        <p>{spotlight.copy}</p>
+                        <div>{spotlight.metrics.map((metric) => <span key={metric}>{metric}</span>)}</div>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+
+              {(chapter.feature || chapter.support.length > 0) && (
+                <div className={chapter.id === "protection" ? "capability-scroll__media-showcase capability-scroll__media-showcase--compact" : "capability-scroll__media-showcase"}>
+                {chapter.feature && (
+                  <article className="capability-scroll__feature capability-scroll__story">
+                    {chapter.id === "protection" ? (
+                      <div className="capability-scroll__media capability-scroll__media--static">
+                        <img src={asset(chapter.feature.image)} alt={`${chapter.feature.title} Hydra Gen2 proof`} />
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className="capability-scroll__media"
+                        onClick={() => onPlay(chapter.feature.title, asset(chapter.feature.image))}
+                        aria-label={`Open ${chapter.feature.title} full-size media preview`}
+                      >
+                        <img src={asset(chapter.feature.image)} alt={`${chapter.feature.title} Hydra Gen2 proof`} />
+                        <span className="capability-scroll__play" aria-hidden="true"><Play size={25} weight="fill" /></span>
+                      </button>
+                    )}
+                    <div className="capability-scroll__story-copy">
+                      <h4>{chapter.feature.title}</h4>
+                      <p>{chapter.feature.copy}</p>
+                      {chapter.feature.metrics?.length > 0 && (
+                        <div>{chapter.feature.metrics.map((metric) => <span key={metric}>{metric}</span>)}</div>
+                      )}
+                    </div>
+                  </article>
+                )}
+
+                <div className={chapter.support.some((item) => item.icon) ? "capability-scroll__support capability-scroll__support--icons" : "capability-scroll__support"}>
+                  {chapter.support.map((item) => (
+                    <article key={item.title}>
+                      {item.icon
+                        ? <span className="capability-scroll__support-icon" aria-hidden="true"><item.icon size={28} weight="regular" /></span>
+                        : <img src={asset(item.image)} alt="" />}
+                      <div>
+                        <h4>{item.title}</h4>
+                        <p>{item.copy}</p>
+                        {item.metrics?.length > 0 && (
+                          <div className="capability-scroll__support-tags">
+                            {item.metrics.map((metric) => <span key={metric}>{metric}</span>)}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                </div>
+              )}
+
+              {chapter.proofs.length > 0 && (
+                <div className="capability-scroll__proofs">
+                  {chapter.proofs.map(({ value, label, icon: Icon }) => (
+                    <article key={`${value}-${label}`}>
+                      <Icon size={24} weight="regular" aria-hidden="true" />
+                      <strong>{value}</strong>
+                      <span>{label}</span>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              {chapter.details.length > 0 && (
+                <div className="capability-scroll__details" aria-label={`${chapter.nav} additional details`}>
+                  <span>More built in</span>
+                  <div>{chapter.details.map((detail) => <span key={detail}>{detail}</span>)}</div>
+                </div>
+              )}
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export function HydraPage() {
-  const [model,setModel]=useState('9'); const [config,setConfig]=useState('Hybrid');
-  const [video,setVideo]=useState(null); const closeVideo=useCallback(()=>setVideo(null),[]);
-  const [gallery,setGallery]=useState(0); const [preview,setPreview]=useState(null); const closePreview=useCallback(()=>setPreview(null),[]);
-  const [material,setMaterial]=useState(0); const [paused,setPaused]=useState(false); const [interacting,setInteracting]=useState(false); const [epoch,setEpoch]=useState(0);
-  const [rfTab,setRfTab]=useState(0); const [powerTab,setPowerTab]=useState(0); const [openFaq,setOpenFaq]=useState(0); const [opportunity,setOpportunity]=useState(0); const [product,setProduct]=useState(0);
-  const [specModel,setSpecModel]=useState('9'); const [activeNav,setActiveNav]=useState('possibilities'); const [activeChapter,setActiveChapter]=useState('laser-guide');
-  const [sticky,setSticky]=useState(false);const [topVisible,setTopVisible]=useState(false);
-  const [reduced,setReduced]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const thumbs=useRef(null);const touchX=useRef(null); const matTouch=useRef(null);
-  const m=models[model]; const p=prices[model]; const variant=p.variants.find(v=>v.title.includes(config)) || p.variants[0];
-  const purchaseUrl=`${p.url}?variant=${variant.id}&utm_source=hydra-gen2-listing&utm_medium=product-page`;
-  const galleryItems=[{name:`hydra-${model}-hero.webp`,alt:`OneLaser Hydra ${model} Gen2 machine`}, ...(model==='9'?[{name:'hydra-front.webp',alt:'Hydra 9 Gen2 front view'},{name:'hydra-workflow.webp',alt:'Hydra 9 Gen2 open bed view'}]:[]), {name:'hydra-ai-projects.webp',alt:'Application concept: laser-engraved and cut products'},{name:'hydra-official-05.webp',alt:'Smart Dual Air-Assist'},{name:'hydra-official-07.webp',alt:'Lens temperature protection'},{name:'hydra-official-14.webp',alt:'GT5 touchscreen and keypad'}];
-  const currentImage=galleryItems[gallery%galleryItems.length];
-  const mat=materials[material]; const selectedProduct=opportunitySets[opportunity].items[product];
-  function chooseModel(n){setModel(n);if(n==='7')setConfig('Pro');setGallery(0);trackEvent('select_model',{model:n});}
-  function selectMaterial(n){setMaterial((n+materials.length)%materials.length);setEpoch(e=>e+1);}
-  function step(n){setGallery(i=>(i+n+galleryItems.length)%galleryItems.length);}
-  function navigate(id){document.getElementById(id)?.scrollIntoView({behavior:reduced?'auto':'smooth'});trackEvent('navigate_section',{section_id:id});}
-  useEffect(()=>{
-    initializeAnalytics();trackEvent('view_content',{content_name:'Hydra Gen2',content_type:'product'});
-    const mq=window.matchMedia('(prefers-reduced-motion: reduce)');const change=()=>setReduced(mq.matches);mq.addEventListener('change',change);return()=>mq.removeEventListener('change',change);
-  },[]);
-  useEffect(()=>{
-    let prev=window.scrollY; const onScroll=()=>{const y=window.scrollY;setSticky((document.getElementById('top')?.getBoundingClientRect().bottom ?? 9999)<132);setTopVisible(y>700&&y<prev);prev=y;};
-    window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll);
-  },[]);
-  useEffect(()=>{
-    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){if(navItems.some(([id])=>id===e.target.id))setActiveNav(e.target.id);if(chapterNav.some(c=>c.id===e.target.id))setActiveChapter(e.target.id);}});},{rootMargin:'-20% 0px -55% 0px',threshold:0});
-    [...navItems.map(([id])=>id),...chapterNav.map(c=>c.id)].forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el);});return()=>observer.disconnect();
-  },[]);
-  useEffect(()=>{if(paused||interacting||reduced)return;const t=setTimeout(()=>setMaterial(n=>(n+1)%materials.length),6000);return()=>clearTimeout(t);},[material,paused,interacting,reduced,epoch]);
+  useEffect(() => {
+    document.title = "OneLaser Hydra Gen2 Industrial RF Laser | OneLaser";
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.content = "Explore the OneLaser Hydra Gen2 industrial RF laser, built for precision, speed and production-ready performance.";
+  }, []);
+  const [activeMedia, setActiveMedia] = useState(0);
+  const [activeMaterial, setActiveMaterial] = useState(0);
+  const [materialPaused, setMaterialPaused] = useState(false);
+  const [materialTimerEpoch, setMaterialTimerEpoch] = useState(0);
+  const [materialReducedMotion, setMaterialReducedMotion] = useState(() => (
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false
+  ));
+  const {
+    activeIndex: activeRfAdvantage,
+    selectIndex: setActiveRfAdvantage,
+    interactionProps: rfCarouselProps,
+  } = useAutoplayCarousel(rfAdvantages.length);
+  const {
+    activeIndex: activePowerProof,
+    selectIndex: setActivePowerProof,
+    interactionProps: powerCarouselProps,
+  } = useAutoplayCarousel(powerProofs.length);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedPackageId, setSelectedPackageId] = useState("9");
+  const [purchasePower, setPurchasePower] = useState("38W");
+  const [selectedPurchaseAccessories, setSelectedPurchaseAccessories] = useState([]);
+  const [activeJourneySection, setActiveJourneySection] = useState("why-hydra");
+  const [journeyVisible, setJourneyVisible] = useState(false);
+  const [videoModal, setVideoModal] = useState(null);
+  const [youtubeVideo, setYoutubeVideo] = useState(null);
+  const thumbnailRailRef = useRef(null);
+  const heroMediaTouchStartX = useRef(null);
+  const authorityVideoRailRef = useRef(null);
+  const horizontalRailDragRef = useRef({ rail: null, pointerId: null, startX: 0, startScrollLeft: 0, dragged: false });
+  const reviewVideoRailRef = useRef(null);
+  const consultationFeedbackRailRef = useRef(null);
+  const materialTabRefs = useRef([]);
+  const materialTouchStartX = useRef(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [topButtonState, setTopButtonState] = useState("hidden");
+  const lastScrollYRef = useRef(0);
 
-  return <div className="site-shell home-global-chrome hydra-page">
-    <a className="skip-link" href="#main">Skip to content</a><HomeNavigation megaMenuActivation="click"/>
-    <main id="main">
-      <section className="hero section h-hero" id="top">
-        <div className="hero-media">
-          <div className="media-stage" role="region" aria-label="Hydra product gallery" aria-roledescription="carousel" tabIndex={0} onKeyDown={e=>{if(e.key==='ArrowRight'){e.preventDefault();step(1);}if(e.key==='ArrowLeft'){e.preventDefault();step(-1);}}} onTouchStart={e=>touchX.current=e.changedTouches[0].clientX} onTouchEnd={e=>{if(touchX.current!==null&&Math.abs(e.changedTouches[0].clientX-touchX.current)>44)step(e.changedTouches[0].clientX<touchX.current?1:-1);touchX.current=null;}}>
-            <button className="h-gallery-open" onClick={()=>setPreview(currentImage)} aria-label="Enlarge product image"><Img key={currentImage.name} name={currentImage.name} alt={currentImage.alt} eager/><span className="h-enlarge"><MagnifyingGlassPlus size={20}/></span></button>
-            <span className="media-count">{String(gallery%galleryItems.length+1).padStart(2,'0')} / {String(galleryItems.length).padStart(2,'0')}</span>
-            <button className="media-arrow media-arrow--previous" aria-label="Previous product view" onClick={()=>step(-1)}><CaretLeft size={24}/></button><button className="media-arrow media-arrow--next" aria-label="Next product view" onClick={()=>step(1)}><CaretRight size={24}/></button>
+  useEffect(() => {
+    initializeAnalytics();
+    trackEvent("view_content", {
+      content_name: "OneLaser Hydra Gen2",
+      content_category: "Laser engraver",
+      value: 10999,
+      currency: "USD",
+    });
+  }, []);
+
+  useEffect(() => {
+    materialCategories.forEach(({ image }) => {
+      const preload = new Image();
+      preload.src = asset(image);
+    });
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setMaterialReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (materialReducedMotion || materialPaused) return undefined;
+    const timeout = window.setTimeout(() => {
+      setActiveMaterial((current) => (current + 1) % materialCategories.length);
+    }, MATERIAL_AUTOPLAY_DELAY);
+    return () => window.clearTimeout(timeout);
+  }, [activeMaterial, materialPaused, materialReducedMotion, materialTimerEpoch]);
+
+  useEffect(() => {
+    const revealNodes = [...document.querySelectorAll("[data-reveal]")];
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
+    revealNodes.forEach((node) => revealObserver.observe(node));
+
+    const updateProgress = () => {
+      const currentScrollY = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(100, (currentScrollY / max) * 100) : 0);
+      const readingLine = currentScrollY + 156;
+      const currentSection = journeySections.reduce((active, section) => {
+        const node = document.getElementById(section.id);
+        const absoluteTop = node ? node.getBoundingClientRect().top + currentScrollY : Number.POSITIVE_INFINITY;
+        return absoluteTop <= readingLine ? section.id : active;
+      }, "why-hydra");
+      setActiveJourneySection(currentSection);
+      if (currentScrollY < 480) {
+        setTopButtonState("hidden");
+      } else if (currentScrollY < lastScrollYRef.current - 4) {
+        setTopButtonState("visible");
+      } else if (currentScrollY > lastScrollYRef.current + 4) {
+        setTopButtonState("muted");
+      }
+      const journeyStart = document.getElementById("why-hydra");
+      setJourneyVisible(Boolean(journeyStart && journeyStart.getBoundingClientRect().bottom <= window.innerHeight));
+      lastScrollYRef.current = currentScrollY;
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      revealObserver.disconnect();
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, []);
+
+  useEffect(() => {
+    const placeholderPalettes = [
+      ["#e7ded5", "#d8c9bc", "#f3ece5"],
+      ["#dfe5df", "#cbd8cf", "#edf2ed"],
+      ["#dde4e8", "#c7d4db", "#edf2f4"],
+      ["#e8dfdf", "#d9c8ca", "#f4ebeb"],
+      ["#e5e0e9", "#d3cadb", "#f1edf4"],
+      ["#e1e6e3", "#cbd7d2", "#eff3f1"],
+      ["#e8e2d7", "#d8cdbb", "#f4efe6"],
+    ];
+    const assignPlaceholderPalette = (image) => {
+      const seed = `${image.getAttribute("src") || ""}|${image.alt || ""}`;
+      const hash = [...seed].reduce((value, character) => (
+        ((value << 5) - value + character.charCodeAt(0)) | 0
+      ), 0);
+      const [base, low, high] = placeholderPalettes[Math.abs(hash) % placeholderPalettes.length];
+      image.style.setProperty("--image-placeholder-base", base);
+      image.style.setProperty("--image-placeholder-low", low);
+      image.style.setProperty("--image-placeholder-high", high);
+    };
+    const prepareImage = (image) => {
+      if (!(image instanceof HTMLImageElement)) return;
+      assignPlaceholderPalette(image);
+      image.classList.toggle("is-image-ready", image.complete && image.naturalWidth > 0);
+      image.classList.toggle("is-image-error", image.complete && image.naturalWidth === 0);
+    };
+    const markReady = (event) => {
+      if (!(event.target instanceof HTMLImageElement)) return;
+      event.target.classList.add("is-image-ready");
+      event.target.classList.remove("is-image-error");
+    };
+    const markError = (event) => {
+      if (!(event.target instanceof HTMLImageElement)) return;
+      event.target.classList.add("is-image-error");
+      event.target.classList.remove("is-image-ready");
+    };
+    const imageObserver = new MutationObserver((records) => {
+      records.forEach((record) => {
+        if (record.type === "attributes") prepareImage(record.target);
+        record.addedNodes.forEach((node) => {
+          if (node instanceof HTMLImageElement) prepareImage(node);
+          if (node instanceof Element) node.querySelectorAll("img").forEach(prepareImage);
+        });
+      });
+    });
+
+    document.querySelectorAll("img").forEach(prepareImage);
+    document.addEventListener("load", markReady, true);
+    document.addEventListener("error", markError, true);
+    imageObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["src", "srcset"],
+      childList: true,
+      subtree: true,
+    });
+    return () => {
+      document.removeEventListener("load", markReady, true);
+      document.removeEventListener("error", markError, true);
+      imageObserver.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!youtubeVideo && !videoModal) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setYoutubeVideo(null);
+        setVideoModal(null);
+      }
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [youtubeVideo, videoModal]);
+
+  const selectedPurchasePackage = useMemo(() => {
+    const selected = purchasePackages.find((item) => item.id === selectedPackageId) ?? purchasePackages[0];
+    const powerDelta = purchasePower === "70W" ? selected.powerDelta : 0;
+    return { ...selected, price: selected.price + powerDelta, msrp: selected.msrp + powerDelta };
+  }, [selectedPackageId, purchasePower]);
+
+  const purchaseAccessoryTotal = useMemo(
+    () => officialAccessories
+      .filter((item) => selectedPurchaseAccessories.includes(item.id))
+      .reduce((sum, item) => sum + item.price, 0),
+    [selectedPurchaseAccessories],
+  );
+
+  const purchaseAccessoryMsrpTotal = useMemo(
+    () => officialAccessories
+      .filter((item) => selectedPurchaseAccessories.includes(item.id))
+      .reduce((sum, item) => sum + item.msrp, 0),
+    [selectedPurchaseAccessories],
+  );
+
+  const purchaseTotal = (selectedPurchasePackage.price + purchaseAccessoryTotal) * quantity;
+  const purchaseMsrpTotal = (selectedPurchasePackage.msrp + purchaseAccessoryMsrpTotal) * quantity;
+  const monthlyPayment = purchaseTotal / 24;
+  const selectedVariant = purchasePower === "70W" ? selectedPurchasePackage.pro : selectedPurchasePackage.hybrid;
+  const cartItems = [`${selectedVariant}:${quantity}`, ...officialAccessories.filter(item => selectedPurchaseAccessories.includes(item.id)).map(item => `${item.variant}:${quantity}`)];
+  const checkoutUrl = `https://www.1laser.com/cart/${cartItems.join(',')}`;
+  const SHOP_PAY_CHECKOUT_URL = checkoutUrl;
+  const MORE_PAYMENT_OPTIONS_URL = checkoutUrl;
+  const financingCopy = selectedPackageId === "9" && purchasePower === "38W" && !selectedPurchaseAccessories.length && quantity === 1 ? "From $534/mo." : "Financing available";
+
+  function handleJourneyNavigation(section) {
+    trackEvent("navigate_section", { section_id: section.id, section_name: section.label });
+    document.getElementById(section.id)?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
+  function getPurchaseEventParameters() {
+    return {
+      content_name: `Hydra Gen2 ${purchasePower} ${selectedPurchasePackage.name}`,
+      content_ids: [`hydra-gen2-${purchasePower.toLowerCase()}-${selectedPackageId}`],
+      content_type: "product",
+      value: purchaseTotal,
+      currency: "USD",
+      quantity,
+      accessory_count: selectedPurchaseAccessories.length,
+    };
+  }
+
+  function handleAddToCart() {
+    trackEvent("add_to_cart", getPurchaseEventParameters());
+    window.open(checkoutUrl, "_blank", "noopener,noreferrer");
+  }
+
+  function handleShopPayCheckout() {
+    trackEvent("begin_checkout", {
+      ...getPurchaseEventParameters(),
+      checkout_type: "shop_pay",
+    });
+  }
+
+  function trackLead(destination, leadType) {
+    trackEvent("generate_lead", {
+      content_name: "OneLaser Hydra Gen2",
+      lead_type: leadType,
+      destination,
+    });
+  }
+
+  function selectMedia(index) {
+    setActiveMedia(index);
+  }
+
+  function playOfficialFilm() {
+    if (!officialFilm.youtubeId) return;
+    setYoutubeVideo({
+      id: officialFilm.youtubeId,
+      title: officialFilm.title,
+      channel: "OneLaser",
+      tag: "OFFICIAL Hydra GEN2 FILM",
+    });
+  }
+
+  function stepMedia(direction) {
+    setActiveMedia((current) => (current + direction + media.length) % media.length);
+  }
+
+  function handleHeroMediaTouchStart(event) {
+    heroMediaTouchStartX.current = event.changedTouches[0]?.clientX ?? null;
+  }
+
+  function handleHeroMediaTouchEnd(event) {
+    const startX = heroMediaTouchStartX.current;
+    const endX = event.changedTouches[0]?.clientX;
+    heroMediaTouchStartX.current = null;
+
+    if (startX == null || endX == null || Math.abs(endX - startX) < 44) return;
+    stepMedia(endX < startX ? 1 : -1);
+  }
+
+  function scrollThumbnails(direction) {
+    thumbnailRailRef.current?.scrollBy({ left: direction * 330, behavior: "smooth" });
+  }
+
+  function scrollReviewVideos(direction) {
+    reviewVideoRailRef.current?.scrollBy({ left: direction * 420, behavior: "smooth" });
+  }
+
+  function scrollAuthorityVideos(direction) {
+    authorityVideoRailRef.current?.scrollBy({ left: direction * 420, behavior: "smooth" });
+  }
+
+  function startHorizontalRailDrag(event) {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    const rail = event.currentTarget;
+    horizontalRailDragRef.current = {
+      rail,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startScrollLeft: rail.scrollLeft,
+      dragged: false,
+    };
+  }
+
+  function moveHorizontalRailDrag(event) {
+    const drag = horizontalRailDragRef.current;
+    const rail = drag.rail;
+    if (!rail || drag.pointerId !== event.pointerId) return;
+    const distance = event.clientX - drag.startX;
+    if (Math.abs(distance) > 4 && !drag.dragged) {
+      drag.dragged = true;
+      rail.setPointerCapture?.(event.pointerId);
+      rail.classList.add("is-dragging");
+    }
+    if (!drag.dragged) return;
+    event.preventDefault();
+    rail.scrollLeft = drag.startScrollLeft - distance;
+  }
+
+  function endHorizontalRailDrag(event) {
+    const drag = horizontalRailDragRef.current;
+    const rail = drag.rail;
+    if (!rail || drag.pointerId !== event.pointerId) return;
+    if (rail.hasPointerCapture?.(event.pointerId)) rail.releasePointerCapture(event.pointerId);
+    rail.classList.remove("is-dragging");
+    drag.rail = null;
+    drag.pointerId = null;
+    if (drag.dragged) window.setTimeout(() => { drag.dragged = false; }, 0);
+  }
+
+  function suppressHorizontalRailClickAfterDrag(event) {
+    if (!horizontalRailDragRef.current.dragged) return;
+    event.preventDefault();
+    event.stopPropagation();
+    horizontalRailDragRef.current.dragged = false;
+  }
+
+  function scrollConsultationFeedback(direction) {
+    const rail = consultationFeedbackRailRef.current;
+    if (!rail) return;
+    const firstCard = rail.querySelector("blockquote");
+    const cardWidth = firstCard?.getBoundingClientRect().width ?? 360;
+    const gap = Number.parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 12;
+    rail.scrollBy({ left: direction * (cardWidth + gap), behavior: "smooth" });
+  }
+
+  function selectMaterial(index, { focus = false } = {}) {
+    const nextIndex = (index + materialCategories.length) % materialCategories.length;
+    setActiveMaterial(nextIndex);
+    setMaterialTimerEpoch((current) => current + 1);
+    if (focus) materialTabRefs.current[nextIndex]?.focus();
+  }
+
+  function resumeMaterialAutoplay() {
+    setMaterialPaused(false);
+    setMaterialTimerEpoch((current) => current + 1);
+  }
+
+  function handleMaterialKeyDown(event, index) {
+    const navigationKeys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!navigationKeys.includes(event.key)) return;
+    event.preventDefault();
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? materialCategories.length - 1
+        : event.key === "ArrowLeft"
+          ? index - 1
+          : index + 1;
+    selectMaterial(nextIndex, { focus: true });
+  }
+
+  function openStory(title, image) {
+    if (typeof title === "object" && title?.id) {
+      setYoutubeVideo(title);
+      return;
+    }
+    setVideoModal({ title, image });
+  }
+
+  function togglePurchaseAccessory(accessoryId) {
+    setSelectedPurchaseAccessories((current) => {
+      const selected = !current.includes(accessoryId);
+      trackEvent("select_accessory", { accessory_id: accessoryId, selected });
+      return selected ? [...current, accessoryId] : current.filter((id) => id !== accessoryId);
+    });
+  }
+
+  return (
+    <div className="site-shell home-global-chrome">
+      <div className="page-progress" aria-hidden="true"><span style={{ width: `${scrollProgress}%` }} /></div>
+      <a className="skip-link" href="#main">Skip to content</a>
+      <HomeNavigation megaMenuActivation="click" />
+
+      <nav className={journeyVisible ? "journey-nav is-visible" : "journey-nav"} aria-label="Explore Hydra Gen2 page sections">
+        <div className="journey-nav__inner">
+          <div className="journey-nav__rail">
+            {journeySections.map((section, index) => (
+              <button
+                type="button"
+                className={activeJourneySection === section.id ? "is-active" : ""}
+                aria-current={activeJourneySection === section.id ? "location" : undefined}
+                onClick={() => handleJourneyNavigation(section)}
+                key={section.id}
+              >
+                <span>{section.label}</span>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+              </button>
+            ))}
           </div>
-          <div className="thumbnail-controls"><button className="thumb-arrow" aria-label="Scroll product thumbnails left" onClick={()=>thumbs.current?.scrollBy({left:-240,behavior:reduced?'auto':'smooth'})}><CaretLeft size={20}/></button><div className="thumbnail-row" ref={thumbs}>{galleryItems.map((im,i)=><button className={`thumbnail ${i===gallery?'is-active':''}`} key={im.name} aria-label={`Show product view ${i+1}`} aria-pressed={i===gallery} onClick={()=>setGallery(i)}><Img name={im.name}/></button>)}</div><button className="thumb-arrow" aria-label="Scroll product thumbnails right" onClick={()=>thumbs.current?.scrollBy({left:240,behavior:reduced?'auto':'smooth'})}><CaretRight size={20}/></button></div>
-          <button className="h-hero-video" onClick={()=>setVideo(hydraFilm)} aria-label="Watch the official Hydra Gen2 film"><span><img src={asset(hydraFilm.cover)} alt="" width="1280" height="720"/><Play size={20} weight="fill"/></span><strong>Hydra Gen2 in action<small>Official film · Stitchcraft Interiors</small></strong><ArrowUpRight size={18}/></button>
-          <div className="hero-assurance-grid"><a className="hero-assurance-card hero-assurance-card--link" href={call} target="_blank" rel="noreferrer"><Phone size={28}/><strong>Book A Free Call</strong><ArrowUpRight className="hero-assurance-card__arrow" size={15}/></a><a className="hero-assurance-card hero-assurance-card--link" href={brochure} target="_blank" rel="noreferrer"><DownloadSimple size={28}/><strong>Download Brochure</strong><ArrowUpRight className="hero-assurance-card__arrow" size={15}/></a><a className="hero-assurance-card hero-assurance-card--link" href="https://www.1laser.com/pages/contact-us" target="_blank" rel="noreferrer"><Headset size={28}/><strong>U.S.-based Engineers with Lifetime Support</strong><ArrowUpRight className="hero-assurance-card__arrow" size={15}/></a><div className="hero-assurance-card"><ShieldCheck size={28}/><strong>Up to 3-Year Warranty</strong></div></div>
+          <span className="journey-nav__count">
+            {String(Math.max(1, journeySections.findIndex(({ id }) => id === activeJourneySection) + 1)).padStart(2, "0")}
+            <i>/</i>{String(journeySections.length).padStart(2, "0")}
+          </span>
         </div>
-        <div className="purchase-panel">
-          <h1>OneLaser Hydra™ {model} Gen2<br/>Industrial RF Laser Engraver</h1>
-          <p className="h-hero-description">Sharper detail. Faster output.<br/>Built around the way you produce.</p>
-          <ul className="hero-highlights"><li><strong>Production speed:</strong> up to 2,000 mm/s · 4G acceleration.</li><li><strong>RF precision:</strong> up to 2,000 DPI · 0.07 mm spot.</li><li><strong>Work area:</strong> {m.area} ({m.inches}).</li><li><strong>Smarter workflow:</strong> autofocus · dual air-assist · GT5 control.</li></ul>
-          <div className="official-price"><div className="official-price__main"><span>Hydra {model} {config}</span><strong>{money(variant.price)} <small>USD</small></strong></div></div><p className="h-footnote">Shipping and taxes calculated on the official store.</p>
-          <a className="h-financing" href="https://www.1laser.com/pages/financing" target="_blank" rel="noreferrer">Explore financing options <ArrowUpRight size={14}/></a>
-          <fieldset className="h-options"><legend>Choose your workspace</legend><div className="h-model-options">{Object.keys(models).map(n=><button key={n} className={n===model?'is-selected':''} aria-pressed={n===model} onClick={()=>chooseModel(n)}><strong>Hydra {n}</strong><span>{models[n].area}</span></button>)}</div></fieldset>
-          <fieldset className="h-options"><legend>Choose your laser configuration</legend><div className="purchase-power-options">{['Hybrid','Pro'].map(c=><button key={c} disabled={model==='7'&&c==='Hybrid'} className={`purchase-power ${c===config?'is-selected':''}`} aria-pressed={c===config} onClick={()=>{setConfig(c);trackEvent('select_configuration',{model,configuration:c});}}><strong>{c==='Pro'?'70W RF Pro':`38W RF + ${m.dc||'DC'}${m.dc?'W DC':''}`}</strong><span>{c==='Pro'?'Fine detail & dedicated RF production':model==='7'?'Available on Hydra 9, 13 & 16':'RF engraving & powerful glass-tube cutting'}</span></button>)}</div></fieldset>
-          <div className="h-config-note"><ShieldCheck size={20}/><p>{config==='Pro'?'Air-cooled RF source. Optional fiber expansion on supported 70W configurations.':'Air-cooled RF engraving + water-cooled DC cutting. Confirm the matching chiller with your engineer.'}</p></div>
-          <a className="primary-cta h-purchase" href={purchaseUrl} target="_blank" rel="noreferrer" onClick={()=>trackEvent('purchase_intent',{model,configuration:config,value:variant.price,currency:'USD'})}>Configure on official store<ArrowUpRight size={20}/></a>
-          <p className="h-purchase-note">U.S.-based lifetime support · 1-on-1 setup guidance</p>
-          <details className="h-addons"><summary>Optional accessories & upgrades <span>+</span></summary><p>Compatible 4-pin rotary, LightBurn Pro license, additional lenses and fume filtration. Fiber upgrades are optional, subject to release and compatibility confirmation. Request a quote for the complete setup.</p><Link secondary>Plan your setup</Link></details>
+      </nav>
+
+      <main id="main">
+        <section className="hero section" id="top">
+          <div className="hero-media">
+            <div
+              className="media-stage"
+              aria-label="Hydra Gen2 product gallery"
+              aria-roledescription="carousel"
+              onTouchStart={handleHeroMediaTouchStart}
+              onTouchEnd={handleHeroMediaTouchEnd}
+              onTouchCancel={() => { heroMediaTouchStartX.current = null; }}
+            >
+              <img src={media[activeMedia].src} alt={media[activeMedia].alt} draggable="false" />
+              <span className="media-count">{String(activeMedia + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
+              <button type="button" className="media-arrow media-arrow--previous" aria-label="Previous product view" onClick={() => stepMedia(-1)}><CaretLeft size={25} /></button>
+              <button type="button" className="media-arrow media-arrow--next" aria-label="Next product view" onClick={() => stepMedia(1)}><CaretRight size={25} /></button>
+            </div>
+            <div className="thumbnail-controls">
+              <button type="button" className="thumb-arrow" aria-label="Scroll product views left" onClick={() => scrollThumbnails(-1)}><CaretLeft size={20} /></button>
+              <div className="thumbnail-row" ref={thumbnailRailRef} aria-label="Product views">
+                {media.map((item, index) => (
+                  <button
+                    type="button"
+                    key={item.src}
+                    className={activeMedia === index ? "thumbnail is-active" : "thumbnail"}
+                    onClick={() => selectMedia(index)}
+                    aria-label={`Show product view ${String(index + 1).padStart(2, "0")}`}
+                  >
+                    <img src={item.src} alt="" />
+                  </button>
+                ))}
+              </div>
+              <button type="button" className="thumb-arrow" aria-label="Scroll product views right" onClick={() => scrollThumbnails(1)}><CaretRight size={20} /></button>
+              <span className="thumbnail-divider" aria-hidden="true" />
+              <button type="button" className="video-thumbnail video-thumbnail--placeholder" onClick={playOfficialFilm} aria-label="Watch the official Hydra Gen2 film" disabled={!officialFilm.youtubeId}>
+                <span><Play size={16} weight="fill" /><small>WATCH</small></span>
+              </button>
+            </div>
+            <div className="hero-assurance-grid" aria-label="Hydra Gen2 information, consultation, and support benefits">
+              <a className="hero-assurance-card hero-assurance-card--link" href={SALES_CALL_URL} target="_blank" rel="noreferrer" onClick={() => trackLead("sales-consultation-call", "book_free_call")}>
+                <Phone size={28} weight="light" aria-hidden="true" />
+                <strong>Book A Free Call</strong>
+                <ArrowUpRight className="hero-assurance-card__arrow" size={15} aria-hidden="true" />
+              </a>
+              <a className="hero-assurance-card hero-assurance-card--link" href={BROCHURE_URL} target="_blank" rel="noreferrer" onClick={() => trackLead("hydra-brochure", "download_brochure")}>
+                <DownloadSimple size={28} weight="light" aria-hidden="true" />
+                <strong>Download Brochure</strong>
+                <ArrowUpRight className="hero-assurance-card__arrow" size={15} aria-hidden="true" />
+              </a>
+              <a className="hero-assurance-card hero-assurance-card--link" href={SUPPORT_URL} target="_blank" rel="noreferrer" onClick={() => trackLead("onelaser-support", "hero_assurance_support")}>
+                <Headset size={28} weight="light" aria-hidden="true" />
+                <strong>100% U.S.-based Engineers with Lifetime Support</strong>
+                <ArrowUpRight className="hero-assurance-card__arrow" size={15} aria-hidden="true" />
+              </a>
+              <div className="hero-assurance-card">
+                <ShieldCheck size={28} weight="light" aria-hidden="true" />
+                <strong>Max 3-Year Warranty: Unmatched Reliability</strong>
+              </div>
+            </div>
+          </div>
+
+          <div className="purchase-panel">
+            <h1>OneLaser Hydra™ {selectedPackageId} Gen2 Industrial Laser Engraver ({selectedPackageId === "7" ? "70W RF" : "38W RF + DC / 70W RF"})</h1>
+
+            <div className="rating-row" aria-label={`Hydra ${selectedPackageId} Gen2 has no published customer ratings yet`}>
+              <span className="rating-stars" aria-hidden="true">
+                {[0, 1, 2, 3, 4].map((item) => <Star size={18} weight="regular" key={item} />)}
+              </span>
+              <strong>—</strong>
+              <a href="#reviews">0 reviews</a>
+            </div>
+
+            <ul className="hero-highlights">
+              <li><strong>38W / 70W RF source:</strong> 20,000–30,000 hours, air-cooled.</li>
+              <li><strong>Production speed:</strong> up to 2,000 mm/s · 4G acceleration.</li>
+              <li><strong>Professional detail:</strong> 2,000 DPI · 0.07 mm spot · ≤ 0.01 mm repeat.</li>
+              <li><strong>Work area:</strong> {selectedPurchasePackage.area} · camera-assisted positioning.</li>
+            </ul>
+
+            <div className="official-price">
+              <div className="official-price__main">
+                <span>Final price</span>
+                <strong>{formatMoney(selectedPurchasePackage.price)} <small>USD</small></strong>
+                <em>Save {formatMoney(selectedPurchasePackage.msrp - selectedPurchasePackage.price)}</em>
+              </div>
+              <div className="official-price__msrp">
+                <span>MSRP</span>
+                <strong><span>{formatMoney(selectedPurchasePackage.msrp)}</span> <small>USD</small></strong>
+              </div>
+            </div>
+            <div className="financing-line">
+              <strong><span>{financingCopy}</span> with Affirm</strong>
+              <a href="https://www.1laser.com/pages/financing" target="_blank" rel="noreferrer">See if you qualify <CaretRight size={15} /></a>
+            </div>
+            <div className="financing-more">
+              <span>Subject to eligibility and terms</span>
+              <a href="https://www.1laser.com/pages/financing" target="_blank" rel="noreferrer">Click here <ArrowUpRight size={14} /></a>
+            </div>
+
+            <div className="purchase-options" id="purchase-options">
+              <div className="purchase-section-heading">
+                <div><span>Choose your laser source</span><small>Same platform, tuned for different workloads.</small></div>
+              </div>
+              <div className="purchase-power-options">
+                {[
+                  { id: "38W", title: "38W RF + DC", copy: "Fine RF engraving & glass-tube cutting" },
+                  { id: "70W", title: "70W RF Pro", copy: "Dedicated RF detail & production" },
+                ].map((item) => {
+                  const selected = purchasePower === item.id;
+                  return (
+                    <button
+                      type="button"
+                      className={selected ? "purchase-power is-selected" : "purchase-power"}
+                      key={item.id}
+                      disabled={selectedPackageId === "7" && item.id === "38W"}
+                      onClick={() => {
+                        setPurchasePower(item.id);
+                        if (item.id === "38W" && selectedPackageId === "7") setSelectedPackageId("9");
+                        trackEvent("select_power", { power: item.id, value: item.id === "70W" ? 11999 : 10999, currency: "USD" });
+                      }}
+                      aria-pressed={selected}
+                    >
+                      <span><strong>{item.title}</strong>{item.badge && <small>{item.badge}</small>}</span>
+                      <p>{item.copy}</p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="purchase-section-heading">
+                <div><span>Package</span><small>Choose the setup that matches your workspace.</small></div>
+              </div>
+              <div className="official-packages">
+                {purchasePackages.map((item) => {
+                  const selected = selectedPackageId === item.id;
+                  const powerAdjustment = purchasePower === "70W" ? item.powerDelta : 0;
+                  const packagePrice = item.price + powerAdjustment;
+                  const packageMsrp = item.msrp + powerAdjustment;
+                  return (
+                    <button
+                      type="button"
+                      className={selected ? "official-package is-selected" : "official-package"}
+                      key={item.id}
+                      onClick={() => {
+                        setSelectedPackageId(item.id);
+                        if (!item.hybrid) setPurchasePower("70W");
+                        trackEvent("select_package", { package_id: item.id, power: purchasePower });
+                      }}
+                      aria-pressed={selected}
+                    >
+                      <div className="official-package__top">
+                        <span><small>{item.badge}</small><strong>{item.name}</strong></span>
+                        <span>
+                          <strong>{formatMoney(packagePrice)}</strong>
+                          <span className="official-package__monthly">Financing subject to approval</span>
+                          <em>Save {formatMoney(packageMsrp - packagePrice)}</em>
+                        </span>
+                      </div>
+                      <div className="official-package__detail"><Check size={17} weight="bold" /><span>{item.detail}</span></div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="purchase-section-heading purchase-section-heading--accessories">
+                <div><span>Frequently bought together</span><small>Official accessory pricing from OneLaser.</small></div>
+              </div>
+              <div className="purchase-accessories">
+                {officialAccessories.map((item) => {
+                  const selected = selectedPurchaseAccessories.includes(item.id);
+                  return (
+                    <label className={selected ? "purchase-accessory is-selected" : "purchase-accessory"} key={item.id}>
+                      <input type="checkbox" checked={selected} onChange={() => togglePurchaseAccessory(item.id)} />
+                      <span
+                        className="purchase-accessory__media"
+                        style={{ "--accessory-image-scale": item.imageScale }}
+                      >
+                        <img src={asset(item.image)} alt={item.name} />
+                      </span>
+                      <span><strong>{item.name}</strong><small>OPTIONAL</small><p>{item.description}</p></span>
+                      <span className="purchase-accessory__price"><strong>{formatMoney(item.price)}</strong><del>{formatMoney(item.msrp)}</del></span>
+                    </label>
+                  );
+                })}
+              </div>
+
+              <div className="purchase-total">
+                <span><small>Your configuration</small><strong>{purchasePower} · {selectedPurchasePackage.name}{selectedPurchaseAccessories.length ? ` + ${selectedPurchaseAccessories.length} optional item${selectedPurchaseAccessories.length > 1 ? "s" : ""}` : ""}</strong></span>
+                <strong>{formatMoney(purchaseTotal)}</strong>
+              </div>
+              <div className="purchase-actions purchase-actions--hero">
+                <div className="quantity-control" aria-label="Purchase quantity">
+                  <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(1, value - 1))}><Minus size={15} /></button>
+                  <strong>{quantity}</strong>
+                  <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => value + 1)}><Plus size={15} /></button>
+                </div>
+                <button type="button" className="primary-cta" onClick={handleAddToCart}>Add to Cart</button>
+              </div>
+              <a
+                className="secondary-cta secondary-cta--link secondary-cta--shop"
+                href={SHOP_PAY_CHECKOUT_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={handleShopPayCheckout}
+              >
+                Continue to checkout <ArrowUpRight size={16} />
+              </a>
+              <a className="more-payment-options" href={MORE_PAYMENT_OPTIONS_URL} target="_blank" rel="noreferrer" onClick={() => trackEvent("begin_checkout", { ...getPurchaseEventParameters(), checkout_type: "more_payment_options" })}>More payment options <ArrowUpRight size={14} /></a>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="feature-overview" id="why-hydra" data-reveal>
+          <img src={asset("feature-overview-hero.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="OneLaser Hydra Gen2 in a working studio with finished products and brand proof" />
+        </section>
+
+        <section className="official-film" aria-labelledby="official-film-title" data-reveal>
+          <header className="official-film__header">
+            <span className="eyebrow">OFFICIAL Hydra GEN2 FILM</span>
+            <h2 id="official-film-title">{officialFilm.title}</h2>
+            <p>See how Revo Reeves of Stitchcraft Interiors uses Hydra 16 Gen2 in his custom automotive interior work today.</p>
+          </header>
+          <button type="button" className="official-film__placeholder" onClick={playOfficialFilm} aria-label="Watch the official Hydra Gen2 film" disabled={!officialFilm.youtubeId}>
+            <div className="official-film__placeholder-copy">
+              <span>ONELASER · OFFICIAL FILM</span>
+              <strong>Hydra GEN2</strong>
+              <span className="official-film__play" aria-hidden="true">
+                <Play size={28} weight="fill" />
+              </span>
+              <small>WATCH OFFICIAL FILM</small>
+            </div>
+          </button>
+        </section>
+
+        <section className="tv-proof" aria-labelledby="tv-proof-title" data-reveal>
+          <div className="tv-proof__copy">
+            <span className="eyebrow">A MAKER’S PERSPECTIVE</span>
+            <h2 id="tv-proof-title">From creative ideas to a working business.</h2>
+            <p>Heather Dorian of The Stamp House discusses Hydra 13 in pottery-tool production. This Hydra series story does not specify the machine generation.</p>
+            <div className="tv-proof__signals" aria-label="Hydra owner story highlights">
+              <span>Owner story</span><span>Hydra series</span>
+            </div>
+          </div>
+          <button type="button" className="tv-proof__media" onClick={() => setYoutubeVideo(tvFeature)} aria-label="Play the Hydra 13 pottery owner story">
+            <img
+              src={asset("fox-friends-onelaser-hd.webp")}
+              alt="Hydra 13 pottery business owner story"
+              width="1280"
+              height="720"
+              loading="lazy"
+            />
+            <span className="tv-proof__play"><Play size={28} weight="fill" /></span>
+            <i>HYDRA SERIES · OWNER STORY</i>
+          </button>
+        </section>
+
+        <section className="review-proof authority-proof" aria-labelledby="authority-proof-title" data-reveal>
+          <div className="review-proof__header">
+            <div className="section-heading section-heading--stack">
+              <span className="eyebrow">CREATOR WALKTHROUGHS &amp; TESTS</span>
+              <h2 id="authority-proof-title">See Hydra through a maker’s eyes.</h2>
+              <p>Explore Hydra series walkthroughs and tests. Earlier hardware may be shown; use the Gen2 specifications for current performance. Videos may include sponsorships or affiliate links.</p>
+            </div>
+            <div className="review-proof__controls" aria-label="Browse independent Hydra reviews">
+              <button type="button" onClick={() => scrollAuthorityVideos(-1)} aria-label="Show previous independent Hydra review"><CaretLeft size={22} /></button>
+              <button type="button" onClick={() => scrollAuthorityVideos(1)} aria-label="Show more independent Hydra reviews"><CaretRight size={22} /></button>
+            </div>
+          </div>
+          <div
+            className="review-proof__rail is-mouse-draggable"
+            ref={authorityVideoRailRef}
+            aria-label="Independent Hydra review videos"
+            onPointerDown={startHorizontalRailDrag}
+            onPointerMove={moveHorizontalRailDrag}
+            onPointerUp={endHorizontalRailDrag}
+            onPointerCancel={endHorizontalRailDrag}
+            onClickCapture={suppressHorizontalRailClickAfterDrag}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            {authorityVideos.map((video, index) => <ReviewVideoCard video={video} onPlay={setYoutubeVideo} index={index} total={authorityVideos.length} key={video.id} />)}
+          </div>
+        </section>
+
+        <CapabilityBrowser onPlay={openStory}>
+          <RfAdvantages activeIndex={activeRfAdvantage} onChange={setActiveRfAdvantage} carouselProps={rfCarouselProps} />
+          <section className="power-guide" id="power-guide" data-chapter-index="0" data-reveal {...powerCarouselProps}>
+            <div className="power-guide__inner">
+              <div className="section-heading section-heading--left">
+                <span className="eyebrow">TWO PURPOSE-BUILT RF OPTIONS</span>
+                <h2>Choose the power that fits your work.</h2>
+                <p>Hybrid and Pro share the Hydra production platform. Choose dedicated RF production or RF engraving with glass DC cutting.</p>
+              </div>
+              <div className="power-switch" role="tablist" aria-label="Explore 38W and 70W RF results">
+                {powerProofs.map((item, index) => (
+                  <button
+                    type="button"
+                    role="tab"
+                    id={`power-tab-${item.id}`}
+                    aria-controls="power-proof-panel"
+                    aria-selected={activePowerProof === index}
+                    tabIndex={activePowerProof === index ? 0 : -1}
+                    className={activePowerProof === index ? "is-active" : ""}
+                    key={item.id}
+                    onClick={() => setActivePowerProof(index)}
+                    onKeyDown={(event) => {
+                      const navigationKeys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+                      if (!navigationKeys.includes(event.key)) return;
+                      event.preventDefault();
+                      const nextIndex = event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? powerProofs.length - 1
+                          : event.key === "ArrowLeft"
+                            ? (index - 1 + powerProofs.length) % powerProofs.length
+                            : (index + 1) % powerProofs.length;
+                      setActivePowerProof(nextIndex);
+                      event.currentTarget.parentElement
+                        ?.querySelectorAll('[role="tab"]')
+                        [nextIndex]?.focus();
+                    }}
+                  >
+                    {item.tab}
+                  </button>
+                ))}
+              </div>
+              <div
+                className="power-proof-stage"
+                id="power-proof-panel"
+                role="tabpanel"
+                aria-labelledby={`power-tab-${powerProofs[activePowerProof].id}`}
+                aria-live="polite"
+              >
+                <div className="power-proof-stage__media">
+                  <img key={powerProofs[activePowerProof].id} src={asset(powerProofs[activePowerProof].image)} alt={powerProofs[activePowerProof].alt} />
+                </div>
+                <div className="power-proof-stage__copy">
+                  <span className="eyebrow">{powerProofs[activePowerProof].eyebrow}</span>
+                  <h3>{powerProofs[activePowerProof].title}</h3>
+                  <p>{powerProofs[activePowerProof].copy}</p>
+                  <strong>{powerProofs[activePowerProof].proof}</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+        </CapabilityBrowser>
+
+        <section className="makerboost-proof" id="makerboost" data-chapter-index={capabilityChapters.length} data-reveal>
+          <div className="makerboost-proof__inner">
+            <div className="makerboost-proof__intro">
+              <header className="makerboost-proof__header">
+                <span className="eyebrow">MAKERBOOST AI SOFTWARE</span>
+                <h2>Out of the box, into creation.</h2>
+              </header>
+              <div className="makerboost-proof__copy">
+                <p className="makerboost-proof__body">MakerBoost is built for the Hydra platform — automatic model detection, recommended parameters and registration-mark recognition help simplify setup and repeat production.</p>
+              </div>
+            </div>
+            <div className="makerboost-proof__media">
+              <img src={asset("software-makerboost.webp")} alt="MakerBoost AI software identity artwork" />
+            </div>
+          </div>
+        </section>
+
+        <section className="software-compatibility" id="software" data-reveal>
+          <div className="software-compatibility__inner">
+            <header className="software-compatibility__header">
+              <span className="eyebrow">SOFTWARE</span>
+              <h2>Your software. Your way.</h2>
+            </header>
+            <article className="software-compatibility__stage">
+              <div className="software-compatibility__copy">
+                <p className="software-compatibility__body">Works with LightBurn, RDWorks, and MakerBoost AI — supporting formats including AI, PDF, DXF, HPGL, PLT, RD, SVG, LBRN, BMP, JPG, PNG, GIF, TIFF and more.</p>
+              </div>
+              <div className="software-compatibility__media">
+                <img src={asset("software-compatibility.webp")} alt="LightBurn and RDWorks software compatibility shown on a laptop" />
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <CommercialCapabilities asset={asset} equipmentInvestment={purchaseTotal} />
+
+        <section className="section materials" id="materials" data-reveal>
+          <div className="section-heading section-heading--stack">
+            <span className="eyebrow">MATERIALS THAT BECOME BUSINESSES</span>
+            <h2>From material choice to sellable work.</h2>
+            <p>Explore material-led product categories, pricing potential and repeatable workflows. Application images are illustrative concepts.</p>
+          </div>
+          <div
+            className="material-gallery"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Hydra Gen2 finished-product material gallery"
+            onMouseEnter={() => setMaterialPaused(true)}
+            onMouseLeave={resumeMaterialAutoplay}
+            onFocusCapture={() => setMaterialPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) resumeMaterialAutoplay();
+            }}
+            onTouchStart={(event) => {
+              materialTouchStartX.current = event.changedTouches[0]?.clientX ?? null;
+              setMaterialPaused(true);
+            }}
+            onTouchEnd={(event) => {
+              const endX = event.changedTouches[0]?.clientX;
+              if (materialTouchStartX.current !== null && endX !== undefined) {
+                const distance = endX - materialTouchStartX.current;
+                if (Math.abs(distance) > 48) selectMaterial(activeMaterial + (distance > 0 ? -1 : 1));
+              }
+              materialTouchStartX.current = null;
+              resumeMaterialAutoplay();
+            }}
+            onTouchCancel={() => {
+              materialTouchStartX.current = null;
+              resumeMaterialAutoplay();
+            }}
+          >
+            <div id="material-gallery-stage" className="material-gallery__stage" aria-live={materialPaused ? "polite" : "off"}>
+              <img key={materialCategories[activeMaterial].id} src={asset(materialCategories[activeMaterial].image)} alt={`${materialCategories[activeMaterial].label} products created for Hydra Gen2 material proof`} />
+              <div className="material-gallery__copy">
+                <span>{materialCategories[activeMaterial].label}</span>
+                <h3>{materialCategories[activeMaterial].title}</h3>
+                <p>{materialCategories[activeMaterial].copy}</p>
+                <strong>{materialCategories[activeMaterial].proof}</strong>
+              </div>
+            </div>
+            <div className="material-tabs" role="tablist" aria-label="Explore Hydra Gen2 material categories">
+              {materialCategories.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeMaterial === index}
+                    aria-controls="material-gallery-stage"
+                    className={activeMaterial === index ? "is-active" : ""}
+                    key={item.id}
+                    ref={(node) => { materialTabRefs.current[index] = node; }}
+                    onClick={() => selectMaterial(index)}
+                    onKeyDown={(event) => handleMaterialKeyDown(event, index)}
+                  >
+                    <span className="material-tab__label"><Icon size={23} weight="regular" aria-hidden="true" /><span>{item.label}</span></span>
+                    <small>{String(index + 1).padStart(2, "0")}</small>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="material-progress" aria-hidden="true">
+              <span
+                key={`${activeMaterial}-${materialTimerEpoch}`}
+                className={materialPaused ? "is-paused" : ""}
+                style={{ "--material-progress-duration": `${MATERIAL_AUTOPLAY_DELAY}ms` }}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="section specs" id="specs" data-reveal>
+          <div className="section-heading section-heading--stack">
+            <span className="eyebrow">COMPLETE DETAILS</span><h2>Specifications.</h2>
+            <p>Core published specifications for the Hydra Gen2 platform. Final bundle content and electrical requirements should be confirmed at checkout.</p>
+            <a className="specs-brochure" href={BROCHURE_URL} target="_blank" rel="noreferrer" onClick={() => trackLead("hydra-brochure", "download_brochure")}>Download Brochure <ArrowUpRight size={16} /></a>
+          </div>
+          <div className="spec-list">
+            {specs.map((group) => <SpecGroup group={group} key={group.title} />)}
+          </div>
+        </section>
+
+        <GenerationComparison />
+
+        <section className="sales-video sales-video--competitor" data-reveal>
+          <span className="commercial-capabilities__anchor" id="comparison-proof" aria-hidden="true" />
+          <YouTubeCover video={decisionVideos.competitor} onPlay={setYoutubeVideo} />
+          <div className="sales-video__copy">
+            <span className="eyebrow">A FAIR SIDE-BY-SIDE</span>
+            <h2>RF or glass tube? See the process.</h2>
+            <p>Watch a Hydra 9 source comparison, then compare today’s Pro and Hybrid configurations below. The video is a Hydra series reference, not a Gen2 benchmark.</p>
+            <div className="measured-comparison" role="region" aria-label="Hydra Pro and Hybrid specification comparison" tabIndex="0">
+              <table>
+                <thead>
+                  <tr><th scope="col">Published specification</th><th scope="col">Hydra Pro Gen2</th><th scope="col">Hydra Hybrid Gen2</th></tr>
+                </thead>
+                <tbody>
+                  {competitorRows.map(([label, hydra, p2]) => (
+                    <tr key={label}><th scope="row">{label}</th><td>{hydra}</td><td>{p2}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="measured-comparison__note">
+              Source basis: Hydra Gen2 product specifications. Source power, material and settings influence results. Confirm the installed configuration before ordering.
+            </p>
+          </div>
+        </section>
+
+        <section className="review-proof" id="reviews" aria-labelledby="review-proof-title" data-reveal>
+          <div className="review-proof__header">
+            <div className="section-heading section-heading--stack">
+              <span className="eyebrow">CUSTOMER SUCCESS · OWNER STORIES</span>
+              <h2 id="review-proof-title">Real businesses. Real results.</h2>
+              <p>Explore real Hydra workshops. Generations are identified where confirmed; other films show the Hydra series as workflow references.</p>
+            </div>
+            <div className="review-proof__controls" aria-label="Browse customer stories">
+              <button type="button" onClick={() => scrollReviewVideos(-1)} aria-label="Show previous customer story"><CaretLeft size={22} /></button>
+              <button type="button" onClick={() => scrollReviewVideos(1)} aria-label="Show more customer stories"><CaretRight size={22} /></button>
+            </div>
+          </div>
+          <div
+            className="review-proof__rail is-mouse-draggable"
+            ref={reviewVideoRailRef}
+            aria-label="Customer story videos"
+            onPointerDown={startHorizontalRailDrag}
+            onPointerMove={moveHorizontalRailDrag}
+            onPointerUp={endHorizontalRailDrag}
+            onPointerCancel={endHorizontalRailDrag}
+            onClickCapture={suppressHorizontalRailClickAfterDrag}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            {customerStoryVideos.map((video, index) => <ReviewVideoCard video={video} onPlay={setYoutubeVideo} index={index} total={customerStoryVideos.length} key={video.id} />)}
+          </div>
+          <div className="consultation-feedback" aria-label="OneLaser Hydra owner reviews">
+            <div className="consultation-feedback__intro">
+              <div>
+                <strong>Hydra in real workshops.</strong>
+                <span>Summaries of public videos · Not rated reviews</span>
+              </div>
+              <div className="consultation-feedback__controls" aria-label="Browse Hydra owner reviews">
+                <button type="button" onClick={() => scrollConsultationFeedback(-1)} aria-label="Show previous Hydra owner reviews"><CaretLeft size={20} /></button>
+                <button type="button" onClick={() => scrollConsultationFeedback(1)} aria-label="Show more Hydra owner reviews"><CaretRight size={20} /></button>
+              </div>
+            </div>
+            <div
+              className="consultation-feedback__grid is-mouse-draggable"
+              ref={consultationFeedbackRailRef}
+              onPointerDown={startHorizontalRailDrag}
+              onPointerMove={moveHorizontalRailDrag}
+              onPointerUp={endHorizontalRailDrag}
+              onPointerCancel={endHorizontalRailDrag}
+              onClickCapture={suppressHorizontalRailClickAfterDrag}
+            >
+              {consultationFeedback.map((item) => (
+                <blockquote key={item.name}>
+                  <div className="consultation-feedback__stars" aria-label="Video summary, not a rated review">
+                    {[0, 1, 2, 3, 4].map((star) => <Star size={14} weight="regular" key={star} />)}
+                  </div>
+                  <p>{item.quote}</p>
+                  <footer><strong>{item.name}</strong><span>{item.role}</span></footer>
+                </blockquote>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="decision-paths" id="next-step" aria-labelledby="decision-paths-title" data-reveal>
+          <div className="decision-paths__heading">
+            <span className="eyebrow">NOT READY TO CHECK OUT?</span>
+            <h2 id="decision-paths-title">Choose the next step that helps you decide.</h2>
+            <p>See the machine live, speak with an experienced engineer, or get the information you need to evaluate Hydra Gen2 on your own time.</p>
+          </div>
+          <div className="decision-paths__grid">
+            <a
+              className="decision-path"
+              href="https://www.1laser.com/pages/find-demo-host?utm_source=hydra-gen2-listing&utm_medium=product-page&utm_campaign=hydra-gen2-demo"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackLead("find-demo-host", "book_live_demo")}
+            >
+              <span><Play size={22} weight="fill" /></span>
+              <strong>Book a FREE Demo</strong>
+              <p>See Hydra in action and ask questions about the work you want to make.</p>
+              <i>Find a demo host <ArrowUpRight size={15} /></i>
+            </a>
+            <a
+              className="decision-path"
+              href={SALES_CALL_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackLead("sales-consultation", "talk_to_engineer")}
+            >
+              <span><Phone size={22} weight="bold" /></span>
+              <strong>Talk to an engineer</strong>
+              <p>Get a free 30-minute consultation focused on your products, workflow and setup.</p>
+              <i>Schedule a consultation <ArrowUpRight size={15} /></i>
+            </a>
+            <form
+              className="decision-path decision-path--capture"
+              action="https://www.1laser.com/contact#ContactForm"
+              method="post"
+              target="_blank"
+              onSubmit={() => trackLead("shopify-contact", "email_capture")}
+            >
+              <input type="hidden" name="form_type" value="contact" />
+              <input type="hidden" name="utf8" value="✓" />
+              <input type="hidden" name="contact[subject]" value="Hydra Gen2 website lead" />
+              <span><EnvelopeSimple size={22} weight="bold" /></span>
+              <strong>Get Hydra Gen2 information</strong>
+              <p>Choose the complete specifications, an itemized quote or help evaluating your materials.</p>
+              <label>
+                <span className="sr-only">Choose what you want to receive</span>
+                <select name="contact[body]" defaultValue="Send me the complete Hydra Gen2 specification sheet">
+                  <option>Send me the complete Hydra Gen2 specification sheet</option>
+                  <option>I want an itemized Hydra Gen2 quotation</option>
+                  <option>I want to discuss my materials with an engineer</option>
+                </select>
+              </label>
+              <label className="decision-path__email">
+                <span className="sr-only">Email address</span>
+                <input type="email" name="contact[email]" placeholder="Work email" required />
+                <button type="submit" aria-label="Send my Hydra Gen2 request"><ArrowUpRight size={17} /></button>
+              </label>
+            </form>
+          </div>
+        </section>
+
+        <section className="trade-up-banner" aria-labelledby="trade-up-title" data-reveal>
+          <div>
+            <span className="eyebrow">TRADE UP TO Hydra</span>
+            <h2 id="trade-up-title">Have an old laser? Explore a Hydra upgrade.</h2>
+            <p>Tell OneLaser what you own today and confirm current eligibility and offers for your chosen Hydra configuration.</p>
+          </div>
+          <a
+            href="https://www.1laser.com/pages/trade-up?utm_source=hydra-gen2-listing&utm_medium=product-page&utm_campaign=hydra-gen2-trade-up"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackLead("trade-up", "trade_up")}
+          >
+            Check my trade-up value <ArrowUpRight size={16} />
+          </a>
+        </section>
+
+        <section className="ownership-support" id="faq-support" data-reveal>
+          <span className="commercial-capabilities__anchor" id="support" aria-hidden="true" />
+          <div className="ownership-support__inner">
+            <div className="ownership-support__grid">
+              <article className="ownership-support__card">
+                <div className="ownership-support__card-top"><Check size={26} weight="bold" aria-hidden="true" /><span>01</span></div>
+                <div className="ownership-support__lead"><h3>Clear terms. Confident decisions.</h3></div>
+                <div className="ownership-support__details">
+                  <p>Review OneLaser’s current return eligibility, exclusions, fees and shipping responsibilities for your Hydra configuration before ordering. Contact the team for help with the process.</p>
+                </div>
+              </article>
+              <article className="ownership-support__card">
+                <div className="ownership-support__card-top"><ShieldCheck size={26} weight="regular" aria-hidden="true" /><span>02</span></div>
+                <div className="ownership-support__lead"><h3>We built it to last. We back it to prove it.</h3></div>
+                <div className="ownership-support__details">
+                  <p>Review current Hydra warranty coverage, component terms and exclusions with OneLaser. Confirm coverage for the installed RF source, any glass DC source and optional accessories before ordering.</p>
+                </div>
+              </article>
+              <article className="ownership-support__card ownership-support__card--wide">
+                <div className="ownership-support__card-top"><Star size={26} weight="regular" aria-hidden="true" /><span>03</span></div>
+                <div className="ownership-support__lead"><h3>One Support. Real engineers. Real experience.</h3></div>
+                <div className="ownership-support__details">
+                  <p>Work directly with OneLaser’s U.S.-based engineering team for lifetime support, 1-on-1 training and setup guidance. Plan delivery access, electrical requirements, ventilation and cooling before your machine arrives.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="section faq" id="faq" data-reveal>
+          <div className="section-heading section-heading--stack faq-heading"><span className="eyebrow">BUYING QUESTIONS</span><h2>Good answers before you commit.</h2></div>
+          <div className="faq-list">
+            {faqs.map((item, index) => (
+              <div className="faq-item" key={item.q}>
+                <button type="button" onClick={() => setOpenFaq(openFaq === index ? -1 : index)} aria-expanded={openFaq === index}>
+                  <span>{item.q}</span><span aria-hidden="true">{openFaq === index ? <Minus size={18} /> : <Plus size={18} />}</span>
+                </button>
+                {openFaq === index && <p>{item.a}</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </main>
+
+      <HomeFooter />
+
+      <button
+        type="button"
+        className={`back-to-top back-to-top--${topButtonState}`}
+        aria-label="Back to top"
+        onClick={() => window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        })}
+      >
+        <CaretUp size={17} weight="bold" aria-hidden="true" />
+        <span>TOP</span>
+      </button>
+
+      <div className="sticky-buy" aria-label="Sticky purchase bar">
+        <div>
+          <strong>{selectedPurchasePackage.name}</strong>
+          <span>{purchasePower === "38W" ? "38W RF + DC" : "70W RF Pro"} · {selectedPurchaseAccessories.length ? `${selectedPurchaseAccessories.length} optional item${selectedPurchaseAccessories.length > 1 ? "s" : ""}` : "Standalone configuration"}</span>
+          <small>U.S.-based lifetime support · 1-on-1 setup guidance</small>
         </div>
-      </section>
+        <div className="sticky-buy__price">
+          <div className="sticky-buy__amounts">
+            <span><strong>{formatMoney(purchaseTotal)}</strong><del>{formatMoney(purchaseMsrpTotal)}</del></span>
+            <small>Financing available with Affirm</small>
+          </div>
+          <button type="button" onClick={handleAddToCart}>Add to Cart</button>
+        </div>
+      </div>
 
-      <nav className={sticky?'journey-nav is-visible':'journey-nav'} aria-label="Explore Hydra Gen2"><div className="journey-nav__inner"><div className="journey-nav__rail">{navItems.map(([id,label],i)=><button key={id} onClick={()=>navigate(id)} className={activeNav===id?'is-active':''} aria-current={activeNav===id?'location':undefined}><span>{label}</span><small>{String(i+1).padStart(2,'0')}</small></button>)}</div><span className="journey-nav__count">{String(navItems.findIndex(([id])=>id===activeNav)+1).padStart(2,'0')}<i>/</i>06</span></div></nav>
+      {videoModal && (
+        <div className="video-modal" role="dialog" aria-modal="true" aria-label={`${videoModal.title} media preview`} onClick={() => setVideoModal(null)}>
+          <div className="video-modal__dialog" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="video-modal__close" aria-label="Close media preview" onClick={() => setVideoModal(null)}><X size={22} /></button>
+            <div className="video-modal__media">
+              <img src={videoModal.image} alt="" />
+              <span><Play size={26} weight="fill" /></span>
+            </div>
+            <div className="video-modal__copy">
+              <h2>{videoModal.title}</h2>
+              <p>Hydra Gen2 product media. Application images are illustrative concepts; actual results depend on material and settings.</p>
+            </div>
+          </div>
+        </div>
+      )}
 
-      <section className="h-section" id="possibilities"><div className="h-wrap"><Heading eyebrow="HYDRA GEN2" title={<>The end game of<br/>performance laser.</>}>RF engraving quality, real production speed and scalable working sizes. Built to complete more jobs, create higher-value products and grow with your business.</Heading><figure className="h-wide-image"><Img name="hydra-ai-projects.webp" alt="Conceptual laser applications in wood, leather, acrylic, slate and powder-coated drinkware"/><figcaption>Application inspiration · AI-generated concept. Results depend on material and settings.</figcaption></figure><div className="h-metrics">{[['2,000 mm/s','Raster engraving speed'],['4G','Production acceleration'],['2,000 DPI','Maximum scanning precision'],['4 workspaces','From 700 × 500 to 1,600 × 1,000 mm']].map(([v,l])=><div key={v}><strong>{v}</strong><span>{l}</span></div>)}</div></div></section>
-
-      <HydraFilm onPlay={setVideo}/>
-      <HydraSpotlight onPlay={setVideo}/>
-      <HydraVideoRail onPlay={setVideo}/>
-
-      <section className="capability-scroll hydra-capability" id="performance"><nav className="capability-scroll__nav" style={{'--active-chapter':chapterNav.findIndex(c=>c.id===activeChapter)}} aria-label="Hydra engineering chapters">{chapterNav.map(c=><button key={c.id} onClick={()=>navigate(c.id)} className={activeChapter===c.id?'is-active':''} aria-current={activeChapter===c.id?'location':undefined}><strong>{c.label}</strong></button>)}</nav>
-      <section className="rf-advantages" id="laser-guide"><div className="rf-advantages__inner"><header className="rf-advantages__header"><span className="eyebrow">WHY RF TUBE</span><h2>Why makers choose RF tube.</h2><p>Fine textures, smooth grayscale and responsive power control. Built for premium personalization and daily production.</p></header><div className="rf-advantages__tabs" role="group" aria-label="RF advantages">{['Fine detail','Longer life','Power control'].map((t,i)=><button key={t} className={rfTab===i?'is-active':''} aria-pressed={rfTab===i} onClick={()=>setRfTab(i)}><span>{t}</span></button>)}</div><div className="rf-advantages__stage"><div className="rf-advantages__media"><Img name={rfTab===0?'hydra-ai-detail.webp':'hydra-rf-source.webp'} alt={rfTab===0?'Fine engraved wood application concept':'Hydra RF laser source'}/></div><div className="rf-advantages__copy"><span className="eyebrow">{['FINER DETAIL','LONGER LIFESPAN','VERSATILE CONTROL'][rfTab]}</span><h3>{['A finer beam. A richer result.','Less maintenance. More uptime.','Tune the pulse to the process.'][rfTab]}</h3><p>{['A tight RF beam and responsive power control render subtle shades and intricate detail for premium personalization.','The sealed, air-cooled RF source is rated for 20,000–30,000 hours. No water chiller is required for the RF source; Hybrid DC tubes use water cooling.','Adjustable PWM supports fine engraving at high frequencies and stronger pulse energy at lower frequencies. Tune settings to your material and desired result.'][rfTab]}</p><strong>{['0.07 mm focused spot · Up to 2,000 DPI','20,000–30,000 hours · Air-cooled RF','Adjustable PWM · 38W / 70W RF'][rfTab]}</strong></div></div></div></section>
-
-      <section className="power-guide" id="power-guide"><div className="power-guide__inner"><Heading eyebrow="TWO PURPOSE-BUILT CONFIGURATIONS" title="Choose the power that fits your work.">Pro and Hybrid share the Hydra production platform. Explore the source configuration designed for your workflow.</Heading><div className="power-switch" role="group" aria-label="Explore Hydra laser configurations">{['70W RF Pro','38W RF + DC Hybrid'].map((t,i)=><button key={t} className={powerTab===i?'is-active':''} aria-pressed={powerTab===i} onClick={()=>setPowerTab(i)}>{t}</button>)}</div><div className="power-proof-stage"><div className="power-proof-stage__media"><Img name={powerTab===0?'hydra-ai-detail.webp':'hydra-ai-acrylic.webp'} alt={powerTab===0?'Detailed RF wood engraving concept':'RF engraving and CO2 cutting application concept'}/></div><div className="power-proof-stage__copy"><span className="eyebrow">{powerTab===0?'HYDRA PRO GEN2':'HYDRA HYBRID GEN2'}</span><h3>{powerTab===0?'Dedicated RF performance.':'Detailed engraving. Powerful cutting.'}</h3><p>{powerTab===0?'70W RF for detailed grayscale, fine textures and professional batch engraving. Air-cooled operation with optional fiber expansion on supported configurations.':'38W RF engraving with a dedicated glass DC CO₂ cutting source. Multi-laser workflows through LightBurn and MakerBoost keep mixed jobs moving.'}</p><strong>{powerTab===0?'Hydra 7 · Hydra 9 · Hydra 13 · Hydra 16':'Hydra 9 / 100W · Hydra 13 / 130W · Hydra 16 / 150W'}</strong></div></div><p className="h-footnote">Fiber is optional and subject to compatibility and release availability. Standard 38W Hybrid requires upgrading to 70W RF before a fiber upgrade.</p></div></section>
-
-<div className="capability-scroll__layout"><div className="capability-scroll__chapters">{chapters.map(c=><section className="capability-scroll__chapter" id={c.id} key={c.id}><header className="capability-scroll__chapter-heading"><h3>{c.title.replace('\n',' ')}</h3><p>{c.copy}</p></header><div className="capability-scroll__media-showcase"><article className="capability-scroll__feature capability-scroll__story"><button className="capability-scroll__media" onClick={()=>setPreview({name:c.image,alt:c.alt})} aria-label={`Enlarge ${c.label} image`}><Img name={c.image} alt={c.alt}/></button></article><div className="capability-scroll__support capability-scroll__support--icons">{c.proofs.map(([Icon,title,text])=><article key={title}><span className="capability-scroll__support-icon"><Icon size={28}/></span><div><h4>{title}</h4><p>{text}</p></div></article>)}</div></div>{c.metrics&&<div className="capability-scroll__proofs">{c.metrics.map(([v,l])=><article key={v}><Target size={24}/><strong>{v}</strong><span>{l}</span></article>)}</div>}</section>)}</div></div></section>
-
-      <section className="h-section h-soft" id="workspaces"><div className="h-wrap"><Heading eyebrow="WORKSPACE AREA" title="The right size for your next step.">From focused personalization to large-format production, choose a bed that fits your ambition.</Heading><div className="h-workspaces">{Object.entries(models).map(([n,x])=><article key={n}><Img name={`hydra-${n}-hero.webp`} alt={`Hydra ${n} Gen2`}/><h3>Hydra {n}</h3><strong>{x.area}</strong><span>{x.inches}</span><p>{x.fit}</p><small>From {money(Math.min(...prices[n].variants.map(v=>v.price)))} USD</small><button className="h-link" onClick={()=>{chooseModel(n);navigate('top');}}>Explore Hydra {n}<ArrowUpRight size={16}/></button></article>)}</div></div></section>
-
-      <section className="makerboost-proof" id="makerboost"><div className="makerboost-proof__inner"><div className="makerboost-proof__intro"><header className="makerboost-proof__header"><span className="eyebrow">MAKERBOOST SOFTWARE</span><h2>Out of the box, into creation.</h2></header><div className="makerboost-proof__copy"><p className="makerboost-proof__body">Built by OneLaser for Hydra. Automatic model detection, recommended parameters and registration-mark recognition simplify setup and repeat production.</p></div></div><div className="makerboost-proof__media"><Img name="hydra-makerboost.webp" alt="MakerBoost Hydra workflow and desktop interface"/></div></div></section>
-      <section className="software-compatibility" id="software"><div className="software-compatibility__inner"><header className="software-compatibility__header"><span className="eyebrow">SOFTWARE</span><h2>Your software. Your way.</h2></header><article className="software-compatibility__stage"><div className="software-compatibility__copy"><p className="software-compatibility__body">Works with LightBurn, MakerBoost and RDWorks. The GT5 controller combines a 5-inch touchscreen with physical keys for file preview, diagnostics and offline production. Connect by USB, Ethernet or Wi-Fi.</p><p className="h-footnote">LightBurn license is optional and sold separately. Windows &amp; macOS supported.</p></div><div className="software-compatibility__media"><Img name="hydra-official-14.webp" alt="GT5 control system with touchscreen and keypad"/></div></article></div></section>
-
-      <section className="product-opportunities" id="product-opportunities"><div className="product-opportunities__inner"><header className="product-opportunities__header"><span className="eyebrow">PRODUCT OPPORTUNITIES</span><h2>What could you sell with Hydra Gen2?</h2><p>Explore product categories designed for one-offs, repeat orders and batch production.</p></header><div className="product-opportunities__tabs" role="group" aria-label="Product opportunities">{opportunitySets.map((x,i)=><button key={x.label} className={opportunity===i?'is-active':''} aria-pressed={opportunity===i} onClick={()=>{setOpportunity(i);setProduct(0);}}><span>{String(i+1).padStart(2,'0')}</span><strong>{x.label}</strong></button>)}</div><div className="product-opportunities__panel"><header className="product-opportunities__category-copy"><p>{opportunitySets[opportunity].copy}</p></header><div className="product-card-grid" role="group" aria-label="Application products">{opportunitySets[opportunity].items.map(([name,image,material,process],i)=><button key={name} className={product===i?'product-card is-active':'product-card'} aria-pressed={product===i} onClick={()=>{setProduct(i);if(innerWidth<=760)document.getElementById('hydra-product-detail')?.scrollIntoView({behavior:reduced?'auto':'smooth',block:'nearest'});}}><span className="product-card__media"><Img name={image} alt={`${name} application concept`}/></span><span className="product-card__body"><small>{String(i+1).padStart(2,'0')}</small><strong>{name}</strong><span className="product-card__economics"><span>Material: <b>{material}</b></span><span>Process: <b>{process}</b></span></span></span></button>)}</div><div className="product-opportunities__selection"><article className="product-detail" id="hydra-product-detail"><div className="product-detail__facts"><span><small>Material</small><strong>{selectedProduct[2]}</strong></span><span><small>Process</small><strong>{selectedProduct[3]}</strong></span></div><p className="product-detail__setup"><small>Setup guidance</small><span>{selectedProduct[4]}</span></p></article><aside className="product-economics"><div className="product-economics__inner"><header className="product-economics__header"><span>PLAN YOUR APPLICATION</span><h4>Make the setup fit the work.</h4></header><p className="h-footnote">Choose the bed size, source and optional accessories with an engineer. Images are AI-generated application concepts.</p><Link secondary>Discuss your application</Link></div></aside></div></div></div></section>
-
-      <section className="section materials" id="materials"><Heading eyebrow="MATERIALS THAT BECOME BUSINESSES" title="From material choice to sellable work.">Explore material-led projects that fit the Hydra production platform.</Heading><div className="material-gallery" role="region" aria-label="Hydra material slideshow" onMouseEnter={()=>setInteracting(true)} onMouseLeave={()=>setInteracting(false)} onFocusCapture={()=>setInteracting(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget))setInteracting(false);}} onTouchStart={e=>{setInteracting(true);matTouch.current=e.changedTouches[0].clientX;}} onTouchEnd={e=>{if(matTouch.current!==null&&Math.abs(e.changedTouches[0].clientX-matTouch.current)>44)selectMaterial(material+(e.changedTouches[0].clientX<matTouch.current?1:-1));matTouch.current=null;setInteracting(false);}}><div className="material-gallery__stage"><Img key={mat.image} name={mat.image} alt={`${mat.name} application inspiration`}/><div className="material-gallery__copy"><span>{mat.name}</span><h3>{mat.title}</h3><p>{mat.copy}</p><strong>{mat.mode}</strong></div></div><div className="material-tabs" role="group" aria-label="Materials">{materials.map((x,i)=><button className={material===i?'is-active':''} key={x.name} onClick={()=>selectMaterial(i)} onKeyDown={e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=(i+(e.key==='ArrowRight'?1:3))%4;selectMaterial(n);e.currentTarget.parentElement.children[n].focus();}}} aria-pressed={material===i}><span className="material-tab__label"><x.icon size={23}/><span>{x.name}</span></span><small>{String(i+1).padStart(2,'0')}</small></button>)}</div><div className="material-progress" aria-hidden="true"><span key={`${material}-${epoch}`} className={paused||interacting||reduced?'is-paused':''} style={{'--material-progress-duration':'6000ms'}}/></div></div><div className="h-material-controls"><small>AI-generated application inspiration. Results depend on material and settings.</small><button className="thumb-arrow" aria-label={paused?'Play material slideshow':'Pause material slideshow'} aria-pressed={paused} onClick={()=>setPaused(v=>!v)}>{paused?<Play size={16}/>:<Pause size={16}/>}</button><button className="thumb-arrow" aria-label="Previous material" onClick={()=>selectMaterial(material-1)}><CaretLeft size={18}/></button><button className="thumb-arrow" aria-label="Next material" onClick={()=>selectMaterial(material+1)}><CaretRight size={18}/></button></div></section>
-
-      <section className="section specs" id="specifications"><div><Heading eyebrow="COMPLETE DETAILS" title="Specifications.">Compare workspaces and plan the setup that is right for your shop.</Heading><div className="h-spec-bar"><div className="h-tabs" role="group" aria-label="Specification model">{Object.keys(models).map(n=><button key={n} className={specModel===n?'is-active':''} aria-pressed={specModel===n} onClick={()=>setSpecModel(n)}>Hydra {n}</button>)}</div><a href={brochure} target="_blank" rel="noreferrer" className="h-link"><DownloadSimple size={18}/>Download brochure</a></div><div className="spec-list">{(()=>{const rows=[
-        ['Work area',`${models[specModel].area} / ${models[specModel].inches}`],['Laser configurations',`70W RF Pro${specModel==='7'?'':` / 38W RF + ${models[specModel].dc}W DC Hybrid`}`],['Raster engraving speed','Up to 2,000 mm/s'],['Acceleration','4G'],['Maximum scanning precision','2,000 DPI'],['Repeat positioning accuracy','≤ 0.01 mm'],['Focused spot size','As small as 0.07 mm'],['Z-axis bed travel','225 mm / 8.86 in'],['Maximum bed load',models[specModel].load],['Machine dimensions (L × W × H)',models[specModel].dimensions],['Cooling','RF: air cooling. Hybrid DC source: water cooling.'],['Air assist','Built-in Smart Dual Air-Assist'],['Standard lens','2.5 in; optional 1.5 / 2 / 3 / 4 in lenses'],['Work tables','Honeycomb and blade table'],['Pass-through opening','Front-to-back, 20 mm height'],['Controller','GT5 · 5-inch touchscreen + keypad'],['Compatible software','LightBurn / MakerBoost / RDWorks'],['Connectivity','USB / Ethernet / Wi-Fi'],['Power supply','110V 60Hz / 220V 50Hz; confirm configuration and circuit requirements'],['Safety features','Lid and side-panel interlocks, lens-temperature monitoring, workbench temperature sensor, PM2.5 detector'],['Included essentials','Exhaust fan and ducting, air pump, tool kit, cables, lens removal tool and setup accessories']
-      ]; return [{title:'Laser source & performance',rows:rows.slice(1,7)},{title:'Workspace & machine',rows:[rows[0],...rows.slice(7,10),rows[14]]},{title:'Control & software',rows:rows.slice(15,18)},{title:'Optics, cooling & safety',rows:[...rows.slice(10,14),rows[19]]},{title:'Electrical & included essentials',rows:[rows[18],rows[20]]}].map(g=><SpecGroup key={g.title} {...g}/>);})()}</div><p className="h-footnote">Confirm installed configuration, electrical circuit, ventilation, delivery access and any required cooling equipment with OneLaser before ordering.</p></div></section>
-
-      <HydraComparison onPlay={setVideo}/>
-      <HydraVideoRail onPlay={setVideo} owners/>
-      <HydraDecisionPaths/>
-      <section className="ownership-support" id="support"><div className="ownership-support__inner"><div className="ownership-support__grid">{[[Headset,'One Support. Real engineers.','Get direct support from the U.S.-based engineering team, plus 1-on-1 training and installation guidance.','https://www.1laser.com/pages/contact-us','Meet your support team'],[ShieldCheck,'Confidence beyond day one.','Review coverage, component terms and exclusions for your Hydra configuration before you buy.','https://www.1laser.com/pages/warranty-policy','View warranty terms'],[Truck,'Ready for arrival.','Plan delivery access, electrical supply, ventilation and cooling. Confirm current lead times and delivery arrangements with your engineer.',call,'Plan your installation']].map(([Icon,t,c,url,label],i)=><article className="ownership-support__card" key={t}><div className="ownership-support__card-top"><Icon size={26}/><span>{String(i+1).padStart(2,'0')}</span></div><div className="ownership-support__lead"><h3>{t}</h3></div><div className="ownership-support__details"><p>{c}</p><Link href={url} secondary>{label}</Link></div></article>)}</div></div></section>
-
-      <section className="section faq" id="faq"><Heading eyebrow="BUYING QUESTIONS" title="Good answers before you commit."/><div className="faq-list">{[
-        ['What is the difference between Pro and Hybrid?','Pro uses a dedicated 70W RF source for fine engraving and RF production. Hybrid pairs a 38W RF engraving source with a glass DC CO₂ cutting tube: 100W on Hydra 9, 130W on Hydra 13 and 150W on Hydra 16. Hydra 7 is offered as 70W RF Pro.'],
-        ['Can I engrave bare metal?','Standard CO₂ sources are suited to compatible organic materials, glass and coated surfaces. Bare-metal processing requires an appropriate process or a compatible optional fiber upgrade. The standard 38W Hybrid does not support fiber without upgrading to 70W RF. Confirm upgrade availability with OneLaser.'],
-        ['Does Hydra require a water chiller?','The RF source is air-cooled. The glass DC CO₂ source in Hybrid configurations is water-cooled and requires an appropriate cooling setup. Confirm the correct chiller and what is included with your quote.'],
-        ['Which workspace should I choose?','Hydra 7 provides 700 × 500 mm; Hydra 9, 900 × 600 mm; Hydra 13, 1,300 × 900 mm; and Hydra 16, 1,600 × 1,000 mm. Choose around your largest regular job, batch layout, floor space and delivery access.'],
-        ['What power outlet and ventilation do I need?','The specification lists 110V 60Hz / 220V 50Hz configurations. Required amperage and circuit sizing must be confirmed for the ordered machine and its accessories. Plan an appropriate exhaust route or compatible filtration system before installation.'],
-        ['Can I engrave tumblers and bottles?','Yes, on laser-compatible materials using a compatible optional 4-pin rotary. Cylindrical work requires the rotary; confirm fit, object dimensions and clearance with OneLaser.'],
-        ['What are the shipping and processing times?','Availability and delivery arrangements vary by model, configuration and destination. Ask OneLaser for the current processing estimate, shipping method and installation requirements for your order.'],
-        ['Are accessories and software included in the displayed price?','Prices shown are for the selected machine configuration. Optional rotary, software licenses, filtration, lenses and fiber upgrades are separate. Review the official store or request an itemized quote for the complete setup.']
-      ].map(([q,a],i)=><div className="faq-item" key={q}><button onClick={()=>setOpenFaq(openFaq===i?-1:i)} aria-expanded={openFaq===i}><span>{q}</span><span>{openFaq===i?'−':'+'}</span></button>{openFaq===i&&<p>{a}</p>}</div>)}</div></section>
-    </main><HomeFooter/>
-    <button className={`back-to-top back-to-top--${topVisible?'visible':'hidden'}`} aria-label="Back to top" onClick={()=>navigate('top')}><CaretUp size={17}/><span>TOP</span></button>
-    <div className={`sticky-buy hydra-sticky ${sticky?'is-visible':''}`} aria-hidden={!sticky} aria-label="Sticky purchase bar"><div><strong>Hydra {model} {config} Gen2</strong><span>{m.area}</span><small>U.S.-based lifetime support · 1-on-1 setup guidance</small></div><div className="sticky-buy__price"><div className="sticky-buy__amounts"><span><strong>{money(variant.price)}</strong></span></div></div><a className="primary-cta" href={purchaseUrl} tabIndex={sticky?0:-1} target="_blank" rel="noreferrer" onClick={()=>trackEvent('purchase_intent',{model,configuration:config,placement:'sticky'})}>Configure<ArrowUpRight size={17}/></a></div>
-    {video&&<HydraVideoModal item={video} onClose={closeVideo}/>}
-    {preview&&<Preview item={preview} close={closePreview}/>}
-  </div>;
+      {youtubeVideo && (
+        <div className="youtube-modal" role="dialog" aria-modal="true" aria-label={`${youtubeVideo.title} YouTube video`} onClick={() => setYoutubeVideo(null)}>
+          <div className="youtube-modal__dialog" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="youtube-modal__close" aria-label="Close YouTube video" onClick={() => setYoutubeVideo(null)}><X size={23} /></button>
+            <div className="youtube-modal__player">
+              <iframe
+                src={`https://www.youtube.com/embed/${youtubeVideo.id}?autoplay=1&rel=0&modestbranding=1`}
+                title={youtubeVideo.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+            <div className="youtube-modal__copy"><span className="eyebrow">{youtubeVideo.tag}</span><h2>{youtubeVideo.title}</h2><p>{youtubeVideo.channel} · YouTube</p></div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }

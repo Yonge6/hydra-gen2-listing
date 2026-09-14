@@ -1,6 +1,6 @@
 # Hydra Gen2 content sources
 
-Verified: 2026-09-10.
+Technical / original image provenance: 2026-09-10. Commercial data reverified: 2026-09-14.
 
 ## Design
 
@@ -20,7 +20,7 @@ Conflicting fiber wattages are deliberately omitted. Fiber is optional on suppor
 
 ## Prices and official purchase paths
 
-Commercial data is recorded in `src/data/hydra-prices.json`, from each official product's `.js` endpoint. Displayed prices are machine prices in USD, not estimates for a complete installation. Current shipping, tax, delivery arrangements and optional accessories remain on the official store or an engineering quote.
+Active commercial data is recorded in the configuration and accessory constants in `src/Hydra.jsx`, from each official product’s `.js` endpoint. The older `src/data/hydra-prices.json` is retained as a historical snapshot. Displayed prices are machine prices in USD, not estimates for a complete installation. Current shipping, tax, delivery arrangements and optional accessories remain on the official store or an engineering quote.
 
 | Model | Hybrid | Pro |
 | --- | ---: | ---: |
@@ -29,7 +29,7 @@ Commercial data is recorded in `src/data/hydra-prices.json`, from each official 
 | Hydra 13 | $12,999 | $13,999 |
 | Hydra 16 | $13,999 | $14,999 |
 
-Official pages use `https://www.1laser.com/products/hydra-{7,9,13,16}-gen-2-70w-rf-co2-dual-laser-machine` with the exact corresponding variant ID in the data file.
+Official pages use `https://www.1laser.com/products/hydra-{7,9,13,16}-gen-2-70w-rf-co2-dual-laser-machine` with the exact corresponding variant IDs in `src/Hydra.jsx`. Purchase links use official Shopify cart permalinks, including selected quantity and optional accessory variants.
 
 ## Image provenance
 
