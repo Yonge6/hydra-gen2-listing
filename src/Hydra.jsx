@@ -42,11 +42,11 @@ const assetMap = {
   "feature-overview-hero.webp": "home-banner-hydra-education.png",
   "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
   "fox-friends-onelaser-hd.webp": "hydra-video-Fqtlsk_NsKM.jpg",
-  "material-acrylic.webp": "hydra-ai-acrylic.webp",
-  "material-wood.webp": "hydra-ai-detail.webp",
-  "material-leather.webp": "hydra-ai-leather.webp",
-  "material-glass-stone.webp": "hydra-material-glass-stone-v2.webp",
-  "material-coated-metal.webp": "hydra-material-coated-metal-v3.webp"
+  "material-acrylic.webp": "hydra-material-acrylic-production.webp",
+  "material-wood.webp": "hydra-material-wood-production.webp",
+  "material-leather.webp": "hydra-material-leather-production.webp",
+  "material-glass-stone.webp": "hydra-material-glass-stone-production.webp",
+  "material-coated-metal.webp": "hydra-material-coated-metal-production.webp"
 };
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${assetMap[name] || name}`;
 const MATERIAL_AUTOPLAY_DELAY = 6000;
@@ -65,9 +65,9 @@ const materialCategories = [
   {
     id: "acrylic",
     label: "Acrylic",
-    title: "Polished edges. Dimensional color.",
-    copy: "Build layered signage, displays, organizers and decorative objects with clean contours and premium edge quality.",
-    proof: "Clear · colored · layered · dimensional",
+    title: "Big displays. Fine detail.",
+    copy: "Create large engraved acrylic panels and coordinated display batches, with delicate frosted linework and crisp, consistent details.",
+    proof: "Large panels · signage · display batches",
     image: "material-acrylic.webp",
     icon: CubeTransparent,
   },
@@ -75,17 +75,17 @@ const materialCategories = [
     id: "wood",
     label: "Wood",
     title: "From photo detail to repeatable batches.",
-    copy: "Turn natural wood into photo-real engraving, deep relief, architectural parts and products made to sell again and again.",
-    proof: "Photo engraving · relief · batch goods · models",
+    copy: "Turn large wood panels into detailed landscape art, then carry that fine engraving into coordinated batches of smaller pieces.",
+    proof: "Large wall art · fine textures · panel batches",
     image: "material-wood.webp",
     icon: Tree,
   },
   {
     id: "leather",
     label: "Leather",
-    title: "Personalization that feels permanent.",
-    copy: "Create refined wallets, notebooks, straps and tags with consistent tonal contrast and precise cut edges.",
-    proof: "Wallets · straps · tags · premium gifts",
+    title: "Large panels. Precise repeats.",
+    copy: "Bring intricate botanical detail to large leather panels and batches of notebook covers, with natural texture and rich tonal contrast.",
+    proof: "Decorative panels · cover batches · fine linework",
     image: "material-leather.webp",
     icon: Handbag,
   },
@@ -93,8 +93,8 @@ const materialCategories = [
     id: "glass-stone",
     label: "Glass & Stone",
     title: "Fine marks on hard, high-value surfaces.",
-    copy: "Add crisp frosted artwork and detailed personalization to awards, slate, glassware, coasters and polished stone.",
-    proof: "Awards · slate · glassware · keepsakes",
+    copy: "Pair large frosted-glass artwork with coordinated slate plaques and coaster batches. Fine surface engraving brings each detail into focus.",
+    proof: "Large glass panels · slate plaques · batch sets",
     image: "material-glass-stone.webp",
     icon: Wine,
   },
@@ -102,8 +102,8 @@ const materialCategories = [
     id: "coated-metal",
     label: "Coated Metal",
     title: "High contrast for everyday production.",
-    copy: "Produce detailed tumblers, anodized cards, tags and identification plates with clean, repeatable contrast.",
-    proof: "Tumblers · cards · tags · nameplates",
+    copy: "Create large anodized signs and batches of identification plates with fine surface detail. Cylindrical drinkware requires a compatible optional rotary.",
+    proof: "Large signs · plate batches · coated drinkware",
     image: "material-coated-metal.webp",
     icon: Tag,
   },
@@ -950,37 +950,12 @@ const consultationFeedback = [
   }
 ];
 
+const competitorModels = ["Hydra 9 (early model)", "Thunder Nova 35", "OMTech AF2440", "OMTech Pronto 45"];
 const competitorRows = [
-  [
-    "Laser source",
-    "70W RF Pro",
-    "38W RF + glass DC Hybrid"
-  ],
-  [
-    "Raster speed",
-    "Up to 2,000 mm/s",
-    "Up to 2,000 mm/s"
-  ],
-  [
-    "Acceleration",
-    "4G",
-    "4G"
-  ],
-  [
-    "Detail",
-    "Up to 2,000 DPI · 0.07 mm spot",
-    "Up to 2,000 DPI · 0.07 mm RF spot"
-  ],
-  [
-    "Cooling",
-    "Air-cooled RF",
-    "Air-cooled RF + water-cooled DC"
-  ],
-  [
-    "Available sizes",
-    "Hydra 7 / 9 / 13 / 16",
-    "Hydra 9 / 13 / 16"
-  ]
+  ["Glass CO₂ configuration", "100W", "Glass CO₂; wattage not stated", "100W", "100W"],
+  ["Maximum speed cited", "1,200 mm/s · 3G", "Lower speed; no figure cited", "600 mm/s", "1,000 mm/s"],
+  ["RF option discussed", "38W RF upgrade (+$2,000)", "RF model discussed separately as Nova Plus 35", "Glass-only comparison", "Glass-only comparison"],
+  ["Price cited · glass-only", "About $7,000", "Above $9,000", "About $4,500", "About $6,000"]
 ];
 
 function SpecGroup({ group }) {
@@ -2265,7 +2240,7 @@ export function HydraPage() {
           <div className="section-heading section-heading--stack">
             <span className="eyebrow">MATERIALS THAT BECOME BUSINESSES</span>
             <h2>From material choice to sellable work.</h2>
-            <p>Explore material-led product categories, pricing potential and repeatable workflows. Application images are illustrative concepts.</p>
+            <p>Large-format projects. Repeatable batches. Fine engraving detail. Application images are illustrative concepts.</p>
           </div>
           <div
             className="material-gallery"
@@ -2297,7 +2272,7 @@ export function HydraPage() {
             }}
           >
             <div id="material-gallery-stage" className="material-gallery__stage" aria-live={materialPaused ? "polite" : "off"}>
-              <img key={materialCategories[activeMaterial].id} src={asset(materialCategories[activeMaterial].image)} alt={`${materialCategories[activeMaterial].label} products created for Hydra Gen2 material proof`} />
+              <img key={materialCategories[activeMaterial].id} src={asset(materialCategories[activeMaterial].image)} alt={`${materialCategories[activeMaterial].label} large-format and batch engraving application concept`} />
               <div className="material-gallery__copy">
                 <span>{materialCategories[activeMaterial].label}</span>
                 <h3>{materialCategories[activeMaterial].title}</h3>
@@ -2355,21 +2330,21 @@ export function HydraPage() {
           <div className="sales-video__copy">
             <span className="eyebrow">HYDRA VS. THE COMPETITION</span>
             <h2>See how Hydra compares.</h2>
-            <p>Make or Break Shop reviews Hydra 9 alongside OMTech, Thunder Nova and Monport alternatives. The film shows an early Hydra 9; its pricing and specifications are historical. Explore today’s Gen2 configurations below.</p>
-            <div className="measured-comparison" role="region" aria-label="Hydra Pro and Hybrid specification comparison" tabIndex="0">
+            <p>Compare the early Hydra 9 with Thunder Nova 35, OMTech AF2440 and OMTech Pronto 45, as discussed by Make or Break Shop. Figures below reflect the video, not current offers or Gen2 specifications.</p>
+            <div className="measured-comparison" role="region" aria-label="Machines compared in the Hydra 9 video" tabIndex="0">
               <table>
                 <thead>
-                  <tr><th scope="col">Published specification</th><th scope="col">Hydra Pro Gen2</th><th scope="col">Hydra Hybrid Gen2</th></tr>
+                  <tr><th scope="col">In the video</th>{competitorModels.map((model) => <th scope="col" key={model}>{model}</th>)}</tr>
                 </thead>
                 <tbody>
-                  {competitorRows.map(([label, hydra, p2]) => (
-                    <tr key={label}><th scope="row">{label}</th><td>{hydra}</td><td>{p2}</td></tr>
+                  {competitorRows.map(([label, ...values]) => (
+                    <tr key={label}><th scope="row">{label}</th>{values.map((value, index) => <td key={competitorModels[index]}>{value}</td>)}</tr>
                   ))}
                 </tbody>
               </table>
             </div>
             <p className="measured-comparison__note">
-              Table: published Hydra Gen2 specifications. Video: the creator’s review and comparisons, with affiliate relationships disclosed. It is not a Gen2 head-to-head test.
+              Historical comparison from the <a href="https://www.machinesformakers.com/products/onelaser-hydra-9/video-review" target="_blank" rel="noreferrer">creator’s video transcript</a>. Hydra footage uses a pre-production unit. Prices exclude its optional RF upgrade; affiliate relationships are disclosed by the creator.
             </p>
           </div>
         </section>

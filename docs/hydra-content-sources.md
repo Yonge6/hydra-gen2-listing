@@ -53,4 +53,19 @@ The downloadable brochure is the user-supplied English product PDF.
 
 - Coated Metal v3: `hydra-material-coated-metal-v3.webp`, generated in Chrome ChatGPT at https://chatgpt.com/c/6aa8fb94-307c-83ea-b0a2-bb867c95043c. Ivory/sage powder-coated drinkware and anodized tags/card with surface-removal engraving concepts. Supersedes v2 in the active gallery; v2 remains available for rollback.
 - Glass & Stone v2: `hydra-material-glass-stone-v2.webp`, generated in Chrome ChatGPT at https://chatgpt.com/c/6aa8fbfa-02bc-83e9-81be-55498cddb2c0. Frosted surface-engraved glassware and plaque, slate coasters and an engraved stone keepsake. Replaces the mixed-material assortment. Both new images are 1536×1024 and retain the gallery's illustrative-concept framing.
-- User expanded the cross-brand video scope to any Hydra generation. The comparison module now embeds Make or Break Shop's https://www.youtube.com/watch?v=y0YUu-4rx7A. The creator's own transcript at https://www.machinesformakers.com/products/onelaser-hydra-9/video-review confirms direct OMTech work-bed comparison and discussion of Thunder Nova and Monport alternatives. The reviewer identifies a pre-production early Hydra 9 and affiliate relationships. Page copy distinguishes this historical review from current Gen2 specifications; no historical price or comparative performance claims were copied into the Gen2 table.
+- User expanded the cross-brand video scope to any Hydra generation. The comparison module now embeds Make or Break Shop's https://www.youtube.com/watch?v=y0YUu-4rx7A. The creator's own transcript at https://www.machinesformakers.com/products/onelaser-hydra-9/video-review confirms direct OMTech work-bed comparison and discussion of Thunder Nova 35, OMTech AF2440 and OMTech Pronto 45 alternatives. The reviewer identifies a pre-production early Hydra 9 and affiliate relationships. Page copy distinguishes this historical review from current Gen2 specifications; the table now uses the video’s models and historical figures instead of Gen2 configurations.
+
+
+## Industrial material gallery and video-model table — 2026-09-15
+
+Five independent images were generated through Chrome ChatGPT, visually inspected and encoded at 1536×1024 as WebP. Each shows a large-format hero piece and repeated finished products, with refined surface engraving. They are illustrative applications, not recorded production results; no machine imagery or measured throughput is implied.
+
+| Active asset | Chrome ChatGPT source | Subject |
+| --- | --- | --- |
+| `hydra-material-leather-production.webp` | https://chatgpt.com/c/6aa90204-243c-83ea-8d54-643a13fa5bc3 | Large botanical leather panel and cover batches |
+| `hydra-material-wood-production.webp` | https://chatgpt.com/c/6aa90211-8098-83ea-b4eb-04e8e7347a46 | Large landscape panel and matching wood orders |
+| `hydra-material-acrylic-production.webp` | https://chatgpt.com/c/6aa9022b-7900-83ea-9189-1f778e436554 | Large botanical panel and acrylic display batches |
+| `hydra-material-glass-stone-production.webp` | https://chatgpt.com/c/6aa90259-39f0-83e9-929c-628c9ed4af61 | Large frosted glass artwork and slate orders |
+| `hydra-material-coated-metal-production.webp` | https://chatgpt.com/c/6aa90298-784c-83ea-b1a7-e59ecbc09ef8 | Large anodized sign, repeated plates and coated drinkware |
+
+The comparison table uses the creator transcript linked above for historical configurations, speed discussion, RF options and indicative prices. Missing numeric Thunder specifications stay explicitly unstated. Brand correction checked against the official OMTech page: https://omtech.com/products/pronto-45-100w-co2-laser-engraver-and-cutter-upgraded-version. Current store pricing is not mixed into the historical comparison.

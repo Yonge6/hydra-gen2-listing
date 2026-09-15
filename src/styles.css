@@ -1235,6 +1235,11 @@ main [id] {
   line-height: 1.4;
 }
 
+.sales-video--competitor .measured-comparison table {
+  min-width: 900px;
+  table-layout: fixed;
+}
+
 .measured-comparison th,
 .measured-comparison td {
   padding: 12px 14px;

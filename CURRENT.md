@@ -10,8 +10,8 @@
 - Do not modify the parent XRF checkout or its untracked QA evidence.
 
 - 2026-09-15 feedback: RF advantages (three tabs), Speed & Motion (four materials), RF Precision main media, MakerBoost, Software and the Product Opportunities opening artwork reuse the exact XRF d01dc77 assets. Preserve Hydra text/specifications. Video introductions wrap within a shrinkable heading column so controls stay in bounds; confirmed Gen2 footage leads the creator rail.
-- Coated Metal and Glass & Stone material tabs use the dedicated 3:2 Chrome ChatGPT images `hydra-material-coated-metal-v3.webp` and `hydra-material-glass-stone-v2.webp`, regenerated on 2026-09-15. Each image contains only its matching material category; prior assets are retained for rollback.
+- All five Materials tabs use `hydra-material-{acrylic,wood,leather,glass-stone,coated-metal}-production.webp`: Chrome ChatGPT 3:2 images created 2026-09-15 showing large-format hero pieces, batch orders and fine surface engraving. Matching copy and illustrative-concept framing are retained. Prior assets remain for rollback.
 - Owner text-summary cards under the customer video rail are hidden per 2026-09-15 feedback; customer videos remain.
 - The first decision-path card links to the official Testimonials page, with customer-story copy and matching analytics; it no longer promises a demo booking.
-- Cross-brand video scope includes earlier Hydra series per user approval. Comparison module uses Make or Break Shop `y0YUu-4rx7A`, with early-model / historical facts and affiliate context identified. Do not present it as a Gen2 benchmark.
+- Cross-brand video scope includes earlier Hydra series per user approval. Comparison module uses Make or Break Shop `y0YUu-4rx7A`, with early-model / historical facts and affiliate context identified. Its table compares the video’s early Hydra 9, Thunder Nova 35, OMTech AF2440 and OMTech Pronto 45 with historical figures from the creator transcript. Pronto 45 belongs to OMTech. Do not present it as a Gen2 benchmark.
 - The information selector retains native select behavior with an explicit chevron inset 14px from the right edge.
