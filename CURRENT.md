@@ -11,3 +11,5 @@
 
 - 2026-09-15 feedback: RF advantages (three tabs), Speed & Motion (four materials), RF Precision main media, MakerBoost, Software and the Product Opportunities opening artwork reuse the exact XRF d01dc77 assets. Preserve Hydra text/specifications. Video introductions wrap within a shrinkable heading column so controls stay in bounds; confirmed Gen2 footage leads the creator rail.
 - Coated Metal material gallery uses the dedicated 3:2 ChatGPT image `hydra-material-coated-metal-v2.webp`, generated in Chrome on 2026-09-15; no mixed wood/leather/acrylic assortment.
+- Owner text-summary cards under the customer video rail are hidden per 2026-09-15 feedback; customer videos remain.
+- The first decision-path card links to the official Testimonials page, with customer-story copy and matching analytics; it no longer promises a demo booking.

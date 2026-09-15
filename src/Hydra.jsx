@@ -2399,57 +2399,27 @@ export function HydraPage() {
           >
             {customerStoryVideos.map((video, index) => <ReviewVideoCard video={video} onPlay={setYoutubeVideo} index={index} total={customerStoryVideos.length} key={video.id} />)}
           </div>
-          <div className="consultation-feedback" aria-label="OneLaser Hydra owner reviews">
-            <div className="consultation-feedback__intro">
-              <div>
-                <strong>Hydra in real workshops.</strong>
-                <span>Summaries of public videos · Not rated reviews</span>
-              </div>
-              <div className="consultation-feedback__controls" aria-label="Browse Hydra owner reviews">
-                <button type="button" onClick={() => scrollConsultationFeedback(-1)} aria-label="Show previous Hydra owner reviews"><CaretLeft size={20} /></button>
-                <button type="button" onClick={() => scrollConsultationFeedback(1)} aria-label="Show more Hydra owner reviews"><CaretRight size={20} /></button>
-              </div>
-            </div>
-            <div
-              className="consultation-feedback__grid is-mouse-draggable"
-              ref={consultationFeedbackRailRef}
-              onPointerDown={startHorizontalRailDrag}
-              onPointerMove={moveHorizontalRailDrag}
-              onPointerUp={endHorizontalRailDrag}
-              onPointerCancel={endHorizontalRailDrag}
-              onClickCapture={suppressHorizontalRailClickAfterDrag}
-            >
-              {consultationFeedback.map((item) => (
-                <blockquote key={item.name}>
-                  <div className="consultation-feedback__stars" aria-label="Video summary, not a rated review">
-                    {[0, 1, 2, 3, 4].map((star) => <Star size={14} weight="regular" key={star} />)}
-                  </div>
-                  <p>{item.quote}</p>
-                  <footer><strong>{item.name}</strong><span>{item.role}</span></footer>
-                </blockquote>
-              ))}
-            </div>
-          </div>
+
         </section>
 
         <section className="decision-paths" id="next-step" aria-labelledby="decision-paths-title" data-reveal>
           <div className="decision-paths__heading">
             <span className="eyebrow">NOT READY TO CHECK OUT?</span>
             <h2 id="decision-paths-title">Choose the next step that helps you decide.</h2>
-            <p>See the machine live, speak with an experienced engineer, or get the information you need to evaluate Hydra Gen2 on your own time.</p>
+            <p>Explore customer stories, speak with an experienced engineer, or get the information you need to evaluate Hydra Gen2 on your own time.</p>
           </div>
           <div className="decision-paths__grid">
             <a
               className="decision-path"
-              href="https://www.1laser.com/pages/find-demo-host?utm_source=hydra-gen2-listing&utm_medium=product-page&utm_campaign=hydra-gen2-demo"
+              href="https://www.1laser.com/pages/testimonials"
               target="_blank"
               rel="noreferrer"
-              onClick={() => trackLead("find-demo-host", "book_live_demo")}
+              onClick={() => trackLead("testimonials", "customer_stories")}
             >
               <span><Play size={22} weight="fill" /></span>
-              <strong>Book a FREE Demo</strong>
-              <p>See Hydra in action and ask questions about the work you want to make.</p>
-              <i>Find a demo host <ArrowUpRight size={15} /></i>
+              <strong>See what owners are making</strong>
+              <p>Visit real workshops and hear how OneLaser owners bring their ideas to life.</p>
+              <i>Explore customer stories <ArrowUpRight size={15} /></i>
             </a>
             <a
               className="decision-path"
