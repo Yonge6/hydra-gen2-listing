@@ -69,3 +69,12 @@ Five independent images were generated through Chrome ChatGPT, visually inspecte
 | `hydra-material-coated-metal-production.webp` | https://chatgpt.com/c/6aa90298-784c-83ea-b1a7-e59ecbc09ef8 | Large anodized sign, repeated plates and coated drinkware |
 
 The comparison table uses the creator transcript linked above for historical configurations, speed discussion, RF options and indicative prices. Missing numeric Thunder specifications stay explicitly unstated. Brand correction checked against the official OMTech page: https://omtech.com/products/pronto-45-100w-co2-laser-engraver-and-cutter-upgraded-version. Current store pricing is not mixed into the historical comparison.
+
+
+## Video module roles — 2026-09-15
+
+YouTube search and each video's oEmbed title/channel were checked before separating the two rails. Existing verified films cover the requested topics; no unrelated result was added to fill a slot.
+
+- Machine reviews/demonstrations: `y0YUu-4rx7A` (Make or Break Shop, industrial laser review), `xgY6aEGvvQQ` (Wrico Goods, Hydra 9 unboxing/features), `ZQ_VhgOepXE` (Wrico Goods, RF/glass cutting tests), `dYYZXY_FHXc` (OneLaser, touchscreen tutorial), `QnASI4XyATU` (Sechelski Creations, Print to Cut demonstration).
+- Customer production: `vf5KO_kGgmU` (OneLaser, Stitchcraft automotive interiors), `Fqtlsk_NsKM` (OneLaser, pottery business), `HdP62cQVzs0` (OneLaser, map production), `godnvdc7raE` (Maker Foundry, five-foot store signs).
+- Each source is `https://www.youtube.com/watch?v=<id>`. Stitchcraft is removed from the machine rail; Print to Cut is removed from customer stories. Titles and summaries identify each module's purpose; older/unspecified hardware is not relabeled Gen2. The separately requested removal of the standalone A Maker’s Perspective section remains in effect.

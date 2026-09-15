@@ -227,7 +227,6 @@ const decisionVideos = {
 };
 
 const authorityVideos = [
-  decisionVideos.business,
   {
     "id": "y0YUu-4rx7A",
     "title": "Should you get an industrial-size laser?",
@@ -293,13 +292,6 @@ const customerStoryVideos = [
     "channel": "Maker Foundry",
     "tag": "HYDRA SERIES · LARGE FORMAT",
     "cover": "hydra-video-godnvdc7raE.jpg"
-  },
-  {
-    "id": "QnASI4XyATU",
-    "title": "Print to Cut on my OneLaser Hydra 9",
-    "channel": "Sechelski Creations",
-    "tag": "HYDRA SERIES · WORKFLOW",
-    "cover": "hydra-video-QnASI4XyATU.jpg"
   }
 ];
 
@@ -2082,11 +2074,11 @@ export function HydraPage() {
         <section className="review-proof authority-proof" aria-labelledby="authority-proof-title" data-reveal>
           <div className="review-proof__header">
             <div className="section-heading section-heading--stack">
-              <span className="eyebrow">HYDRA GEN2 &amp; CREATOR VIDEOS</span>
-              <h2 id="authority-proof-title">See Hydra through a maker’s eyes.</h2>
-              <p>Watch Hydra Gen2 in action, followed by more Hydra series walkthroughs.</p>
+              <span className="eyebrow">REVIEWS, TESTS &amp; TUTORIALS</span>
+              <h2 id="authority-proof-title">See Hydra put to the test.</h2>
+              <p>Explore hands-on reviews, cutting tests and feature demonstrations. Videos show Hydra series hardware; generations may vary.</p>
             </div>
-            <div className="review-proof__controls" aria-label="Browse Hydra Gen2 and series videos">
+            <div className="review-proof__controls" aria-label="Browse Hydra reviews and demonstrations">
               <button type="button" onClick={() => scrollAuthorityVideos(-1)} aria-label="Show previous Hydra video"><CaretLeft size={22} /></button>
               <button type="button" onClick={() => scrollAuthorityVideos(1)} aria-label="Show more Hydra videos"><CaretRight size={22} /></button>
             </div>
@@ -2094,7 +2086,7 @@ export function HydraPage() {
           <div
             className="review-proof__rail is-mouse-draggable"
             ref={authorityVideoRailRef}
-            aria-label="Hydra Gen2 and series videos"
+            aria-label="Hydra machine reviews and demonstrations"
             onPointerDown={startHorizontalRailDrag}
             onPointerMove={moveHorizontalRailDrag}
             onPointerUp={endHorizontalRailDrag}
@@ -2321,9 +2313,9 @@ export function HydraPage() {
         <section className="review-proof" id="reviews" aria-labelledby="review-proof-title" data-reveal>
           <div className="review-proof__header">
             <div className="section-heading section-heading--stack">
-              <span className="eyebrow">CUSTOMER SUCCESS · OWNER STORIES</span>
+              <span className="eyebrow">CUSTOMER STORIES · REAL PRODUCTION</span>
               <h2 id="review-proof-title">Real businesses. Real results.</h2>
-              <p>Explore real Hydra workshops. Generations are identified where confirmed; other films show the Hydra series as workflow references.</p>
+              <p>From custom automotive interiors to pottery tools, maps and large-format signs—see how owners put Hydra to work.</p>
             </div>
             <div className="review-proof__controls" aria-label="Browse customer stories">
               <button type="button" onClick={() => scrollReviewVideos(-1)} aria-label="Show previous customer story"><CaretLeft size={22} /></button>
