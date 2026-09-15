@@ -8,3 +8,6 @@
 - YouTube loads on interaction through the original shared modal, using `www.youtube.com/embed`. Use real Hydra videos and distinguish Gen2, Gen1 and unspecified series footage.
 - Before release run `npm run verify`, inspect desktop and 390px mobile, configuration/cart mappings, image loading and modal close. Push main and verify Pages HTML/assets and browser content.
 - Do not modify the parent XRF checkout or its untracked QA evidence.
+
+- 2026-09-15 feedback: RF advantages (three tabs), Speed & Motion (four materials), RF Precision main media, MakerBoost, Software and the Product Opportunities opening artwork reuse the exact XRF d01dc77 assets. Preserve Hydra text/specifications. Video introductions wrap within a shrinkable heading column so controls stay in bounds; confirmed Gen2 footage leads the creator rail.
+- Coated Metal material gallery uses the dedicated 3:2 ChatGPT image `hydra-material-coated-metal-v2.webp`, generated in Chrome on 2026-09-15; no mixed wood/leather/acrylic assortment.

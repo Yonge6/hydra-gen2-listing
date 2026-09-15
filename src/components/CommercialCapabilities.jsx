@@ -261,7 +261,7 @@ export function CommercialCapabilities({ asset, equipmentInvestment }) {
       <span className="commercial-capabilities__anchor" id="capabilities" aria-hidden="true" />
       <span className="commercial-capabilities__anchor" id="results" aria-hidden="true" />
       <div className="journey-opening-artwork">
-        <img src={asset("hydra-profit-products-v2.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="Premium products and example business outputs made with the OneLaser Hydra Gen2" />
+        <img src={asset("xrf-profit-products-v2.webp")} alt="Product opportunities artwork from the XRF Gen2 listing" />
       </div>
       <ProductOpportunities asset={asset} equipmentInvestment={equipmentInvestment} />
     </section>

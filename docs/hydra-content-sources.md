@@ -44,3 +44,7 @@ Official pages use `https://www.1laser.com/products/hydra-{7,9,13,16}-gen-2-70w-
 The four AI application images were generated through ChatGPT in Chrome on 2026-09-10, inspected and exported as WebP. They illustrate possible applications rather than measured machine results. No machine photograph was synthesized for this page.
 
 The downloadable brochure is the user-supplied English product PDF.
+
+## Coated Metal replacement — 2026-09-15
+
+`hydra-material-coated-metal-v2.webp` was generated through ChatGPT in Chrome: https://chatgpt.com/c/6aa8f57c-b6c8-83ea-a3c7-4f104cef0d5c. It shows powder-coated tumblers, anodized metal cards, a key tag and nameplate as illustrative coating-removal / surface-marking applications. Inspected at 1536×1024; exported as WebP. Replaces only the Coated Metal tab image.

@@ -41,15 +41,12 @@ import { useAutoplayCarousel } from "./hooks/useAutoplayCarousel.js";
 const assetMap = {
   "feature-overview-hero.webp": "home-banner-hydra-education.png",
   "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
-  "hydra-profit-products-v2.webp": "hydra-ai-projects.webp",
   "fox-friends-onelaser-hd.webp": "hydra-video-Fqtlsk_NsKM.jpg",
-  "software-makerboost.webp": "hydra-makerboost.webp",
-  "software-compatibility.webp": "hydra-official-14.webp",
   "material-acrylic.webp": "hydra-ai-acrylic.webp",
   "material-wood.webp": "hydra-ai-detail.webp",
   "material-leather.webp": "hydra-ai-leather.webp",
   "material-glass-stone.webp": "hydra-ai-projects.webp",
-  "material-coated-metal.webp": "hydra-ai-projects.webp"
+  "material-coated-metal.webp": "hydra-material-coated-metal-v2.webp"
 };
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${assetMap[name] || name}`;
 const MATERIAL_AUTOPLAY_DELAY = 6000;
@@ -171,8 +168,8 @@ const rfAdvantages = [
     "title": "Fine textures. Richer grayscale.",
     "copy": "RF pulse control brings out fine textures, small text and subtle shades on compatible materials. Tune your settings to each material and finish.",
     "proof": "0.07 mm spot · Up to 2,000 DPI",
-    "image": "hydra-ai-detail.webp",
-    "alt": "Fine RF engraving concept",
+    "image": "xrf-detail-proof.webp",
+    "alt": "RF engraving detail reference from the XRF Gen2 listing",
     "icon": Target
   },
   {
@@ -182,8 +179,8 @@ const rfAdvantages = [
     "title": "Detail at production speed.",
     "copy": "Fast RF response works with the servo motion platform to support detailed engraving at up to 2,000 mm/s raster speed and 4G acceleration.",
     "proof": "Up to 2,000 mm/s · 4G",
-    "image": "hydra-motion.webp",
-    "alt": "Hydra Gen2 motion system",
+    "image": "rf-faster-response-v2.webp",
+    "alt": "RF response illustration from the XRF Gen2 listing",
     "icon": ArrowClockwise
   },
   {
@@ -193,8 +190,8 @@ const rfAdvantages = [
     "title": "Less maintenance. More uptime.",
     "copy": "The sealed RF source is rated for 20,000–30,000 hours and uses air cooling. The glass DC source in Hybrid configurations requires water cooling.",
     "proof": "20,000–30,000 hours · Air-cooled RF",
-    "image": "hydra-rf-source.webp",
-    "alt": "Hydra RF source",
+    "image": "rf-longer-lifespan.webp",
+    "alt": "Air-cooled RF source illustration from the XRF Gen2 listing",
     "icon": ShieldCheck
   }
 ];
@@ -239,6 +236,7 @@ const decisionVideos = {
 };
 
 const authorityVideos = [
+  decisionVideos.business,
   {
     "id": "y0YUu-4rx7A",
     "title": "Should you get an industrial-size laser?",
@@ -320,7 +318,7 @@ const speedMotionMaterials = [
     "label": "Wood",
     "title": "Production motion for detailed woodwork.",
     "copy": "High-speed servo motion supports detailed raster engraving and repeat positioning on laser-compatible wood.",
-    "image": "hydra-ai-detail.webp",
+    "image": "speed-motion-wood.webp",
     "icon": Tree
   },
   {
@@ -328,7 +326,7 @@ const speedMotionMaterials = [
     "label": "Acrylic",
     "title": "Keep acrylic work moving.",
     "copy": "Pair RF engraving with the cutting source suited to your acrylic workload. Test thickness and settings before running a batch.",
-    "image": "hydra-ai-acrylic.webp",
+    "image": "speed-motion-acrylic.webp",
     "icon": CubeTransparent
   },
   {
@@ -336,7 +334,7 @@ const speedMotionMaterials = [
     "label": "Slate",
     "title": "Bring contrast to natural surfaces.",
     "copy": "Responsive RF control supports detailed marks on compatible slate. Surface texture and settings influence the finished result.",
-    "image": "hydra-ai-projects.webp",
+    "image": "speed-motion-slate.webp",
     "icon": Target
   },
   {
@@ -344,7 +342,7 @@ const speedMotionMaterials = [
     "label": "Leather",
     "title": "Personalization, ready to repeat.",
     "copy": "Use tested laser-compatible leather and repeatable fixtures to keep personalized production consistent.",
-    "image": "hydra-ai-leather.webp",
+    "image": "speed-motion-leather.webp",
     "icon": Handbag
   }
 ];
@@ -359,7 +357,7 @@ const capabilityChapters = [
       {
         "title": "Sharper detail. More valuable work.",
         "copy": "RF control supports fine engraving and premium surface detail.",
-        "image": "hydra-ai-detail.webp",
+        "image": "capability-precision-main.webp",
         "metrics": [
           "2,000 DPI",
           "0.07 mm spot",
@@ -2140,19 +2138,19 @@ export function HydraPage() {
         <section className="review-proof authority-proof" aria-labelledby="authority-proof-title" data-reveal>
           <div className="review-proof__header">
             <div className="section-heading section-heading--stack">
-              <span className="eyebrow">CREATOR WALKTHROUGHS &amp; TESTS</span>
+              <span className="eyebrow">HYDRA GEN2 &amp; CREATOR VIDEOS</span>
               <h2 id="authority-proof-title">See Hydra through a maker’s eyes.</h2>
-              <p>Explore Hydra series walkthroughs and tests. Earlier hardware may be shown; use the Gen2 specifications for current performance. Videos may include sponsorships or affiliate links.</p>
+              <p>Watch Hydra Gen2 in action, followed by more Hydra series walkthroughs.</p>
             </div>
-            <div className="review-proof__controls" aria-label="Browse independent Hydra reviews">
-              <button type="button" onClick={() => scrollAuthorityVideos(-1)} aria-label="Show previous independent Hydra review"><CaretLeft size={22} /></button>
-              <button type="button" onClick={() => scrollAuthorityVideos(1)} aria-label="Show more independent Hydra reviews"><CaretRight size={22} /></button>
+            <div className="review-proof__controls" aria-label="Browse Hydra Gen2 and series videos">
+              <button type="button" onClick={() => scrollAuthorityVideos(-1)} aria-label="Show previous Hydra video"><CaretLeft size={22} /></button>
+              <button type="button" onClick={() => scrollAuthorityVideos(1)} aria-label="Show more Hydra videos"><CaretRight size={22} /></button>
             </div>
           </div>
           <div
             className="review-proof__rail is-mouse-draggable"
             ref={authorityVideoRailRef}
-            aria-label="Independent Hydra review videos"
+            aria-label="Hydra Gen2 and series videos"
             onPointerDown={startHorizontalRailDrag}
             onPointerMove={moveHorizontalRailDrag}
             onPointerUp={endHorizontalRailDrag}

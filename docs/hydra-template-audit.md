@@ -47,3 +47,9 @@ Trade-Up eligibility is linked to https://www.1laser.com/pages/trade-up. Its cur
 
 
 Additional verified video references: https://www.youtube.com/watch?v=QnASI4XyATU (Sechelski, print and cut) and https://www.youtube.com/watch?v=godnvdc7raE (Maker Foundry, Hydra 16 signs). Both are series references, not asserted Gen2 benchmarks.
+
+## 2026-09-15 browser feedback
+
+- Shortened the authority introduction; removed desktop nowrap only within video header paragraphs and allowed the flex heading column to shrink. Original layout, gap and arrow controls are retained.
+- Promoted the confirmed Hydra 16 Gen2 / Stitchcraft film to the first creator-rail slot. YouTube searches and official-channel searches found other Hydra footage without clear Gen2 identification; those remain labeled series references. The rail heading and accessibility labels now include official Gen2 footage rather than calling every video independent.
+- Restored requested original media: xrf-detail-proof.webp, rf-faster-response-v2.webp, rf-longer-lifespan.webp, speed-motion-{wood,acrylic,slate,leather}.webp, capability-precision-main.webp, software-makerboost.webp, software-compatibility.webp and xrf-profit-products-v2.webp. Hydra copy and specifications remain intact.

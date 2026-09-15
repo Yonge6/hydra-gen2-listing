@@ -6414,6 +6414,7 @@ body { color: var(--ink); }
 }
 
 .review-proof__header .section-heading {
+  min-width: 0;
   margin-bottom: 0;
 }
 
@@ -9737,4 +9738,10 @@ body { color: var(--ink); }
   .consultation-feedback__intro strong {
     font-size: 20px;
   }
+}
+
+/* Keep video introductions inside the header and reserve space for rail controls. */
+.review-proof__header .section-heading > p {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
