@@ -48,3 +48,9 @@ The downloadable brochure is the user-supplied English product PDF.
 ## Coated Metal replacement — 2026-09-15
 
 `hydra-material-coated-metal-v2.webp` was generated through ChatGPT in Chrome: https://chatgpt.com/c/6aa8f57c-b6c8-83ea-a3c7-4f104cef0d5c. It shows powder-coated tumblers, anodized metal cards, a key tag and nameplate as illustrative coating-removal / surface-marking applications. Inspected at 1536×1024; exported as WebP. Replaces only the Coated Metal tab image.
+
+## Material regeneration and cross-brand video — 2026-09-15
+
+- Coated Metal v3: `hydra-material-coated-metal-v3.webp`, generated in Chrome ChatGPT at https://chatgpt.com/c/6aa8fb94-307c-83ea-b0a2-bb867c95043c. Ivory/sage powder-coated drinkware and anodized tags/card with surface-removal engraving concepts. Supersedes v2 in the active gallery; v2 remains available for rollback.
+- Glass & Stone v2: `hydra-material-glass-stone-v2.webp`, generated in Chrome ChatGPT at https://chatgpt.com/c/6aa8fbfa-02bc-83e9-81be-55498cddb2c0. Frosted surface-engraved glassware and plaque, slate coasters and an engraved stone keepsake. Replaces the mixed-material assortment. Both new images are 1536×1024 and retain the gallery's illustrative-concept framing.
+- User expanded the cross-brand video scope to any Hydra generation. The comparison module now embeds Make or Break Shop's https://www.youtube.com/watch?v=y0YUu-4rx7A. The creator's own transcript at https://www.machinesformakers.com/products/onelaser-hydra-9/video-review confirms direct OMTech work-bed comparison and discussion of Thunder Nova and Monport alternatives. The reviewer identifies a pre-production early Hydra 9 and affiliate relationships. Page copy distinguishes this historical review from current Gen2 specifications; no historical price or comparative performance claims were copied into the Gen2 table.

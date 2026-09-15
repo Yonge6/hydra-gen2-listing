@@ -45,8 +45,8 @@ const assetMap = {
   "material-acrylic.webp": "hydra-ai-acrylic.webp",
   "material-wood.webp": "hydra-ai-detail.webp",
   "material-leather.webp": "hydra-ai-leather.webp",
-  "material-glass-stone.webp": "hydra-ai-projects.webp",
-  "material-coated-metal.webp": "hydra-material-coated-metal-v2.webp"
+  "material-glass-stone.webp": "hydra-material-glass-stone-v2.webp",
+  "material-coated-metal.webp": "hydra-material-coated-metal-v3.webp"
 };
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${assetMap[name] || name}`;
 const MATERIAL_AUTOPLAY_DELAY = 6000;
@@ -227,11 +227,11 @@ const decisionVideos = {
     "cover": "hydra-video-Fqtlsk_NsKM.jpg"
   },
   "competitor": {
-    "id": "ZQ_VhgOepXE",
-    "title": "RF vs glass tube: Hydra 9 cut tests",
-    "channel": "Wrico Goods",
-    "tag": "HYDRA SERIES · CUT TEST",
-    "cover": "hydra-video-ZQ_VhgOepXE.jpg"
+    "id": "y0YUu-4rx7A",
+    "title": "Hydra 9 review and competitor comparisons",
+    "channel": "Make or Break Shop",
+    "tag": "HYDRA 9 · COMPETITOR REVIEW",
+    "cover": "hydra-video-y0YUu-4rx7A.jpg"
   }
 };
 
@@ -2353,9 +2353,9 @@ export function HydraPage() {
           <span className="commercial-capabilities__anchor" id="comparison-proof" aria-hidden="true" />
           <YouTubeCover video={decisionVideos.competitor} onPlay={setYoutubeVideo} />
           <div className="sales-video__copy">
-            <span className="eyebrow">A FAIR SIDE-BY-SIDE</span>
-            <h2>RF or glass tube? See the process.</h2>
-            <p>Watch a Hydra 9 source comparison, then compare today’s Pro and Hybrid configurations below. The video is a Hydra series reference, not a Gen2 benchmark.</p>
+            <span className="eyebrow">HYDRA VS. THE COMPETITION</span>
+            <h2>See how Hydra compares.</h2>
+            <p>Make or Break Shop reviews Hydra 9 alongside OMTech, Thunder Nova and Monport alternatives. The film shows an early Hydra 9; its pricing and specifications are historical. Explore today’s Gen2 configurations below.</p>
             <div className="measured-comparison" role="region" aria-label="Hydra Pro and Hybrid specification comparison" tabIndex="0">
               <table>
                 <thead>
@@ -2369,7 +2369,7 @@ export function HydraPage() {
               </table>
             </div>
             <p className="measured-comparison__note">
-              Source basis: Hydra Gen2 product specifications. Source power, material and settings influence results. Confirm the installed configuration before ordering.
+              Table: published Hydra Gen2 specifications. Video: the creator’s review and comparisons, with affiliate relationships disclosed. It is not a Gen2 head-to-head test.
             </p>
           </div>
         </section>
