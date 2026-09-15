@@ -41,7 +41,6 @@ import { useAutoplayCarousel } from "./hooks/useAutoplayCarousel.js";
 const assetMap = {
   "feature-overview-hero.webp": "home-banner-hydra-education.png",
   "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
-  "fox-friends-onelaser-hd.webp": "hydra-video-Fqtlsk_NsKM.jpg",
   "material-acrylic.webp": "hydra-material-acrylic-production.webp",
   "material-wood.webp": "hydra-material-wood-production.webp",
   "material-leather.webp": "hydra-material-leather-production.webp",
@@ -195,14 +194,6 @@ const rfAdvantages = [
     "icon": ShieldCheck
   }
 ];
-
-const tvFeature = {
-  "id": "Fqtlsk_NsKM",
-  "title": "A pottery owner’s Hydra 13 story",
-  "channel": "OneLaser",
-  "tag": "HYDRA SERIES · OWNER STORY",
-  "cover": "hydra-video-Fqtlsk_NsKM.jpg"
-};
 
 const decisionVideos = {
   "performance": {
@@ -2085,28 +2076,6 @@ export function HydraPage() {
               </span>
               <small>WATCH OFFICIAL FILM</small>
             </div>
-          </button>
-        </section>
-
-        <section className="tv-proof" aria-labelledby="tv-proof-title" data-reveal>
-          <div className="tv-proof__copy">
-            <span className="eyebrow">A MAKER’S PERSPECTIVE</span>
-            <h2 id="tv-proof-title">From creative ideas to a working business.</h2>
-            <p>Heather Dorian of The Stamp House discusses Hydra 13 in pottery-tool production. This Hydra series story does not specify the machine generation.</p>
-            <div className="tv-proof__signals" aria-label="Hydra owner story highlights">
-              <span>Owner story</span><span>Hydra series</span>
-            </div>
-          </div>
-          <button type="button" className="tv-proof__media" onClick={() => setYoutubeVideo(tvFeature)} aria-label="Play the Hydra 13 pottery owner story">
-            <img
-              src={asset("fox-friends-onelaser-hd.webp")}
-              alt="Hydra 13 pottery business owner story"
-              width="1280"
-              height="720"
-              loading="lazy"
-            />
-            <span className="tv-proof__play"><Play size={28} weight="fill" /></span>
-            <i>HYDRA SERIES · OWNER STORY</i>
           </button>
         </section>
 
