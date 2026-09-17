@@ -382,20 +382,25 @@ const capabilityChapters = [
   {
     "id": "motion",
     "nav": "Speed & Motion",
-    "title": "Turn speed into finished output.",
-    "summary": "High-speed servo motion and a rigid, vibration-optimized platform help production jobs stay precise at speed.",
+    "title": "Real Speed to Elevate New Benchmark.",
+    "summary": "Hydra Gen2 features an all-new ultra-high-speed AC servo motor, delivering a true 2,000 mm/s raster speed and 4G acceleration while maintaining sharp detail at maximum speed.",
     "speedProof": true,
     "spotlights": [],
     "support": [
       {
-        "title": "High-speed servo motion",
-        "copy": "Responsive motion control supports up to 2,000 mm/s raster engraving.",
-        "icon": ArrowClockwise
+        "title": "Ultra-High-Speed Servo Motor",
+        "copy": "Production-grade servo delivers faster motion without sacrificing precision.",
+        "video": "https://www.1laser.com/cdn/shop/videos/c/vp/e0947b02d4c04f8ba8c864c626a90925/e0947b02d4c04f8ba8c864c626a90925.HD-1080p-7.2Mbps-65820255.mp4?v=0",
+        "poster": "https://www.1laser.com/cdn/shop/files/preview_images/e0947b02d4c04f8ba8c864c626a90925.thumbnail.0000000000.jpg?v=1766657449"
       },
       {
-        "title": "A rigid production platform",
-        "copy": "NVH-optimized mechanics help keep high-speed movement stable and repeatable.",
-        "icon": CubeTransparent
+        "title": "Servo-Driven Precision Engraving",
+        "copy": "Advanced PID closed-loop feedback eliminates missed steps, ensuring complete patterns and flawless engraving accuracy.",
+        "compareImages": [
+          "https://www.1laser.com/cdn/shop/files/Group_208_53b0e333-09a8-43eb-a04f-69787edd5b17.png?v=1769768521&width=1182",
+          "https://www.1laser.com/cdn/shop/files/Group_208.png?v=1769768510&width=1182"
+        ],
+        "compareLabels": ["Servo-driven", "Stepper motor"]
       }
     ],
     "proofs": [],
@@ -404,25 +409,30 @@ const capabilityChapters = [
   {
     "id": "workflow",
     "nav": "Smart Workflow",
-    "title": "Less setup. More making.",
-    "summary": "Visual positioning, autofocus and direct machine control make custom and repeat jobs easier to prepare.",
+    "title": "Built-in Airflow That Thinks For You.",
+    "summary": "The Smart Dual Air-Assist System auto-switches between Low-Air for clean, detailed engraving corners and High-Air for faster cutting speed and safety. It is fully automatic, software-integrated, and requires no manual tuning.",
     "spotlights": [
       {
-        "title": "Position with confidence.",
-        "copy": "Use vision-assisted positioning and registration-mark recognition to prepare artwork and align the next job.",
-        "image": "hydra-gen2-visual-positioning.webp",
+        "title": "Smart Dual Air-Assist. Automatically.",
+        "copy": "Low-Air keeps engraving detail clean and sharp. High-Air increases cutting power and edge cleanliness. Hydra Gen2 switches modes automatically through your software.",
+        "image": "hydra-gen2-dual-air-assist.webp",
         "metrics": [
-          "Visual positioning",
-          "Registration marks",
-          "Autofocus"
+          "Built-in dual air",
+          "Low-Air engraving",
+          "High-Air cutting"
         ],
         "hideCopy": false
       }
     ],
     "support": [
       {
-        "title": "See your working area.",
-        "copy": "Camera-assisted placement helps align artwork to the material and reduce setup guesswork.",
+        "title": "Autofocus + Red Dot. Zero Guesswork.",
+        "copy": "Automated autofocus secures the optimal focal distance. High-visibility red-dot positioning helps place artwork precisely on the material.",
+        "image": "hydra-gen2-visual-positioning.webp"
+      },
+      {
+        "title": "Visual Accuracy, Unlocked.",
+        "copy": "Visual positioning supports millimeter-level placement and registration-mark workflows.",
         "image": "hydra-gen2-work-area-camera.webp"
       },
       {
@@ -520,18 +530,19 @@ const capabilityChapters = [
   },
   {
     "id": "protection",
-    "nav": "Reliability & Safety",
-    "title": "Run cleaner. Stay protected.",
-    "summary": "Automatic airflow, lens-temperature monitoring and integrated interlocks support cleaner work and dependable daily operation.",
+    "nav": "All-Material",
+    "title": "All Material Engraving? YES!!!",
+    "summary": "The Hydra Gen2 platform takes material versatility to the next level. The optional Q-Switch Fiber 30W / 50W Upgrade Kit unlocks high-speed, industrial, large-format 2.5D flying metal engraving and marking.",
     "spotlights": [
       {
-        "title": "Smart Dual Air-Assist. Automatically.",
-        "copy": "Low airflow for fine engraving and higher airflow for cutting switch through your software, reducing manual adjustment between processes. Built into Hydra Gen2.",
-        "image": "hydra-gen2-dual-air-assist.webp",
+        "title": "All-Material Engraving",
+        "copy": "Optional Q-Switch Fiber unlocks high-speed, large-format 2.5D metal engraving and marking. Available in 30W / 50W options for compatible 70W RF Hydra Gen2 configurations.",
+        "video": "https://www.1laser.com/cdn/shop/videos/c/vp/29d0ddc1f4344870a95524f7c6dc7201/29d0ddc1f4344870a95524f7c6dc7201.HD-1080p-7.2Mbps-67097782.mp4?v=0",
+        "poster": "https://www.1laser.com/cdn/shop/files/preview_images/29d0ddc1f4344870a95524f7c6dc7201.thumbnail.0000000000.jpg?v=1768550113",
         "metrics": [
-          "Built-in dual air",
-          "Cut / engrave modes",
-          "Automatic switching"
+          "Optional upgrade",
+          "30W / 50W Q-Switch",
+          "70W RF configurations"
         ],
         "hideCopy": false
       }
@@ -1311,7 +1322,13 @@ function CapabilityBrowser({ onPlay, children }) {
                 {chapter.spotlights.map((spotlight) => (
                   <article className="capability-scroll__story" key={spotlight.title}>
                     <div className="capability-scroll__media capability-scroll__media--static">
-                      <img src={asset(spotlight.image)} alt={`${spotlight.title} Hydra Gen2 proof`} />
+                      {spotlight.video ? (
+                        <video controls muted playsInline preload="metadata" poster={spotlight.poster} aria-label={`${spotlight.title} Hydra Gen2 video`} style={{ display: "block", width: "100%", height: "100%", objectFit: "contain", background: "#000" }}>
+                          <source src={spotlight.video} type="video/mp4" />
+                        </video>
+                      ) : (
+                        <img src={asset(spotlight.image)} alt={`${spotlight.title} Hydra Gen2 proof`} />
+                      )}
                     </div>
                     {!spotlight.hideCopy && (
                       <div className="capability-scroll__story-copy">
@@ -1356,9 +1373,24 @@ function CapabilityBrowser({ onPlay, children }) {
                 <div className={chapter.support.some((item) => item.icon) ? "capability-scroll__support capability-scroll__support--icons" : "capability-scroll__support"}>
                   {chapter.support.map((item) => (
                     <article key={item.title}>
-                      {item.icon
-                        ? <span className="capability-scroll__support-icon" aria-hidden="true"><item.icon size={28} weight="regular" /></span>
-                        : <img src={asset(item.image)} alt="" />}
+                      {item.icon ? (
+                        <span className="capability-scroll__support-icon" aria-hidden="true"><item.icon size={28} weight="regular" /></span>
+                      ) : item.video ? (
+                        <video className="capability-scroll__support-media" controls muted playsInline preload="metadata" poster={item.poster} aria-label={`${item.title} video`} style={{ display: "block", width: "100%", aspectRatio: "3 / 2", objectFit: "cover", background: "#000" }}>
+                          <source src={item.video} type="video/mp4" />
+                        </video>
+                      ) : item.compareImages ? (
+                        <div className="capability-scroll__comparison-media">
+                          {item.compareImages.map((image, imageIndex) => (
+                            <figure key={image}>
+                              <img src={image} alt="" />
+                              <figcaption>{item.compareLabels[imageIndex]}</figcaption>
+                            </figure>
+                          ))}
+                        </div>
+                      ) : (
+                        <img src={asset(item.image)} alt="" />
+                      )}
                       <div>
                         <h4>{item.title}</h4>
                         <p>{item.copy}</p>
