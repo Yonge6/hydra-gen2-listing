@@ -178,8 +178,8 @@ const rfAdvantages = [
     "title": "Detail at production speed.",
     "copy": "Fast RF response works with the servo motion platform to support detailed engraving at up to 2,000 mm/s raster speed and 4G acceleration.",
     "proof": "Up to 2,000 mm/s · 4G",
-    "image": "rf-faster-response-v2.webp",
-    "alt": "RF response illustration from the XRF Gen2 listing",
+    "image": "hydra-gen2-faster-response.webp",
+    "alt": "Hydra Gen2 laser head with verified 2,000 mm/s, 4G and repeat-positioning performance",
     "icon": ArrowClockwise
   },
   {
@@ -299,33 +299,33 @@ const speedMotionMaterials = [
   {
     "id": "wood",
     "label": "Wood",
-    "title": "Production motion for detailed woodwork.",
-    "copy": "High-speed servo motion supports detailed raster engraving and repeat positioning on laser-compatible wood.",
-    "image": "speed-motion-wood.webp",
+    "title": "Large-format detail, repeated at scale.",
+    "copy": "Run detailed wood panels and aligned batches across Hydra Gen2’s wide bed with high-speed servo motion and repeatable positioning.",
+    "image": "speed-motion-hydra-wood.webp",
     "icon": Tree
   },
   {
     "id": "acrylic",
     "label": "Acrylic",
-    "title": "Keep acrylic work moving.",
-    "copy": "Pair RF engraving with the cutting source suited to your acrylic workload. Test thickness and settings before running a batch.",
-    "image": "speed-motion-acrylic.webp",
+    "title": "Move from one sign to a full batch.",
+    "copy": "Keep large acrylic panels and repeat sign work moving with responsive RF engraving and the cutting source suited to the job.",
+    "image": "speed-motion-hydra-acrylic.webp",
     "icon": CubeTransparent
   },
   {
     "id": "slate",
     "label": "Slate",
-    "title": "Bring contrast to natural surfaces.",
-    "copy": "Responsive RF control supports detailed marks on compatible slate. Surface texture and settings influence the finished result.",
-    "image": "speed-motion-slate.webp",
+    "title": "Fixture the batch. Repeat the detail.",
+    "copy": "Fill a production fixture with compatible slate pieces and keep fine, high-contrast artwork consistent across the run.",
+    "image": "speed-motion-hydra-slate.webp",
     "icon": Target
   },
   {
     "id": "leather",
     "label": "Leather",
-    "title": "Personalization, ready to repeat.",
-    "copy": "Use tested laser-compatible leather and repeatable fixtures to keep personalized production consistent.",
-    "image": "speed-motion-leather.webp",
+    "title": "Scale personalized leather production.",
+    "copy": "Process large leather layouts and repeat batches of wallets or tags with precise outlines and consistent engraved detail.",
+    "image": "speed-motion-hydra-leather.webp",
     "icon": Handbag
   }
 ];
@@ -410,7 +410,7 @@ const capabilityChapters = [
       {
         "title": "Position with confidence.",
         "copy": "Use vision-assisted positioning and registration-mark recognition to prepare artwork and align the next job.",
-        "image": "hydra-workflow.webp",
+        "image": "hydra-gen2-visual-positioning.webp",
         "metrics": [
           "Visual positioning",
           "Registration marks",
@@ -423,12 +423,12 @@ const capabilityChapters = [
       {
         "title": "See your working area.",
         "copy": "Camera-assisted placement helps align artwork to the material and reduce setup guesswork.",
-        "image": "hydra-workflow.webp"
+        "image": "hydra-gen2-work-area-camera.webp"
       },
       {
         "title": "A touch. A key. Direct control.",
         "copy": "The GT5 controller combines a 5-inch touchscreen and physical keys for file preview, diagnostics and offline operation.",
-        "image": "hydra-official-14.webp"
+        "image": "hydra-gen2-gt5-control.webp"
       }
     ],
     "proofs": [
@@ -468,7 +468,7 @@ const capabilityChapters = [
       {
         "title": "Go longer. Think bigger.",
         "copy": "Front-to-back pass-through doors accommodate longer stock through a 20 mm opening. Plan material support and job alignment for each setup.",
-        "image": "hydra-official-11.webp",
+        "image": "hydra-gen2-pass-through.webp",
         "metrics": [
           "Front-to-back access",
           "20 mm opening",
@@ -481,12 +481,12 @@ const capabilityChapters = [
       {
         "title": "Choose your production footprint.",
         "copy": "Hydra 7: 700 × 500 mm. Hydra 9: 900 × 600 mm. Hydra 13: 1,300 × 900 mm. Hydra 16: 1,600 × 1,000 mm.",
-        "image": "hydra-16-hero.webp"
+        "image": "hydra-gen2-workspace-sizes.webp"
       },
       {
         "title": "From flat work to rotary jobs.",
         "copy": "225 mm Z-axis travel provides setup flexibility. Cylindrical engraving requires a compatible optional 4-pin rotary and suitable object clearance.",
-        "image": "hydra-ai-projects.webp"
+        "image": "hydra-gen2-rotary-workflow.webp"
       }
     ],
     "proofs": [
@@ -527,7 +527,7 @@ const capabilityChapters = [
       {
         "title": "Smart Dual Air-Assist. Automatically.",
         "copy": "Low airflow for fine engraving and higher airflow for cutting switch through your software, reducing manual adjustment between processes. Built into Hydra Gen2.",
-        "image": "hydra-official-05.webp",
+        "image": "hydra-gen2-dual-air-assist.webp",
         "metrics": [
           "Built-in dual air",
           "Cut / engrave modes",
@@ -539,18 +539,18 @@ const capabilityChapters = [
     "feature": {
       "title": "Protect the optics that protect your work.",
       "copy": "Real-time lens-temperature monitoring warns of overheating or contamination and can shut off laser output.",
-      "image": "hydra-official-07.webp"
+      "image": "hydra-gen2-lens-protection.webp"
     },
     "support": [
       {
         "title": "Monitor the working environment.",
         "copy": "Workbench temperature sensing and PM2.5 detection help monitor the processing environment.",
-        "image": "hydra-official-08.webp"
+        "image": "hydra-gen2-environment-monitoring.webp"
       },
       {
         "title": "Interlocks built into the enclosure.",
         "copy": "Lid and side-panel interlocks work with the enclosed chassis and separated electronics area.",
-        "image": "hydra-front.webp"
+        "image": "hydra-gen2-interlocks.webp"
       }
     ],
     "proofs": [
@@ -2050,7 +2050,7 @@ export function HydraPage() {
         </section>
 
         <section className="feature-overview" id="why-hydra" data-reveal>
-          <img src={asset("feature-overview-hero.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="OneLaser Hydra Gen2 in a working studio with finished products and brand proof" />
+          <img src={asset("feature-overview-hydra-gen2.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="OneLaser Hydra Gen2 in an industrial workshop surrounded by finished engraved products" />
         </section>
 
         <section className="official-film" aria-labelledby="official-film-title" data-reveal>

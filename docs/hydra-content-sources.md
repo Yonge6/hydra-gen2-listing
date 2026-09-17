@@ -45,6 +45,16 @@ The four AI application images were generated through ChatGPT in Chrome on 2026-
 
 The downloadable brochure is the user-supplied English product PDF.
 
+## Hydra Gen2 Faster Response artwork — 2026-09-17
+
+`hydra-gen2-faster-response.webp` was generated in Chrome ChatGPT at https://chatgpt.com/c/6aab95be-d2ac-83ea-9b56-0b96c0606651. The earlier XRF Faster Response artwork was the layout/style reference; the user-supplied `9b56f169f9c1cb248a7c084dd4c78768.jpg` was the laser-head and gantry reference. The final artwork replaces the XRF enclosure and unsupported comparison values with the verified Hydra Gen2 figures: 2,000 mm/s raster speed, 4G working acceleration and <=0.01 mm repeat positioning. It was visually inspected at 1536x1024 and exported as WebP. The earlier asset remains available for rollback.
+
+## Hydra Gen2 production imagery — 2026-09-17
+
+`feature-overview-hydra-gen2.webp` is the user-supplied Hydra Gen2 workshop banner (`/Users/yongyuan/Downloads/1.webp`), preserved at its native 3840x1800 aspect ratio. `speed-motion-hydra-{wood,acrylic,slate,leather}.webp` are a coordinated Chrome ChatGPT-generated set illustrating large-format and batch workflows. Performance copy continues to use the workbook-confirmed 2,000 mm/s raster speed and 4G working acceleration.
+
+The ten functional chapter images were generated in the same Chrome ChatGPT conversation from the eleven original Hydra Gen2 renders in `/Users/yongyuan/Downloads/Hydra Gen2`. Their fixed mapping is: `hydra-gen2-visual-positioning.webp`, `hydra-gen2-work-area-camera.webp`, `hydra-gen2-gt5-control.webp`, `hydra-gen2-pass-through.webp`, `hydra-gen2-workspace-sizes.webp`, `hydra-gen2-rotary-workflow.webp`, `hydra-gen2-dual-air-assist.webp`, `hydra-gen2-lens-protection.webp`, `hydra-gen2-environment-monitoring.webp`, and `hydra-gen2-interlocks.webp`. These images visualize the adjacent published feature copy and do not add performance figures.
+
 ## Coated Metal replacement — 2026-09-15
 
 `hydra-material-coated-metal-v2.webp` was generated through ChatGPT in Chrome: https://chatgpt.com/c/6aa8f57c-b6c8-83ea-a3c7-4f104cef0d5c. It shows powder-coated tumblers, anodized metal cards, a key tag and nameplate as illustrative coating-removal / surface-marking applications. Inspected at 1536×1024; exported as WebP. Replaces only the Coated Metal tab image.
