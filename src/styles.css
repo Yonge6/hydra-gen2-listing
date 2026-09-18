@@ -9730,6 +9730,22 @@ body { color: var(--ink); }
   line-height: 1.15;
 }
 
+#capability-motion .capability-scroll__support > article:first-child > div {
+  padding: 24px 4px 0;
+}
+
+#capability-motion .capability-scroll__support > article:first-child h4 {
+  font-size: 32px;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+
+#capability-motion .capability-scroll__support > article:first-child p {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
 #capability-motion .capability-scroll__comparison-media figcaption {
   display: grid;
   gap: 8px;
@@ -9764,6 +9780,18 @@ body { color: var(--ink); }
   #capability-motion .capability-scroll__support h4,
   #capability-motion .capability-scroll__comparison-media figcaption strong {
     font-size: 20px;
+  }
+
+  #capability-motion .capability-scroll__support > article:first-child > div {
+    padding-top: 20px;
+  }
+
+  #capability-motion .capability-scroll__support > article:first-child h4 {
+    font-size: 26px;
+  }
+
+  #capability-motion .capability-scroll__support > article:first-child p {
+    font-size: 15px;
   }
 }
 
