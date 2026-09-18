@@ -9689,6 +9689,11 @@ body { color: var(--ink); }
   min-height: 0;
 }
 
+.rf-advantages__media .rf-advantages__image--detail {
+  object-fit: cover;
+  object-position: center top;
+}
+
 /* Hydra feature layout: preserve official media ratios and hierarchy. */
 #capability-motion .capability-scroll__support {
   grid-template-columns: 1fr;

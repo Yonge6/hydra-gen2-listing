@@ -178,7 +178,7 @@ const rfAdvantages = [
     "title": "Detail at production speed.",
     "copy": "Fast RF response works with the servo motion platform to support detailed engraving at up to 2,000 mm/s raster speed and 4G acceleration.",
     "proof": "Up to 2,000 mm/s · 4G",
-    "image": "hydra-gen2-faster-response.webp",
+    "image": "hydra-gen2-faster-response-v2.webp",
     "alt": "Hydra Gen2 laser head with verified 2,000 mm/s, 4G and repeat-positioning performance",
     "icon": ArrowClockwise
   },
@@ -1164,6 +1164,7 @@ function RfAdvantages({ activeIndex, onChange, carouselProps }) {
           <div className="rf-advantages__media">
             <img
               key={rfAdvantages[activeIndex].id}
+              className={`rf-advantages__image rf-advantages__image--${rfAdvantages[activeIndex].id}`}
               src={asset(rfAdvantages[activeIndex].image)}
               alt={rfAdvantages[activeIndex].alt}
             />
