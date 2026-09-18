@@ -394,13 +394,15 @@ const capabilityChapters = [
         "poster": "https://www.1laser.com/cdn/shop/files/preview_images/e0947b02d4c04f8ba8c864c626a90925.thumbnail.0000000000.jpg?v=1766657449"
       },
       {
-        "title": "Servo-Driven Precision Engraving",
-        "copy": "Advanced PID closed-loop feedback eliminates missed steps, ensuring complete patterns and flawless engraving accuracy.",
         "compareImages": [
           "https://www.1laser.com/cdn/shop/files/Group_208_53b0e333-09a8-43eb-a04f-69787edd5b17.png?v=1769768521&width=1182",
           "https://www.1laser.com/cdn/shop/files/Group_208.png?v=1769768510&width=1182"
         ],
-        "compareLabels": ["Servo-driven", "Stepper motor"]
+        "compareTitles": ["Servo-Driven Precision Engraving", "Stepper Motor Engraving"],
+        "compareCopies": [
+          "Advanced PID closed-loop feedback eliminates missed steps, ensuring complete patterns and flawless engraving accuracy.",
+          "Open-loop control without feedback can cause missed steps, resulting in partial distortion or incomplete engraving details."
+        ]
       }
     ],
     "proofs": [],
@@ -409,12 +411,12 @@ const capabilityChapters = [
   {
     "id": "workflow",
     "nav": "Smart Workflow",
-    "title": "Built-in Airflow That Thinks For You.",
-    "summary": "The Smart Dual Air-Assist System auto-switches between Low-Air for clean, detailed engraving corners and High-Air for faster cutting speed and safety. It is fully automatic, software-integrated, and requires no manual tuning.",
+    "title": "Smarter tools. Smoother production.",
+    "summary": "Automatic airflow, autofocus, red-dot positioning and direct machine control reduce setup work and keep production moving from one job to the next.",
     "spotlights": [
       {
-        "title": "Smart Dual Air-Assist. Automatically.",
-        "copy": "Low-Air keeps engraving detail clean and sharp. High-Air increases cutting power and edge cleanliness. Hydra Gen2 switches modes automatically through your software.",
+        "title": "Built-in Airflow That Thinks For You.",
+        "copy": "The Smart Dual Air-Assist System auto-switches between Low-Air for clean, detailed engraving corners and High-Air for faster cutting speed and safety. Fully automatic, software-integrated, and no manual tuning needed—delivering cleaner edges and better results every time.",
         "image": "hydra-gen2-dual-air-assist.webp",
         "metrics": [
           "Built-in dual air",
@@ -429,11 +431,6 @@ const capabilityChapters = [
         "title": "Autofocus + Red Dot. Zero Guesswork.",
         "copy": "Automated autofocus secures the optimal focal distance. High-visibility red-dot positioning helps place artwork precisely on the material.",
         "image": "hydra-gen2-visual-positioning.webp"
-      },
-      {
-        "title": "Visual Accuracy, Unlocked.",
-        "copy": "Visual positioning supports millimeter-level placement and registration-mark workflows.",
-        "image": "hydra-gen2-work-area-camera.webp"
       },
       {
         "title": "A touch. A key. Direct control.",
@@ -530,23 +527,10 @@ const capabilityChapters = [
   },
   {
     "id": "protection",
-    "nav": "All-Material",
-    "title": "All Material Engraving? YES!!!",
-    "summary": "The Hydra Gen2 platform takes material versatility to the next level. The optional Q-Switch Fiber 30W / 50W Upgrade Kit unlocks high-speed, industrial, large-format 2.5D flying metal engraving and marking.",
-    "spotlights": [
-      {
-        "title": "All-Material Engraving",
-        "copy": "Optional Q-Switch Fiber unlocks high-speed, large-format 2.5D metal engraving and marking. Available in 30W / 50W options for compatible 70W RF Hydra Gen2 configurations.",
-        "video": "https://www.1laser.com/cdn/shop/videos/c/vp/29d0ddc1f4344870a95524f7c6dc7201/29d0ddc1f4344870a95524f7c6dc7201.HD-1080p-7.2Mbps-67097782.mp4?v=0",
-        "poster": "https://www.1laser.com/cdn/shop/files/preview_images/29d0ddc1f4344870a95524f7c6dc7201.thumbnail.0000000000.jpg?v=1768550113",
-        "metrics": [
-          "Optional upgrade",
-          "30W / 50W Q-Switch",
-          "70W RF configurations"
-        ],
-        "hideCopy": false
-      }
-    ],
+    "nav": "Reliability & Safety",
+    "title": "Run cleaner. Stay protected.",
+    "summary": "Automatic airflow, lens-temperature monitoring and integrated interlocks support cleaner work and dependable daily operation.",
+    "spotlights": [],
     "feature": {
       "title": "Protect the optics that protect your work.",
       "copy": "Real-time lens-temperature monitoring warns of overheating or contamination and can shut off laser output.",
@@ -598,6 +582,19 @@ const capabilityChapters = [
 
 const purchasePackages = [
   {
+    "id": "7",
+    "name": "Hydra 7 Gen2",
+    "price": 10999.0,
+    "msrp": 11999.0,
+    "badge": "RF PRO",
+    "detail": "700 × 500 mm work area · 70W RF Pro only",
+    "hybrid": null,
+    "pro": 44667131822114,
+    "powerDelta": 0.0,
+    "dc": null,
+    "area": "700 × 500 mm"
+  },
+  {
     "id": "9",
     "name": "Hydra 9 Gen2",
     "price": 10999.0,
@@ -635,19 +632,6 @@ const purchasePackages = [
     "powerDelta": 1000.0,
     "dc": 150,
     "area": "1,600 × 1,000 mm"
-  },
-  {
-    "id": "7",
-    "name": "Hydra 7 Gen2",
-    "price": 10999.0,
-    "msrp": 11999.0,
-    "badge": "RF PRO",
-    "detail": "700 × 500 mm work area · 70W RF Pro only",
-    "hybrid": null,
-    "pro": 44667131822114,
-    "powerDelta": 0.0,
-    "dc": null,
-    "area": "700 × 500 mm"
   }
 ];
 
@@ -1372,11 +1356,11 @@ function CapabilityBrowser({ onPlay, children }) {
 
                 <div className={chapter.support.some((item) => item.icon) ? "capability-scroll__support capability-scroll__support--icons" : "capability-scroll__support"}>
                   {chapter.support.map((item) => (
-                    <article key={item.title}>
+                    <article key={item.title ?? item.compareTitles?.join("-")}>
                       {item.icon ? (
                         <span className="capability-scroll__support-icon" aria-hidden="true"><item.icon size={28} weight="regular" /></span>
                       ) : item.video ? (
-                        <video className="capability-scroll__support-media" controls muted playsInline preload="metadata" poster={item.poster} aria-label={`${item.title} video`} style={{ display: "block", width: "100%", aspectRatio: "3 / 2", objectFit: "cover", background: "#000" }}>
+                        <video className="capability-scroll__support-media" controls muted playsInline preload="metadata" poster={item.poster} aria-label={`${item.title} video`}>
                           <source src={item.video} type="video/mp4" />
                         </video>
                       ) : item.compareImages ? (
@@ -1384,22 +1368,27 @@ function CapabilityBrowser({ onPlay, children }) {
                           {item.compareImages.map((image, imageIndex) => (
                             <figure key={image}>
                               <img src={image} alt="" />
-                              <figcaption>{item.compareLabels[imageIndex]}</figcaption>
+                              <figcaption>
+                                <strong>{item.compareTitles[imageIndex]}</strong>
+                                <span>{item.compareCopies[imageIndex]}</span>
+                              </figcaption>
                             </figure>
                           ))}
                         </div>
                       ) : (
                         <img src={asset(item.image)} alt="" />
                       )}
-                      <div>
-                        <h4>{item.title}</h4>
-                        <p>{item.copy}</p>
-                        {item.metrics?.length > 0 && (
-                          <div className="capability-scroll__support-tags">
-                            {item.metrics.map((metric) => <span key={metric}>{metric}</span>)}
-                          </div>
-                        )}
-                      </div>
+                      {!item.compareImages && (
+                        <div>
+                          <h4>{item.title}</h4>
+                          <p>{item.copy}</p>
+                          {item.metrics?.length > 0 && (
+                            <div className="capability-scroll__support-tags">
+                              {item.metrics.map((metric) => <span key={metric}>{metric}</span>)}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </article>
                   ))}
                 </div>
