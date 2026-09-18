@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Anchor,
   ArrowUpRight,
   ArrowClockwise,
   Camera,
@@ -18,7 +17,6 @@ import {
   LockKey,
   MapPin,
   Minus,
-  Monitor,
   Phone,
   Play,
   Plus,
@@ -445,9 +443,9 @@ const capabilityChapters = [
         "icon": Camera
       },
       {
-        "value": "GT5",
-        "label": "5-inch touchscreen + keypad",
-        "icon": Monitor
+        "value": "Auto resume",
+        "label": "Power-loss job recovery",
+        "icon": ArrowClockwise
       },
       {
         "value": "3 ways",
@@ -455,15 +453,13 @@ const capabilityChapters = [
         "icon": WifiHigh
       },
       {
-        "value": "Autofocus",
-        "label": "Motorized Z-axis focusing",
-        "icon": CubeFocus
+        "value": "Smart presets",
+        "label": "Material-ready parameters",
+        "icon": Target
       }
     ],
     "details": [
-      "Red-dot alignment",
-      "File preview",
-      "Machine status and alerts"
+      "1 GB job storage"
     ]
   },
   {
@@ -498,29 +494,27 @@ const capabilityChapters = [
     ],
     "proofs": [
       {
-        "value": "4 sizes",
-        "label": "Scalable working areas",
+        "value": "Up to 65 lb",
+        "label": "Heavy-duty workbed",
         "icon": Target
       },
       {
-        "value": "225 mm",
-        "label": "Z-axis bed travel",
+        "value": "3-part",
+        "label": "Modular placement",
+        "icon": CubeTransparent
+      },
+      {
+        "value": "1.5–4 in",
+        "label": "Focal lens range",
         "icon": CubeFocus
       },
       {
-        "value": "20 mm",
-        "label": "Pass-through opening",
+        "value": "Quick swap",
+        "label": "Full lens assembly",
         "icon": ArrowClockwise
-      },
-      {
-        "value": "Optional",
-        "label": "Rotary workflow",
-        "icon": Anchor
       }
     ],
     "details": [
-      "Optional rotary",
-      "Optional focal lenses",
       "Optional compatible filtration",
       "Optional 70W fiber expansion"
     ]
@@ -550,32 +544,29 @@ const capabilityChapters = [
     ],
     "proofs": [
       {
-        "value": "Dual air",
-        "label": "Automatic flow selection",
-        "icon": Fire
-      },
-      {
-        "value": "Interlocks",
-        "label": "Lid and side panels",
+        "value": "Class 1",
+        "label": "FDA-certified design",
         "icon": ShieldCheck
       },
       {
-        "value": "Lens sensor",
-        "label": "Temperature monitoring",
+        "value": "Stress-tested",
+        "label": "Production-grade structure",
+        "icon": Target
+      },
+      {
+        "value": "Audible alert",
+        "label": "Over-temperature warning",
         "icon": Thermometer
       },
       {
-        "value": "Auto stop",
-        "label": "Laser-output protection",
+        "value": "Chiller-free",
+        "label": "No leaks or condensation",
         "icon": LockKey
       }
     ],
     "details": [
-      "Separated electronics",
-      "Lens-temperature alerts",
-      "Workbench temperature sensor",
-      "PM2.5 detector",
-      "Rigid machine structure"
+      "No-alignment mechanical design",
+      "NVH optimization"
     ]
   }
 ];
