@@ -153,6 +153,19 @@
   gap: 56px;
 }
 
+.capability-scroll__full-width-image {
+  margin: 32px 0 0;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #141414;
+}
+
+.capability-scroll__full-width-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .capability-scroll__story {
   min-width: 0;
 }

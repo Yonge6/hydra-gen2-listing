@@ -39,11 +39,11 @@ import { useAutoplayCarousel } from "./hooks/useAutoplayCarousel.js";
 const assetMap = {
   "feature-overview-hero.webp": "home-banner-hydra-education.png",
   "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
-  "material-acrylic.webp": "hydra-material-acrylic-production.webp",
-  "material-wood.webp": "hydra-material-wood-production.webp",
-  "material-leather.webp": "hydra-material-leather-production.webp",
-  "material-glass-stone.webp": "hydra-material-glass-stone-production.webp",
-  "material-coated-metal.webp": "hydra-material-coated-metal-production.webp"
+  "material-acrylic.webp": "hydra-material-acrylic-production-v2.webp",
+  "material-wood.webp": "hydra-material-wood-production-v2.webp",
+  "material-leather.webp": "hydra-material-leather-production-v2.webp",
+  "material-glass-stone.webp": "hydra-material-glass-stone-production-v2.webp",
+  "material-coated-metal.webp": "hydra-material-coated-metal-production-v2.webp"
 };
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${assetMap[name] || name}`;
 const MATERIAL_AUTOPLAY_DELAY = 6000;
@@ -62,45 +62,45 @@ const materialCategories = [
   {
     id: "acrylic",
     label: "Acrylic",
-    title: "Big displays. Fine detail.",
-    copy: "Create large engraved acrylic panels and coordinated display batches, with delicate frosted linework and crisp, consistent details.",
-    proof: "Large panels · signage · display batches",
+    title: "Color, clarity and products ready to sell.",
+    copy: "Build a coordinated acrylic catalog from large statement displays to colorful awards, ornaments and small gift items with crisp frosted detail.",
+    proof: "Statement panels · awards · ornaments · gift batches",
     image: "material-acrylic.webp",
     icon: CubeTransparent,
   },
   {
     id: "wood",
     label: "Wood",
-    title: "From photo detail to repeatable batches.",
-    copy: "Turn large wood panels into detailed landscape art, then carry that fine engraving into coordinated batches of smaller pieces.",
-    proof: "Large wall art · fine textures · panel batches",
+    title: "From statement art to a complete wood collection.",
+    copy: "Pair large landscape panels with serving boards, boxes, lamps, coasters and small gift pieces—all finished with detailed, retail-ready engraving.",
+    proof: "Wall art · boards · boxes · décor · gift batches",
     image: "material-wood.webp",
     icon: Tree,
   },
   {
     id: "leather",
     label: "Leather",
-    title: "Large panels. Precise repeats.",
-    copy: "Bring intricate botanical detail to large leather panels and batches of notebook covers, with natural texture and rich tonal contrast.",
-    proof: "Decorative panels · cover batches · fine linework",
+    title: "A premium leather line, from caps to carry goods.",
+    copy: "Create coordinated caps, wallets, journals, handbags, belts, coasters and tags with rich tonal contrast and fine engraved detail.",
+    proof: "Caps · wallets · journals · bags · tags",
     image: "material-leather.webp",
     icon: Handbag,
   },
   {
     id: "glass-stone",
     label: "Glass & Stone",
-    title: "Fine marks on hard, high-value surfaces.",
-    copy: "Pair large frosted-glass artwork with coordinated slate plaques and coaster batches. Fine surface engraving brings each detail into focus.",
-    proof: "Large glass panels · slate plaques · batch sets",
+    title: "Glass brilliance. Stone permanence.",
+    copy: "Offer large glass art, decanters, awards, slate plaques, marble pieces and coaster sets with crisp frosted and high-contrast engraving.",
+    proof: "Glass art · drinkware · awards · slate · marble",
     image: "material-glass-stone.webp",
     icon: Wine,
   },
   {
     id: "coated-metal",
     label: "Coated Metal",
-    title: "High contrast for everyday production.",
-    copy: "Create large anodized signs and batches of identification plates with fine surface detail. Cylindrical drinkware requires a compatible optional rotary.",
-    proof: "Large signs · plate batches · coated drinkware",
+    title: "High-contrast products built for daily sales.",
+    copy: "Turn coated tumblers, bottles, trays, plates and tags into a varied retail collection. Cylindrical drinkware requires a compatible optional rotary.",
+    proof: "Tumblers · bottles · trays · plates · tags",
     image: "material-coated-metal.webp",
     icon: Tag,
   },
@@ -165,7 +165,7 @@ const rfAdvantages = [
     "title": "Fine textures. Richer grayscale.",
     "copy": "RF pulse control brings out fine textures, small text and subtle shades on compatible materials. Tune your settings to each material and finish.",
     "proof": "0.07 mm spot · Up to 2,000 DPI",
-    "image": "xrf-detail-proof.webp",
+    "image": "rf-cleaner-detail-v2.webp",
     "alt": "RF engraving detail reference from the XRF Gen2 listing",
     "icon": Target
   },
@@ -387,7 +387,7 @@ const capabilityChapters = [
     "support": [
       {
         "title": "Ultra-High-Speed Servo Motor",
-        "copy": "Production-grade servo delivers faster motion without sacrificing precision.",
+        "copy": "Hydra Gen 2 features an all-new ultra-high-speed AC servo motor, delivering a true 2,000 mm/s, 4G acceleration speed.",
         "video": "https://www.1laser.com/cdn/shop/videos/c/vp/e0947b02d4c04f8ba8c864c626a90925/e0947b02d4c04f8ba8c864c626a90925.HD-1080p-7.2Mbps-65820255.mp4?v=0",
         "poster": "https://www.1laser.com/cdn/shop/files/preview_images/e0947b02d4c04f8ba8c864c626a90925.thumbnail.0000000000.jpg?v=1766657449"
       },
@@ -466,8 +466,20 @@ const capabilityChapters = [
     "id": "expansion",
     "nav": "Business Expansion",
     "title": "A platform built to grow with your business.",
-    "summary": "Four working areas, pass-through access and optional rotary workflows help your equipment fit a broader range of jobs.",
+    "summary": "Optional Q-Switch Fiber, four working areas, pass-through access and rotary workflows help your equipment take on a broader range of jobs.",
     "spotlights": [
+      {
+        "title": "All Material Engraving? YES!!!",
+        "copy": "The optional Q-Switch Fiber 30W / 50W Upgrade Kit unlocks high-speed, industrial, large-format 2.5D flying metal engraving and marking on compatible 70W RF Hydra Gen2 configurations.",
+        "video": "https://www.1laser.com/cdn/shop/videos/c/vp/29d0ddc1f4344870a95524f7c6dc7201/29d0ddc1f4344870a95524f7c6dc7201.HD-1080p-7.2Mbps-67097782.mp4?v=0",
+        "poster": "https://www.1laser.com/cdn/shop/files/preview_images/29d0ddc1f4344870a95524f7c6dc7201.thumbnail.0000000000.jpg?v=1768550113",
+        "metrics": [
+          "Optional upgrade",
+          "30W / 50W Q-Switch",
+          "Compatible 70W RF configurations"
+        ],
+        "hideCopy": false
+      },
       {
         "title": "Go longer. Think bigger.",
         "copy": "Front-to-back pass-through doors accommodate longer stock through a 20 mm opening. Plan material support and job alignment for each setup.",
@@ -515,9 +527,9 @@ const capabilityChapters = [
       }
     ],
     "details": [
-      "Optional compatible filtration",
-      "Optional 70W fiber expansion"
-    ]
+      "Optional compatible filtration"
+    ],
+    "fullWidthImage": "hydra-all-material-banner-v1.webp"
   },
   {
     "id": "protection",
@@ -1404,6 +1416,12 @@ function CapabilityBrowser({ onPlay, children }) {
                   <span>More built in</span>
                   <div>{chapter.details.map((detail) => <span key={detail}>{detail}</span>)}</div>
                 </div>
+              )}
+
+              {chapter.fullWidthImage && (
+                <figure className="capability-scroll__full-width-image">
+                  <img src={asset(chapter.fullWidthImage)} alt="Hydra Gen2 all-material engraving collection across wood, leather, glass, stone and coated metal" />
+                </figure>
               )}
             </section>
           ))}
