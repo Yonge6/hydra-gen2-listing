@@ -501,7 +501,7 @@ const capabilityChapters = [
       {
         "title": "From flat work to rotary jobs.",
         "copy": "225 mm Z-axis travel provides setup flexibility. Cylindrical engraving requires a compatible optional 4-pin rotary and suitable object clearance.",
-        "image": "hydra-gen2-rotary-workflow.webp"
+        "image": "hydra-gen2-height-clearance-v2.webp"
       }
     ],
     "proofs": [
