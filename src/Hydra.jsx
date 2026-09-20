@@ -338,7 +338,7 @@ const capabilityChapters = [
       {
         "title": "Sharper detail. More valuable work.",
         "copy": "RF control supports fine engraving and premium surface detail.",
-        "image": "capability-precision-main.webp",
+        "image": "hydra-rf-precision-detail-v2.webp",
         "metrics": [
           "2,000 DPI",
           "0.07 mm spot",
@@ -415,7 +415,7 @@ const capabilityChapters = [
       {
         "title": "Built-in Airflow That Thinks For You.",
         "copy": "The Smart Dual Air-Assist System auto-switches between Low-Air for clean, detailed engraving corners and High-Air for faster cutting speed and safety. Fully automatic, software-integrated, and no manual tuning needed—delivering cleaner edges and better results every time.",
-        "image": "hydra-gen2-dual-air-assist.webp",
+        "image": "hydra-gen2-dual-air-assist-v2.webp",
         "metrics": [
           "Built-in dual air",
           "Low-Air engraving",
@@ -428,12 +428,12 @@ const capabilityChapters = [
       {
         "title": "Autofocus + Red Dot. Zero Guesswork.",
         "copy": "Automated autofocus secures the optimal focal distance. High-visibility red-dot positioning helps place artwork precisely on the material.",
-        "image": "hydra-gen2-visual-positioning.webp"
+        "image": "hydra-gen2-autofocus-red-dot-v2.webp"
       },
       {
         "title": "A touch. A key. Direct control.",
         "copy": "The GT5 controller combines a 5-inch touchscreen and physical keys for file preview, diagnostics and offline operation.",
-        "image": "hydra-gen2-gt5-control.webp"
+        "image": "hydra-gen2-gt5-control-v2.webp"
       }
     ],
     "proofs": [
@@ -496,7 +496,7 @@ const capabilityChapters = [
       {
         "title": "Choose your production footprint.",
         "copy": "Hydra 7: 700 × 500 mm. Hydra 9: 900 × 600 mm. Hydra 13: 1,300 × 900 mm. Hydra 16: 1,600 × 1,000 mm.",
-        "image": "hydra-gen2-workspace-sizes.webp"
+        "image": "hydra-gen2-workspace-sizes-v2.webp"
       },
       {
         "title": "From flat work to rotary jobs.",

@@ -154,9 +154,12 @@
 }
 
 .capability-scroll__full-width-image {
+  position: relative;
+  z-index: 7;
+  width: 100vw;
   margin: 32px 0 0;
   overflow: hidden;
-  border-radius: 32px;
+  border-radius: 0;
   background: #141414;
 }
 
@@ -544,6 +547,19 @@
   .capability-scroll__story-copy {
     gap: 28px;
   }
+
+}
+
+@media (min-width: 1181px) {
+  .capability-scroll__full-width-image {
+    margin-left: calc(-1 * (max(0px, (100vw - 1280px) / 2) + clamp(0px, calc(832px - 50vw), 192px)));
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .capability-scroll__full-width-image {
+    margin-left: -228px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -601,6 +617,10 @@
 
   .capability-scroll__chapters {
     padding: 32px 18px 0;
+  }
+
+  .capability-scroll__full-width-image {
+    margin-left: -18px;
   }
 
   .capability-scroll__chapter {
