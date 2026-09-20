@@ -483,7 +483,7 @@ const capabilityChapters = [
       {
         "title": "Go longer. Think bigger.",
         "copy": "Front-to-back pass-through doors accommodate longer stock through a 20 mm opening. Plan material support and job alignment for each setup.",
-        "image": "hydra-gen2-pass-through.webp",
+        "image": "hydra-gen2-pass-through-v2.webp",
         "metrics": [
           "Front-to-back access",
           "20 mm opening",
