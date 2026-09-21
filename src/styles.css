@@ -174,6 +174,10 @@
   margin-bottom: 48px;
 }
 
+#capability-expansion .capability-scroll__chapter-heading > p {
+  white-space: pre-line;
+}
+
 .capability-scroll__story {
   min-width: 0;
 }
@@ -8512,7 +8516,8 @@ body { color: var(--ink); }
 
   #capability-precision .capability-scroll__story-copy p,
   #capability-protection .capability-scroll__stories .capability-scroll__story-copy p,
-  #capability-workflow .capability-scroll__story-copy p {
+  #capability-workflow .capability-scroll__story-copy p,
+  #capability-expansion .capability-scroll__story-copy p {
     overflow-wrap: anywhere;
     white-space: normal;
   }
