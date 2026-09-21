@@ -38,7 +38,6 @@ import { useAutoplayCarousel } from "./hooks/useAutoplayCarousel.js";
 
 const assetMap = {
   "feature-overview-hero.webp": "home-banner-hydra-education.png",
-  "feature-overview-capabilities-v4.webp": "hydra-ai-projects.webp",
   "material-acrylic.webp": "hydra-material-acrylic-production-v2.webp",
   "material-wood.webp": "hydra-material-wood-production-v2.webp",
   "material-leather.webp": "hydra-material-leather-production-v2.webp",
@@ -1250,7 +1249,7 @@ function CapabilityBrowser({ onPlay, children }) {
     <section className="capability-scroll" id="features">
       <span className="commercial-capabilities__anchor" id="capability-system" aria-hidden="true" />
       <div className="journey-opening-artwork">
-        <img src={asset("feature-overview-capabilities-v4.webp")} style={{aspectRatio:"3840 / 2004",objectFit:"cover"}} alt="Hydra Gen2 feature overview covering RF precision, power options, motion, workflow, safety and support" />
+        <img src={asset("feature-overview-capabilities-v4.webp")} style={{aspectRatio:"3840 / 2004",objectFit:"cover"}} alt="XRF Gen2 selling-point collection covering precision, RF power, motion, workflow, safety and support" />
       </div>
       <nav
           className="capability-scroll__nav"
