@@ -1299,6 +1299,12 @@ function CapabilityBrowser({ onPlay, children }) {
               aria-labelledby={`capability-${chapter.id}-title`}
               key={chapter.id}
             >
+              {chapter.fullWidthImage && (
+                <figure className="capability-scroll__full-width-image capability-scroll__full-width-image--opening">
+                  <img src={asset(chapter.fullWidthImage)} alt="Hydra Gen2 all-material engraving collection across wood, leather, glass, stone and coated metal" />
+                </figure>
+              )}
+
               <header className="capability-scroll__chapter-heading">
                 <small>{chapter.nav}</small>
                 <h3 id={`capability-${chapter.id}-title`}>{chapter.title}</h3>
@@ -1418,11 +1424,6 @@ function CapabilityBrowser({ onPlay, children }) {
                 </div>
               )}
 
-              {chapter.fullWidthImage && (
-                <figure className="capability-scroll__full-width-image">
-                  <img src={asset(chapter.fullWidthImage)} alt="Hydra Gen2 all-material engraving collection across wood, leather, glass, stone and coated metal" />
-                </figure>
-              )}
             </section>
           ))}
         </div>

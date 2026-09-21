@@ -169,6 +169,11 @@
   height: auto;
 }
 
+.capability-scroll__full-width-image--opening {
+  margin-top: 0;
+  margin-bottom: 48px;
+}
+
 .capability-scroll__story {
   min-width: 0;
 }
@@ -621,6 +626,10 @@
 
   .capability-scroll__full-width-image {
     margin-left: -18px;
+  }
+
+  .capability-scroll__full-width-image--opening {
+    margin-bottom: 32px;
   }
 
   .capability-scroll__chapter {
