@@ -540,18 +540,18 @@ const capabilityChapters = [
     "feature": {
       "title": "Protect the optics that protect your work.",
       "copy": "Real-time lens-temperature monitoring warns of overheating or contamination and can shut off laser output.",
-      "image": "hydra-gen2-lens-protection.webp"
+      "image": "hydra-gen2-lens-protection-v2.webp"
     },
     "support": [
       {
         "title": "Monitor the working environment.",
         "copy": "Workbench temperature sensing and PM2.5 detection help monitor the processing environment.",
-        "image": "hydra-gen2-environment-monitoring.webp"
+        "image": "hydra-gen2-environment-monitoring-v2.webp"
       },
       {
         "title": "Interlocks built into the enclosure.",
         "copy": "Lid and side-panel interlocks work with the enclosed chassis and separated electronics area.",
-        "image": "hydra-gen2-interlocks.webp"
+        "image": "hydra-gen2-interlocks-v2.webp"
       }
     ],
     "proofs": [
