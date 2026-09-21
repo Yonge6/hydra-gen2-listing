@@ -176,7 +176,7 @@ const rfAdvantages = [
     "title": "Detail at production speed.",
     "copy": "Fast RF response works with the servo motion platform to support detailed engraving at up to 2,000 mm/s raster speed and 4G acceleration.",
     "proof": "Up to 2,000 mm/s · 4G",
-    "image": "hydra-gen2-faster-response-v2.webp",
+    "image": "hydra-gen2-faster-response-v3.webp",
     "alt": "Hydra Gen2 laser head with verified 2,000 mm/s, 4G and repeat-positioning performance",
     "icon": ArrowClockwise
   },
@@ -187,8 +187,8 @@ const rfAdvantages = [
     "title": "Less maintenance. More uptime.",
     "copy": "The sealed RF source is rated for 20,000–30,000 hours and uses air cooling. The glass DC source in Hybrid configurations requires water cooling.",
     "proof": "20,000–30,000 hours · Air-cooled RF",
-    "image": "rf-longer-lifespan.webp",
-    "alt": "Air-cooled RF source illustration from the XRF Gen2 listing",
+    "image": "hydra-gen2-rf-lifespan-v2.webp",
+    "alt": "Hydra Gen2 air-cooled RF tube lifespan and stability comparison with glass tubes",
     "icon": ShieldCheck
   }
 ];
