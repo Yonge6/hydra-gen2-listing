@@ -299,7 +299,7 @@ const speedMotionMaterials = [
     "label": "Wood",
     "title": "Large-format detail, repeated at scale.",
     "copy": "Run detailed wood panels and aligned batches across Hydra Gen2’s wide bed with high-speed servo motion and repeatable positioning.",
-    "image": "speed-motion-hydra-wood-v2.webp",
+    "image": "speed-motion-hydra-wood-v3.webp",
     "icon": Tree
   },
   {
@@ -307,7 +307,7 @@ const speedMotionMaterials = [
     "label": "Acrylic",
     "title": "Move from one sign to a full batch.",
     "copy": "Keep large acrylic panels and repeat sign work moving with responsive RF engraving and the cutting source suited to the job.",
-    "image": "speed-motion-hydra-acrylic-v2.webp",
+    "image": "speed-motion-hydra-acrylic-v3.webp",
     "icon": CubeTransparent
   },
   {
@@ -315,7 +315,7 @@ const speedMotionMaterials = [
     "label": "Slate",
     "title": "Fixture the batch. Repeat the detail.",
     "copy": "Fill a production fixture with compatible slate pieces and keep fine, high-contrast artwork consistent across the run.",
-    "image": "speed-motion-hydra-slate-v2.webp",
+    "image": "speed-motion-hydra-slate-v3.webp",
     "icon": Target
   },
   {
@@ -323,7 +323,7 @@ const speedMotionMaterials = [
     "label": "Leather",
     "title": "Scale personalized leather production.",
     "copy": "Process large leather layouts and repeat batches of wallets or tags with precise outlines and consistent engraved detail.",
-    "image": "speed-motion-hydra-leather-v2.webp",
+    "image": "speed-motion-hydra-leather-v3.webp",
     "icon": Handbag
   }
 ];
