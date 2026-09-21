@@ -466,7 +466,7 @@ const capabilityChapters = [
     "id": "expansion",
     "nav": "Business Expansion",
     "title": "1 Hydra. 3 Technologies. ∞ Possibilities",
-    "summary": "Users can configure a 38W RF high-speed engraving tube paired with a high-power glass CO₂ tube, enabling our patented multi-laser intelligent switching within a single workflow on LightBurn and MakerBoost.\n\nAlternatively, users can choose a 70W RF tube of Hydra Gen 2 combined with a Q-Switch Fiber module, unlocking true all-material processing capability—from ultra-fine CO₂ engraving to industrial-grade metal marking.\n\n(The Dual-Laser 38W model does not support the fiber-laser upgrade package unless the unit is upgraded to the 70W version.)",
+    "summary": "Users can configure a 38W RF high-speed engraving tube paired with a high-power glass CO₂ tube, enabling our patented multi-laser intelligent switching within a single workflow on LightBurn and MakerBoost.\n\nAlternatively, users can choose a 70W RF tube of Hydra Gen 2 combined with a Q-Switch Fiber module, unlocking true all-material processing capability—from ultra-fine CO₂ engraving to industrial-grade metal marking. (The Dual-Laser 38W model does not support the fiber-laser upgrade package unless the unit is upgraded to the 70W version.)",
     "spotlights": [
       {
         "title": "All Material Engraving? YES!!!",
