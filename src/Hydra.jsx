@@ -493,8 +493,8 @@ const capabilityChapters = [
     ],
     "support": [
       {
-        "title": "Choose your production footprint.",
-        "copy": "Hydra 7: 700 × 500 mm. Hydra 9: 900 × 600 mm. Hydra 13: 1,300 × 900 mm. Hydra 16: 1,600 × 1,000 mm.",
+        "title": "More Sizes · More Possibilities",
+        "copy": "The Hydra Gen2 Series offers a full range of working-area options—from 700×500 mm up to 1600×1000 mm—supporting everything from fine-detail engraving and small-batch production to large-format industrial workflows. Choose the size that fits your business and scale with confidence.",
         "image": "hydra-gen2-workspace-sizes-v2.webp"
       },
       {
@@ -1248,7 +1248,7 @@ function CapabilityBrowser({ onPlay, children }) {
     <section className="capability-scroll" id="features">
       <span className="commercial-capabilities__anchor" id="capability-system" aria-hidden="true" />
       <div className="journey-opening-artwork">
-        <img src={asset("feature-overview-capabilities-v4.webp")} style={{aspectRatio:"3840 / 2004",objectFit:"cover"}} alt="XRF Gen2 selling-point collection covering precision, RF power, motion, workflow, safety and support" />
+        <img src={asset("hydra-gen2-feature-overview-v1.webp")} style={{aspectRatio:"3840 / 2004",objectFit:"cover"}} alt="Hydra Gen2 selling-point collection covering precision, RF power, motion, workflow, safety and support" />
       </div>
       <nav
           className="capability-scroll__nav"
