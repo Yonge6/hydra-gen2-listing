@@ -545,7 +545,7 @@ const capabilityChapters = [
       {
         "title": "Detect. Alert. Protect.",
         "copy": "When the lower rail temperature rises beyond safe limits, the system triggers an audible alarm and immediately shuts off laser output. This proactive safety mechanism alerts the operator, prevents hardware damage, and ensures reliable, worry-free operation.",
-        "image": "hydra-gen2-environment-monitoring-v2.webp"
+        "image": "hydra-gen2-environment-monitoring-v3.webp"
       },
       {
         "title": "Fully Enclosed. Fully Protected",
