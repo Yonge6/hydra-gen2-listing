@@ -9741,6 +9741,55 @@ body { color: var(--ink); }
   object-position: center top;
 }
 
+/* Keep the RF proof card as compact as its intrinsic 3:2 artwork. */
+.rf-advantages__stage {
+  grid-template-columns: minmax(0, 2.1fr) minmax(360px, 1fr);
+  align-items: stretch;
+}
+
+.rf-advantages__media {
+  align-self: stretch;
+}
+
+.rf-advantages__copy {
+  justify-content: center;
+  padding: 24px 28px;
+}
+
+.rf-advantages__copy h3 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.08;
+  letter-spacing: -.02em;
+}
+
+.rf-advantages__copy p {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.rf-advantages__copy strong {
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .rf-advantages__stage {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .rf-advantages__copy {
+    padding: 22px 20px 24px;
+  }
+
+  .rf-advantages__copy h3 {
+    font-size: 24px;
+  }
+}
+
 /* Hydra feature layout: preserve official media ratios and hierarchy. */
 #capability-motion .capability-scroll__support {
   grid-template-columns: 1fr;

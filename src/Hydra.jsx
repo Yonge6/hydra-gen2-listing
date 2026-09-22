@@ -1171,7 +1171,6 @@ function RfAdvantages({ activeIndex, onChange, carouselProps }) {
             />
           </div>
           <div className="rf-advantages__copy">
-            <span className="eyebrow">{rfAdvantages[activeIndex].eyebrow}</span>
             <h3>{rfAdvantages[activeIndex].title}</h3>
             <p>{rfAdvantages[activeIndex].copy}</p>
             <strong>{rfAdvantages[activeIndex].proof}</strong>
