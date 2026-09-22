@@ -213,13 +213,6 @@ const decisionVideos = {
     "channel": "OneLaser",
     "tag": "HYDRA SERIES · OWNER STORY",
     "cover": "hydra-video-Fqtlsk_NsKM.jpg"
-  },
-  "competitor": {
-    "id": "y0YUu-4rx7A",
-    "title": "Hydra 9 review and competitor comparisons",
-    "channel": "Make or Break Shop",
-    "tag": "HYDRA 9 · COMPETITOR REVIEW",
-    "cover": "hydra-video-y0YUu-4rx7A.jpg"
   }
 };
 
@@ -928,13 +921,6 @@ const consultationFeedback = [
     "role": "Hydra 9 · Video summary",
     "quote": "A print-to-cut demonstration shows an example of the Hydra workflow."
   }
-];
-
-const competitorModels = ["Hydra 9 (early model)", "Thunder Nova 35", "OMTech AF2440", "OMTech Pronto 45"];
-const competitorRows = [
-  ["Glass CO₂ configuration", "100W", "Glass CO₂; wattage not stated", "100W", "100W"],
-  ["Maximum speed cited", "1,200 mm/s · 3G", "Lower speed; no figure cited", "600 mm/s", "1,000 mm/s"],
-  ["RF option discussed", "38W RF upgrade (+$2,000)", "RF model discussed separately as Nova Plus 35", "Glass-only comparison", "Glass-only comparison"]
 ];
 
 function SpecGroup({ group }) {
@@ -2313,31 +2299,6 @@ export function HydraPage() {
         </section>
 
         <GenerationComparison />
-
-        <section className="sales-video sales-video--competitor" data-reveal>
-          <span className="commercial-capabilities__anchor" id="comparison-proof" aria-hidden="true" />
-          <YouTubeCover video={decisionVideos.competitor} onPlay={setYoutubeVideo} />
-          <div className="sales-video__copy">
-            <span className="eyebrow">HYDRA VS. THE COMPETITION</span>
-            <h2>See how Hydra compares.</h2>
-            <p>Compare the early Hydra 9 with Thunder Nova 35, OMTech AF2440 and OMTech Pronto 45, as discussed by Make or Break Shop. Figures below reflect the video, not current offers or Gen2 specifications.</p>
-            <div className="measured-comparison" role="region" aria-label="Machines compared in the Hydra 9 video" tabIndex="0">
-              <table>
-                <thead>
-                  <tr><th scope="col">In the video</th>{competitorModels.map((model) => <th scope="col" key={model}>{model}</th>)}</tr>
-                </thead>
-                <tbody>
-                  {competitorRows.map(([label, ...values]) => (
-                    <tr key={label}><th scope="row">{label}</th>{values.map((value, index) => <td key={competitorModels[index]}>{value}</td>)}</tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="measured-comparison__note">
-              Historical comparison from the <a href="https://www.machinesformakers.com/products/onelaser-hydra-9/video-review" target="_blank" rel="noreferrer">creator’s video transcript</a>. Hydra footage uses a pre-production unit; affiliate relationships are disclosed by the creator.
-            </p>
-          </div>
-        </section>
 
         <section className="review-proof" id="reviews" aria-labelledby="review-proof-title" data-reveal>
           <div className="review-proof__header">
