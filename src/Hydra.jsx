@@ -934,8 +934,7 @@ const competitorModels = ["Hydra 9 (early model)", "Thunder Nova 35", "OMTech AF
 const competitorRows = [
   ["Glass CO₂ configuration", "100W", "Glass CO₂; wattage not stated", "100W", "100W"],
   ["Maximum speed cited", "1,200 mm/s · 3G", "Lower speed; no figure cited", "600 mm/s", "1,000 mm/s"],
-  ["RF option discussed", "38W RF upgrade (+$2,000)", "RF model discussed separately as Nova Plus 35", "Glass-only comparison", "Glass-only comparison"],
-  ["Price cited · glass-only", "About $7,000", "Above $9,000", "About $4,500", "About $6,000"]
+  ["RF option discussed", "38W RF upgrade (+$2,000)", "RF model discussed separately as Nova Plus 35", "Glass-only comparison", "Glass-only comparison"]
 ];
 
 function SpecGroup({ group }) {
@@ -2336,7 +2335,7 @@ export function HydraPage() {
               </table>
             </div>
             <p className="measured-comparison__note">
-              Historical comparison from the <a href="https://www.machinesformakers.com/products/onelaser-hydra-9/video-review" target="_blank" rel="noreferrer">creator’s video transcript</a>. Hydra footage uses a pre-production unit. Prices exclude its optional RF upgrade; affiliate relationships are disclosed by the creator.
+              Historical comparison from the <a href="https://www.machinesformakers.com/products/onelaser-hydra-9/video-review" target="_blank" rel="noreferrer">creator’s video transcript</a>. Hydra footage uses a pre-production unit; affiliate relationships are disclosed by the creator.
             </p>
           </div>
         </section>
