@@ -426,12 +426,12 @@ const capabilityChapters = [
     "support": [
       {
         "title": "Autofocus + Red Dot. Zero Guesswork.",
-        "copy": "Automated autofocus secures the optimal focal distance. High-visibility red-dot positioning helps place artwork precisely on the material.",
+        "copy": "Hydra Gen 2 features an automated autofocus system with precision-controlled Z-axis movement, dynamically securing the optimal focal distance without manual adjustment or human error. Paired with a high-visibility red-dot positioning module, it ensures pinpoint alignment on the material—delivering higher consistency, faster throughput, and uncompromised operational accuracy.",
         "image": "hydra-gen2-autofocus-red-dot-v2.webp"
       },
       {
-        "title": "A touch. A key. Direct control.",
-        "copy": "The GT5 controller combines a 5-inch touchscreen and physical keys for file preview, diagnostics and offline operation.",
+        "title": "Supercharged GT5 Control System.",
+        "copy": "Powered by an industrial-grade DSP, the GT5 Smart Control Panel delivers precise, ultra-responsive laser-head control with both physical keys and a touchscreen. Its intuitive interface supports offline operation, file preview, diagnostics, and full parameter access—enabling reliable, high-volume cutting and engraving without a computer.",
         "image": "hydra-gen2-gt5-control-v2.webp"
       }
     ],
