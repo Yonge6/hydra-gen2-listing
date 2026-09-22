@@ -537,19 +537,19 @@ const capabilityChapters = [
     "summary": "Automatic airflow, lens-temperature monitoring and integrated interlocks support cleaner work and dependable daily operation.",
     "spotlights": [],
     "feature": {
-      "title": "Protect the optics that protect your work.",
-      "copy": "Real-time lens-temperature monitoring warns of overheating or contamination and can shut off laser output.",
+      "title": "Real-Time Lens Protection",
+      "copy": "The system monitors lens temperature in real time and warns you of overheating or contamination before damage occurs. This proactive protection prevents burnt lenses, extends the life of expensive optics, and keeps your machine running safely and consistently with lower maintenance costs.",
       "image": "hydra-gen2-lens-protection-v2.webp"
     },
     "support": [
       {
-        "title": "Monitor the working environment.",
-        "copy": "Workbench temperature sensing and PM2.5 detection help monitor the processing environment.",
+        "title": "Detect. Alert. Protect.",
+        "copy": "When the lower rail temperature rises beyond safe limits, the system triggers an audible alarm and immediately shuts off laser output. This proactive safety mechanism alerts the operator, prevents hardware damage, and ensures reliable, worry-free operation.",
         "image": "hydra-gen2-environment-monitoring-v2.webp"
       },
       {
-        "title": "Interlocks built into the enclosure.",
-        "copy": "Lid and side-panel interlocks work with the enclosed chassis and separated electronics area.",
+        "title": "Fully Enclosed. Fully Protected",
+        "copy": "The fully enclosed internal chassis isolates the electronics from the work area, blocking smoke and debris at the source to maintain a clean, safe workspace. This design boosts structural stability, reduces maintenance, and extends overall machine longevity. With built-in particulate and smoke monitoring and an engineered airflow system, it dramatically lowers exposure risks—delivering a cleaner, safer, and more reliable operating experience.",
         "image": "hydra-gen2-interlocks-v2.webp"
       }
     ],
