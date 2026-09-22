@@ -480,8 +480,8 @@ const capabilityChapters = [
         "hideCopy": false
       },
       {
-        "title": "Go longer. Think bigger.",
-        "copy": "Front-to-back pass-through doors accommodate longer stock through a 20 mm opening. Plan material support and job alignment for each setup.",
+        "title": "Go Longer. Cut Bigger.",
+        "copy": "A practical pass-through door design (front-to-back feeding) allows effortless handling of long materials, breaking traditional size limits and enabling larger, more flexible production workflows.",
         "image": "hydra-gen2-pass-through-v2.webp",
         "metrics": [
           "Front-to-back access",
