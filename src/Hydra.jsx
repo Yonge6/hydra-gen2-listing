@@ -16,6 +16,7 @@ import {
   Headset,
   LockKey,
   MapPin,
+  MagnifyingGlassPlus,
   Minus,
   Phone,
   Play,
@@ -1458,6 +1459,7 @@ export function HydraPage() {
     if (description) description.content = "Explore the OneLaser Hydra Gen2 industrial RF laser, built for precision, speed and production-ready performance.";
   }, []);
   const [activeMedia, setActiveMedia] = useState(0);
+  const [heroLightboxOpen, setHeroLightboxOpen] = useState(false);
   const [activeMaterial, setActiveMaterial] = useState(0);
   const [materialPaused, setMaterialPaused] = useState(false);
   const [materialTimerEpoch, setMaterialTimerEpoch] = useState(0);
@@ -1641,13 +1643,16 @@ export function HydraPage() {
   }, []);
 
   useEffect(() => {
-    if (!youtubeVideo && !videoModal) return undefined;
+    if (!youtubeVideo && !videoModal && !heroLightboxOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event) => {
       if (event.key === "Escape") {
         setYoutubeVideo(null);
         setVideoModal(null);
+        setHeroLightboxOpen(false);
       }
+      if (heroLightboxOpen && event.key === "ArrowLeft") stepMedia(-1);
+      if (heroLightboxOpen && event.key === "ArrowRight") stepMedia(1);
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", closeOnEscape);
@@ -1655,7 +1660,7 @@ export function HydraPage() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", closeOnEscape);
     };
-  }, [youtubeVideo, videoModal]);
+  }, [youtubeVideo, videoModal, heroLightboxOpen, media.length]);
 
   const selectedPurchasePackage = useMemo(() => {
     const selected = purchasePackages.find((item) => item.id === selectedPackageId) ?? purchasePackages[0];
@@ -1907,6 +1912,14 @@ export function HydraPage() {
               onTouchCancel={() => { heroMediaTouchStartX.current = null; }}
             >
               <img src={media[activeMedia].src} alt={media[activeMedia].alt} draggable="false" />
+              <button
+                type="button"
+                className="media-stage__open"
+                aria-label={`View larger: ${media[activeMedia].alt}`}
+                onClick={() => setHeroLightboxOpen(true)}
+              >
+                <span aria-hidden="true"><MagnifyingGlassPlus size={20} /></span>
+              </button>
               <span className="media-count">{String(activeMedia + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
               <button type="button" className="media-arrow media-arrow--previous" aria-label="Previous product view" onClick={() => stepMedia(-1)}><CaretLeft size={25} /></button>
               <button type="button" className="media-arrow media-arrow--next" aria-label="Next product view" onClick={() => stepMedia(1)}><CaretRight size={25} /></button>
@@ -2259,7 +2272,7 @@ export function HydraPage() {
           <div className="section-heading section-heading--stack">
             <span className="eyebrow">MATERIALS THAT BECOME BUSINESSES</span>
             <h2>From material choice to sellable work.</h2>
-            <p>Large-format projects. Repeatable batches. Fine engraving detail. Application images are illustrative concepts.</p>
+            <p>Large-format projects. Repeatable batches. Fine engraving detail.</p>
           </div>
           <div
             className="material-gallery"
@@ -2522,6 +2535,30 @@ export function HydraPage() {
           <button type="button" onClick={handleAddToCart}>Add to Cart</button>
         </div>
       </div>
+
+      {heroLightboxOpen && (
+        <div
+          className="hero-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Hydra Gen2 enlarged product gallery"
+          onClick={() => setHeroLightboxOpen(false)}
+        >
+          <div
+            className="hero-lightbox__dialog"
+            onClick={(event) => event.stopPropagation()}
+            onTouchStart={handleHeroMediaTouchStart}
+            onTouchEnd={handleHeroMediaTouchEnd}
+            onTouchCancel={() => { heroMediaTouchStartX.current = null; }}
+          >
+            <img src={media[activeMedia].src} alt={media[activeMedia].alt} draggable="false" />
+            <span className="hero-lightbox__count">{String(activeMedia + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
+            <button type="button" className="hero-lightbox__close" aria-label="Close enlarged product gallery" onClick={() => setHeroLightboxOpen(false)}><X size={24} /></button>
+            <button type="button" className="hero-lightbox__arrow hero-lightbox__arrow--previous" aria-label="Previous enlarged product view" onClick={() => stepMedia(-1)}><CaretLeft size={30} /></button>
+            <button type="button" className="hero-lightbox__arrow hero-lightbox__arrow--next" aria-label="Next enlarged product view" onClick={() => stepMedia(1)}><CaretRight size={30} /></button>
+          </div>
+        </div>
+      )}
 
       {videoModal && (
         <div className="video-modal" role="dialog" aria-modal="true" aria-label={`${videoModal.title} media preview`} onClick={() => setVideoModal(null)}>
