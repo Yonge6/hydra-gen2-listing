@@ -50,7 +50,43 @@ const SALES_CALL_URL = "https://www.1laser.com/products/sales-consultation-call"
 const BROCHURE_URL = `${import.meta.env.BASE_URL}downloads/onelaser-hydra-gen2-brochure.pdf`;
 const SUPPORT_URL = "https://www.1laser.com/pages/contact-us";
 
-const media = ['home-product-hydra-gen2-scene.webp', ...Array.from({length:15},(_,i)=>`hydra-official-${String(i+1).padStart(2,'0')}.webp`), 'hydra-ai-detail.webp','hydra-ai-acrylic.webp','hydra-ai-leather.webp','hydra-workflow.webp'].map((name,index)=>({src:asset(name),alt:`OneLaser Hydra Gen2 product view ${index+1}`,label:`Product ${index+1}`}));
+const baseHeroMedia = [
+  ["hydra-hero-01.webp", "Hydra Gen2 industrial laser in a professional workshop"],
+  ["hydra-hero-02.webp", "Hydra Gen2 feature and capability overview"],
+  ["hydra-hero-03.webp", "Hydra Gen2 engraved product collection across multiple materials"],
+  ["hydra-hero-04.webp", "Hydra Gen2 RF, glass CO2 and optional fiber source configurations"],
+  ["hydra-hero-05.webp", "Hydra Gen2 70W RF deep relief engraving result"],
+  ["hydra-hero-06.webp", "Hydra Gen2 RF source and photorealistic engraving detail"],
+  ["hydra-hero-07.webp", "Hydra Gen2 automatic air assist for cutting and engraving"],
+  ["hydra-hero-08.webp", "Hydra Gen2 pass-through workflow for long materials"],
+  ["hydra-hero-09.webp", "Hydra Gen2 workspace sizes and finished product examples"],
+  ["hydra-hero-10.webp", "Hydra Gen2 fine engraving on wood, coated metal and leather"],
+  ["hydra-hero-11.webp", "Hydra Gen2 variable PWM RF engraving performance"],
+  ["hydra-hero-12.webp", "Hydra Gen2 RF and glass tube lifespan comparison"],
+  ["hydra-hero-13.webp", "Hydra Gen2 GT5 touchscreen control panel"],
+  ["hydra-hero-14.webp", "Hydra Gen2 reinforced motion-system construction"],
+  ["hydra-hero-15.webp", "Hydra Gen2 high-resolution lid camera"],
+  ["hydra-hero-16.webp", "MakerBoost AI software for Hydra Gen2"],
+].map(([name, alt], index) => ({ src: asset(name), alt, label: `Product ${index + 1}` }));
+
+const packageHeroMedia = {
+  "7": [
+    ["hydra-7-white-01.webp", "Hydra 7 Gen2 side product view on white"],
+    ["hydra-7-white-02.webp", "Hydra 7 Gen2 front three-quarter product view on white"],
+  ],
+  "9": [
+    ["hydra-9-white-01.webp", "Hydra 9 Gen2 side product view on white"],
+    ["hydra-9-white-02.webp", "Hydra 9 Gen2 front three-quarter product view on white"],
+  ],
+  "13": [
+    ["hydra-13-white-01.webp", "Hydra 13 Gen2 side product view on white"],
+    ["hydra-13-white-02.webp", "Hydra 13 Gen2 front three-quarter product view on white"],
+  ],
+  "16": [
+    ["hydra-16-white-01.webp", "Hydra 16 Gen2 side product view on white"],
+    ["hydra-16-white-02.webp", "Hydra 16 Gen2 front three-quarter product view on white"],
+  ],
+};
 
 const officialFilm = {
   "youtubeId": "vf5KO_kGgmU",
@@ -1443,6 +1479,13 @@ export function HydraPage() {
   const [openFaq, setOpenFaq] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedPackageId, setSelectedPackageId] = useState("9");
+  const media = useMemo(() => (
+    [...baseHeroMedia, ...packageHeroMedia[selectedPackageId].map(([name, alt], index) => ({
+      src: asset(name),
+      alt,
+      label: `Hydra ${selectedPackageId} view ${index + 1}`,
+    }))]
+  ), [selectedPackageId]);
   const [purchasePower, setPurchasePower] = useState("38W");
   const [selectedPurchaseAccessories, setSelectedPurchaseAccessories] = useState([]);
   const [activeJourneySection, setActiveJourneySection] = useState("why-hydra");
