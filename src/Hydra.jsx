@@ -111,20 +111,20 @@ const powerProofs = [
     "tab": "38W RF + DC",
     "eyebrow": "HYDRA HYBRID · ENGRAVE & CUT",
     "title": "RF detail. Dedicated cutting power.",
-    "copy": "Pair precise 38W RF engraving with a glass DC CO₂ source for mixed engraving-and-cutting jobs. Hydra 9, 13 and 16 offer 100W, 130W and 150W DC respectively.",
+    "copy": "Hydra Hybrid pairs a precision 38W RF source with a high-power glass DC source in one platform. The RF beam preserves crisp linework, fine textures and smooth grayscale engraving, while the dedicated DC source delivers stronger cutting performance for thicker materials—so one machine can move from detailed personalization to production cutting with confidence.",
     "proof": "RF engraving · Glass DC cutting · Separate source control",
-    "image": "hydra-ai-acrylic.webp",
-    "alt": "Hydra acrylic application concept"
+    "image": "hydra-gen2-38w-hybrid-artworks.webp",
+    "alt": "Finished fine-engraved wood and coated metal artwork with precision-cut acrylic and layered wood pieces"
   },
   {
     "id": "70W",
     "tab": "70W RF Pro",
     "eyebrow": "HYDRA PRO · DEDICATED RF",
     "title": "Premium detail. Production focus.",
-    "copy": "Choose a dedicated 70W air-cooled RF source for fine grayscale, textures and professional batch engraving. Available in all four Hydra workspaces.",
+    "copy": "Hydra RF lasers deliver a tighter, rounder, and higher-frequency beam spot, enabling higher DPI and up to 4× ultra-sharp detail with uniform energy distribution. High-power 70w RF delivers consistent depth and flawless grayscale response, making true 3D photorealistic engraving possible.",
     "proof": "70W RF · Air-cooled · 7 / 9 / 13 / 16",
-    "image": "hydra-ai-detail.webp",
-    "alt": "Hydra detailed engraving application concept"
+    "image": "hydra-gen2-70w-deep-engraving.webp",
+    "alt": "Deep three-dimensional owl relief engraved in a thick walnut plaque"
   }
 ];
 
