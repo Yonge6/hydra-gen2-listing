@@ -111,7 +111,7 @@ const powerProofs = [
     "tab": "38W RF + DC",
     "eyebrow": "HYDRA HYBRID · ENGRAVE & CUT",
     "title": "RF detail. Dedicated cutting power.",
-    "copy": "Hydra Hybrid pairs a precision 38W RF source with a high-power glass DC source in one platform. The RF beam preserves crisp linework, fine textures and smooth grayscale engraving, while the dedicated DC source delivers stronger cutting performance for thicker materials—so one machine can move from detailed personalization to production cutting with confidence.",
+    "copy": "Hydra Hybrid combines crisp 38W RF engraving with the stronger cutting power of a high-power glass DC source. Create fine linework, rich textures and smooth grayscale, then cut thicker materials efficiently—all on one production platform.",
     "proof": "RF engraving · Glass DC cutting · Separate source control",
     "image": "hydra-gen2-38w-hybrid-artworks.webp",
     "alt": "Finished fine-engraved wood and coated metal artwork with precision-cut acrylic and layered wood pieces"

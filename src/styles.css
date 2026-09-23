@@ -7553,9 +7553,10 @@ body { color: var(--ink); }
 }
 
 .power-proof-stage {
+  height: 620px;
   min-height: 620px;
   display: grid;
-  grid-template-columns: minmax(0, 1.52fr) minmax(350px, .48fr);
+  grid-template-columns: minmax(0, 1fr) minmax(380px, .54fr);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 32px;
@@ -7564,7 +7565,8 @@ body { color: var(--ink); }
 
 .power-proof-stage__media {
   min-width: 0;
-  min-height: 620px;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
   background: #fff;
 }
@@ -7638,12 +7640,14 @@ body { color: var(--ink); }
   }
 
   .power-proof-stage {
+    height: auto;
     min-height: 0;
     grid-template-columns: 1fr;
     border-radius: 24px;
   }
 
   .power-proof-stage__media {
+    height: auto;
     min-height: 0;
     aspect-ratio: 3 / 2;
   }
