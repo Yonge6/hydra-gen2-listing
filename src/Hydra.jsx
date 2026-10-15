@@ -2121,7 +2121,7 @@ export function HydraPage() {
         </section>
 
         <section className="feature-overview" id="why-hydra" data-reveal>
-          <img src={asset("feature-overview-hydra-gen2-v2.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="OneLaser Hydra Gen2 in an industrial workshop surrounded by finished engraved products" />
+          <img src={asset("feature-overview-hydra-gen2-v3.webp")} style={{aspectRatio:"3840 / 1800",objectFit:"cover"}} alt="OneLaser Hydra Gen2 in an industrial workshop surrounded by finished engraved products" />
         </section>
 
         <section className="official-film" aria-labelledby="official-film-title" data-reveal>
