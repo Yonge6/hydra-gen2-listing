@@ -29,6 +29,10 @@ import {
 
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${name}`;
 const XRF_PAGE_URL = "https://yonge6.github.io/xrf-gen2-listing/";
+const HOME_PAGE_URL = "https://yonge6.github.io/onelaser-homepage-v3/";
+const MACHINES_PAGE_URL = `${HOME_PAGE_URL}collections/`;
+const ACCESSORIES_PAGE_URL = `${HOME_PAGE_URL}accessories/`;
+const MATERIALS_PAGE_URL = "https://www.1laser.com/collections/materials-for-laser-engraving-cutting";
 const wholeCurrencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -202,6 +206,22 @@ const supportMenu = {
   ],
 };
 
+const accessoriesMenu = {
+  featured: [
+    {
+      label: "Laser Accessories",
+      href: ACCESSORIES_PAGE_URL,
+      image: "navigation/accessories-menu.jpg",
+    },
+    {
+      label: "Materials",
+      href: MATERIALS_PAGE_URL,
+      image: "navigation/materials-menu.jpg",
+      external: true,
+    },
+  ],
+};
+
 const communityMenu = {
   featured: [
     {
@@ -330,7 +350,9 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
   const [activeMachineSeries, setActiveMachineSeries] = useState("x");
   const suppressMegaFocusRef = useRef(false);
-  const activatesOnClick = megaMenuActivation === "click";
+  const headerRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const clickActivatedMegaMenus = megaMenuActivation === "click";
   const activeResourceMenu = activeMegaMenu === "support" ? supportMenu : communityMenu;
 
   useEffect(() => {
@@ -350,6 +372,42 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [activeMegaMenu]);
 
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    setActiveMegaMenu(null);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const updatePosition = () => {
+      if (window.innerWidth > 820) { setMenuOpen(false); return; }
+      headerRef.current?.style.setProperty("--mobile-nav-top", `${headerRef.current.getBoundingClientRect().bottom}px`);
+    };
+    updatePosition();
+    const observer = new ResizeObserver(updatePosition);
+    observer.observe(headerRef.current);
+    window.addEventListener("resize", updatePosition);
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+      if (event.key === "Tab") {
+        const controls = [...headerRef.current.querySelectorAll("a, button, summary")].filter(el => el.getClientRects().length > 0 && !el.closest("details:not([open]) > div"));
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      observer.disconnect();
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen, announcementVisible]);
+
   const enterMegaMenu = (menu) => (event) => {
     if (event.key !== "ArrowDown") return;
     event.preventDefault();
@@ -359,11 +417,15 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
     });
   };
 
-  const toggleMegaMenu = (menu) => (event) => {
-    if (!activatesOnClick) return;
-    event.preventDefault();
-    setActiveMegaMenu((activeMenu) => activeMenu === menu ? null : menu);
+  const openMegaMenuOnHover = (menu) => clickActivatedMegaMenus ? undefined : () => setActiveMegaMenu(menu);
+  const openMegaMenuOnFocus = (menu) => clickActivatedMegaMenus ? undefined : () => {
+    if (!suppressMegaFocusRef.current) setActiveMegaMenu(menu);
   };
+  const toggleMegaMenuOnClick = (menu) => clickActivatedMegaMenus ? (event) => {
+    event.preventDefault();
+    setActiveMegaMenu((current) => current === menu ? null : menu);
+  } : undefined;
+  const closeMegaMenuOnHover = clickActivatedMegaMenus ? undefined : () => setActiveMegaMenu(null);
 
   return (
     <>
@@ -384,20 +446,22 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
         </div>
       )}
       <header
+        ref={headerRef}
         className="home-header"
-        onMouseLeave={activatesOnClick ? undefined : () => setActiveMegaMenu(null)}
+        onMouseLeave={closeMegaMenuOnHover}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setActiveMegaMenu(null);
         }}
       >
-        <a className="home-brand" href={import.meta.env.BASE_URL} aria-label="OneLaser home">
+        <a className="home-brand" href={HOME_PAGE_URL} aria-label="OneLaser home">
           <img src={asset("onelaser-logo.png")} alt="OneLaser" />
         </a>
         <button
+          ref={menuButtonRef}
           className="home-menu-button"
           type="button"
           aria-expanded={menuOpen}
-          aria-controls="home-navigation"
+          aria-controls="home-mobile-navigation"
           onClick={() => setMenuOpen((value) => !value)}
         >
           {menuOpen ? <X size={21} weight="bold" /> : <List size={22} weight="bold" />}
@@ -405,18 +469,69 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
         </button>
         <nav id="home-navigation" className={menuOpen ? "home-nav is-open" : "home-nav"} aria-label="Main navigation">
           <div className="home-nav__item">
-            <a href="https://www.1laser.com/collections/laser-engraving-cutting-marking-machines" target="_blank" rel="noreferrer" aria-haspopup="true" aria-controls="home-mega-machines" aria-expanded={activeMegaMenu === "machines"} data-mega-trigger="machines" onClick={toggleMegaMenu("machines")} onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu("machines")} onFocus={activatesOnClick ? undefined : () => { if (!suppressMegaFocusRef.current) setActiveMegaMenu("machines"); }} onKeyDown={enterMegaMenu("machines")}>Laser Machines <CaretDown size={13} weight="bold" /></a>
-          </div>
-          <a href="https://www.1laser.com/collections/laser-accessories" target="_blank" rel="noreferrer" onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu(null)} onFocus={() => setActiveMegaMenu(null)}>Accessories</a>
-          <a href="https://www.1laser.com/collections/limited-offers" target="_blank" rel="noreferrer" onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu(null)} onFocus={() => setActiveMegaMenu(null)}>Clearance</a>
-          <div className="home-nav__item">
-            <a href="https://www.1laser.com/pages/sales-consultation" target="_blank" rel="noreferrer" aria-haspopup="true" aria-controls="home-mega-support" aria-expanded={activeMegaMenu === "support"} data-mega-trigger="support" onClick={toggleMegaMenu("support")} onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu("support")} onFocus={activatesOnClick ? undefined : () => { if (!suppressMegaFocusRef.current) setActiveMegaMenu("support"); }} onKeyDown={enterMegaMenu("support")}>Support <CaretDown size={13} weight="bold" /></a>
+            <a href={MACHINES_PAGE_URL} aria-haspopup="true" aria-controls="home-mega-machines" aria-expanded={activeMegaMenu === "machines"} data-mega-trigger="machines" onMouseEnter={openMegaMenuOnHover("machines")} onFocus={openMegaMenuOnFocus("machines")} onClick={toggleMegaMenuOnClick("machines")} onKeyDown={enterMegaMenu("machines")}>Laser Machines <CaretDown size={13} weight="bold" /></a>
           </div>
           <div className="home-nav__item">
-            <a href="https://www.1laser.com/pages/laser-engraving-community" target="_blank" rel="noreferrer" aria-haspopup="true" aria-controls="home-mega-community" aria-expanded={activeMegaMenu === "community"} data-mega-trigger="community" onClick={toggleMegaMenu("community")} onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu("community")} onFocus={activatesOnClick ? undefined : () => { if (!suppressMegaFocusRef.current) setActiveMegaMenu("community"); }} onKeyDown={enterMegaMenu("community")}>Community <CaretDown size={13} weight="bold" /></a>
+            <a href={ACCESSORIES_PAGE_URL} aria-haspopup="true" aria-controls="home-mega-accessories" aria-expanded={activeMegaMenu === "accessories"} data-mega-trigger="accessories" onMouseEnter={openMegaMenuOnHover("accessories")} onFocus={openMegaMenuOnFocus("accessories")} onClick={toggleMegaMenuOnClick("accessories")} onKeyDown={enterMegaMenu("accessories")}>Accessories <CaretDown size={13} weight="bold" /></a>
           </div>
-          <a href="https://www.1laser.com/pages/contact-us" target="_blank" rel="noreferrer" onMouseEnter={activatesOnClick ? undefined : () => setActiveMegaMenu(null)} onFocus={() => setActiveMegaMenu(null)}>Contact</a>
+          <a href="https://www.1laser.com/collections/limited-offers" target="_blank" rel="noreferrer" onMouseEnter={closeMegaMenuOnHover} onFocus={closeMegaMenuOnHover}>Clearance</a>
+          <div className="home-nav__item">
+            <a href="https://www.1laser.com/pages/sales-consultation" target="_blank" rel="noreferrer" aria-haspopup="true" aria-controls="home-mega-support" aria-expanded={activeMegaMenu === "support"} data-mega-trigger="support" onMouseEnter={openMegaMenuOnHover("support")} onFocus={openMegaMenuOnFocus("support")} onClick={toggleMegaMenuOnClick("support")} onKeyDown={enterMegaMenu("support")}>Support <CaretDown size={13} weight="bold" /></a>
+          </div>
+          <div className="home-nav__item">
+            <a href="https://www.1laser.com/pages/laser-engraving-community" target="_blank" rel="noreferrer" aria-haspopup="true" aria-controls="home-mega-community" aria-expanded={activeMegaMenu === "community"} data-mega-trigger="community" onMouseEnter={openMegaMenuOnHover("community")} onFocus={openMegaMenuOnFocus("community")} onClick={toggleMegaMenuOnClick("community")} onKeyDown={enterMegaMenu("community")}>Community <CaretDown size={13} weight="bold" /></a>
+          </div>
+          <a href="https://www.1laser.com/pages/contact-us" target="_blank" rel="noreferrer" onMouseEnter={closeMegaMenuOnHover} onFocus={closeMegaMenuOnHover}>Contact</a>
         </nav>
+        {menuOpen && (
+          <nav id="home-mobile-navigation" className="home-mobile-nav" aria-label="Mobile main navigation" onClick={(event) => {
+            if (event.target.closest("a")) { setMenuOpen(false); menuButtonRef.current?.focus(); }
+          }}>
+            <details className="home-mobile-nav__group" name="mobile-navigation">
+              <summary>Laser Machines<CaretDown size={18} /></summary>
+              <div className="home-mobile-nav__panel">
+                <a className="home-mobile-nav__all" href={MACHINES_PAGE_URL}>Explore all machines<ArrowUpRight size={16} /></a>
+                {Object.entries(machineMenuSeries).map(([id, series]) => (
+                  <details className="home-mobile-nav__series" name="mobile-machine-series" key={id}>
+                    <summary>{series.label}<CaretDown size={16} /></summary>
+                    <div className="home-mobile-nav__products">
+                      {series.products.map(product => (
+                        <a href={product.href} target="_blank" rel="noreferrer" key={product.name}>
+                          <span><ProductName name={product.name} /></span>
+                          <small>{product.copy}</small>
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </details>
+            <details className="home-mobile-nav__group" name="mobile-navigation">
+              <summary>Accessories<CaretDown size={18} /></summary>
+              <div className="home-mobile-nav__panel home-mobile-nav__links">
+                {accessoriesMenu.featured.map((item) => (
+                  <a href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noreferrer" : undefined} key={item.label}>{item.label}<ArrowUpRight size={15} /></a>
+                ))}
+              </div>
+            </details>
+            <a className="home-mobile-nav__direct" href="https://www.1laser.com/collections/limited-offers" target="_blank" rel="noreferrer">Clearance<ArrowUpRight size={16} /></a>
+            {[["Support", supportMenu], ["Community", communityMenu]].map(([label, menu]) => (
+              <details className="home-mobile-nav__group" name="mobile-navigation" key={label}>
+                <summary>{label}<CaretDown size={18} /></summary>
+                <div className="home-mobile-nav__panel home-mobile-nav__links">
+                  {[...menu.featured.map(item => [item.label, item.href]), ...menu.links].map(([title, href]) => (
+                    <a href={href} target="_blank" rel="noreferrer" key={title}>{title}<ArrowUpRight size={15} /></a>
+                  ))}
+                </div>
+              </details>
+            ))}
+            <a className="home-mobile-nav__direct" href="https://www.1laser.com/pages/contact-us" target="_blank" rel="noreferrer">Contact<ArrowUpRight size={16} /></a>
+            <div className="home-mobile-nav__utilities">
+              <a href="https://www.1laser.com/search" target="_blank" rel="noreferrer"><MagnifyingGlass size={18} />Search</a>
+              <a href="https://www.1laser.com/account/login" target="_blank" rel="noreferrer"><UserCircle size={18} />Log in</a>
+            </div>
+          </nav>
+        )}
         <div className="home-header__actions" aria-label="OneLaser account and shopping">
           <a href="https://www.1laser.com/search" target="_blank" rel="noreferrer" aria-label="Search OneLaser"><MagnifyingGlass size={20} /></a>
           <a href="https://www.1laser.com/cart" target="_blank" rel="noreferrer" aria-label="View cart"><ShoppingBag size={20} /></a>
@@ -441,6 +556,19 @@ export function HomeNavigation({ megaMenuActivation = "hover" }) {
                   </a>
                 ))}
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeMegaMenu === "accessories" && (
+          <div id="home-mega-accessories" className="home-mega home-mega--accessories" aria-label="Accessories menu">
+            <div className="home-mega__inner home-mega__inner--accessories">
+              {accessoriesMenu.featured.map((item) => (
+                <a className="home-mega-resource-card" href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noreferrer" : undefined} key={item.label}>
+                  <img src={asset(item.image)} alt="" />
+                  <span>{item.label}<CaretRight size={20} weight="bold" /></span>
+                </a>
+              ))}
             </div>
           </div>
         )}

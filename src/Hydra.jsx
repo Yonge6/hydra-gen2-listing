@@ -1875,7 +1875,7 @@ export function HydraPage() {
     <div className="site-shell home-global-chrome">
       <div className="page-progress" aria-hidden="true"><span style={{ width: `${scrollProgress}%` }} /></div>
       <a className="skip-link" href="#main">Skip to content</a>
-      <HomeNavigation megaMenuActivation="click" />
+      <HomeNavigation />
 
       <nav className={journeyVisible ? "journey-nav is-visible" : "journey-nav"} aria-label="Explore Hydra Gen2 page sections">
         <div className="journey-nav__inner">
