@@ -39,3 +39,5 @@
 - The information selector retains native select behavior with an explicit chevron inset 14px from the right edge.
 
 - Video modules have distinct roles: the five-card machine rail contains reviews, unboxing, cut tests, touchscreen and Print to Cut demonstrations; the four-card customer rail contains Stitchcraft, pottery tools, maps and large signs. No video ID is shared between these two rails. Preserve this separation; do not add a customer story to the machine rail merely to lead with Gen2.
+
+- 2026-10-20 Product Opportunities economics: the 12 visible products use fixed illustrative monthly sales volumes of 16–180 units, with existing average prices and margins retained. Show monthly sales revenue alongside monthly profit and actual configuration-based payback; state that planned units must be produced and sold, use the exact average price in the formula and retain ILLUSTRATIVE EXAMPLE plus the disclaimer. Standard single-machine scenarios calculate to about 4.5–7.1 months; never clamp payback or automatically inflate sales when configuration cost rises.

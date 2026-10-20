@@ -15,19 +15,12 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-const monthlyCurrencyFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-
 function ProductEconomics({ product, equipmentInvestment }) {
   const economics = economicsExamples[product.economicsId];
   const monthlySales = economics.monthlySales ?? economicsAssumptions.monthlySales;
   const marginRate = Number.parseInt(economics.margin, 10) / 100;
-  const monthlyPayment = equipmentInvestment / 24;
-  const monthlyProfit = economics.unitPrice * marginRate * monthlySales;
+  const monthlyRevenue = economics.unitPrice * monthlySales;
+  const monthlyProfit = monthlyRevenue * marginRate;
   const paybackMonths = equipmentInvestment / monthlyProfit;
 
   return (
@@ -35,17 +28,17 @@ function ProductEconomics({ product, equipmentInvestment }) {
       <div key={product.id} className="product-economics__inner">
         <header className="product-economics__header">
           <div>
-            <span>ILLUSTRATIVE EARNINGS</span>
+            <span>ILLUSTRATIVE EXAMPLE</span>
             <h4>Estimated monthly profit</h4>
           </div>
           <strong>{currencyFormatter.format(monthlyProfit)}<small>/mo.</small></strong>
         </header>
         <dl className="product-economics__metrics">
           <div className="product-economics__payback"><dt>Estimated payback</dt><dd>{paybackMonths.toFixed(1)}<small>months</small></dd></div>
-          <div><dt>24-month cost illustration</dt><dd>{monthlyCurrencyFormatter.format(monthlyPayment)}<small>/mo.</small></dd></div>
+          <div><dt>Estimated monthly sales revenue</dt><dd>{currencyFormatter.format(monthlyRevenue)}<small>/mo.</small></dd></div>
         </dl>
         <p className="product-economics__assumptions">
-          {monthlySales} products/mo. × {economics.sellingPrice} selling price × {economics.margin} net margin. Payback uses the current {currencyFormatter.format(equipmentInvestment)} configuration.
+          {monthlySales} products produced and sold/mo. × {currencyFormatter.format(economics.unitPrice)} assumed average price × {economics.margin} assumed net margin. Payback = current {currencyFormatter.format(equipmentInvestment)} configuration ÷ monthly profit.
         </p>
         <p className="product-economics__disclaimer">{economicsDisclaimer}</p>
       </div>
